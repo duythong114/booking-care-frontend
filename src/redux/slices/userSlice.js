@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { registerUserService } from '../../services/userServices'
 
-import { testApi } from '../../services/userServices'
-
-export const FetchAllStudents = createAsyncThunk(
-    'user/fetchAllStudents',
-    async () => {
-        const response = await testApi()
+export const registerNewUser = createAsyncThunk(
+    'user/registerNewUser',
+    async (userData) => {
+        const response = await registerUserService(userData)
         return response
     },
 )
@@ -14,9 +13,8 @@ const initialState = {
     // common state
     isUserError: null,
 
-    // fetch all students
-    isLoadingAllStudent: false,
-    listStudents: null,
+    // register new user
+    isRegistering: false,
 
 }
 
@@ -27,17 +25,16 @@ export const userSlice = createSlice({
 
     },
     extraReducers: (builder) => {
-        // fetch all user
+        // register new user
         builder
-            .addCase(FetchAllStudents.pending, (state, action) => {
-                state.isLoadingAllStudent = true
+            .addCase(registerNewUser.pending, (state, action) => {
+                state.isRegistering = true
             })
-            .addCase(FetchAllStudents.fulfilled, (state, action) => {
-                state.isLoadingAllStudent = false
-                state.listStudents = action.payload
+            .addCase(registerNewUser.fulfilled, (state, action) => {
+                state.isRegistering = false
             })
-            .addCase(FetchAllStudents.rejected, (state, action) => {
-                state.isLoadingAllStudent = false
+            .addCase(registerNewUser.rejected, (state, action) => {
+                state.isRegistering = false
                 state.isUserError = action.error.message
             })
     },

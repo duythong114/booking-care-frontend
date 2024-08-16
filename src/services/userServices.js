@@ -1,15 +1,22 @@
 import axios from "../axiosConfig";
 
-const testApi = async () => {
+const registerUserService = async (userData) => {
     try {
-        const response = await axios.get('/api/v1/students');
-        return response;
+        const response = await axios.post('/api/register', {
+            fullname: userData.fullname,
+            email: userData.email,
+            phone: userData.phone,
+            gender: userData.gender,
+            dob: userData.dob,
+            password: userData.password
+        })
+        return response
     } catch (error) {
-        console.error('Error fetching students:', error);
+        console.error('Error registering user:', error);
         throw error;
     }
 }
 
 export {
-    testApi,
+    registerUserService,
 }
