@@ -1,0 +1,21 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="20" height="20" fill="#F5F5F5"/>
+<g id="Admin_Docter_Page">
+<rect width="1440" height="1024" transform="translate(-1387 -201)" fill="white"/>
+<g id="Main" clip-path="url(#clip0_0_1)">
+<rect id="Rectangle 48" x="-1107" y="-121" width="1160" height="945" fill="white"/>
+<g id="Booking">
+<rect id="Rectangle 58" x="-130" y="-10" width="160" height="40" rx="16" fill="#007BFF"/>
+<g id="Add">
+<rect id="Rectangle 50" y="6" width="20" height="8" fill="#FFFDFD"/>
+<rect id="Rectangle 51" x="6" width="8" height="20" fill="#FFFDFD"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_1">
+<rect width="1160" height="944" fill="white" transform="translate(-1107 -121)"/>
+</clipPath>
+</defs>
+</svg>

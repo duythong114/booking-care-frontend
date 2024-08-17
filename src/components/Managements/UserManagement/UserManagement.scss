@@ -1,0 +1,114 @@
+.userMana-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 0 40px;
+    align-items: center;
+    flex-direction: column;
+    
+    .pageName-header {
+        margin: 0;
+        font-size: 32px;
+        color: #FFC107;
+        font-weight: 500;
+        padding-top: 20px;
+        font-style: normal;
+        font-family: Inter;
+        line-height: normal;
+        text-transform: uppercase;
+        text-decoration-line: underline;
+    }
+
+    .userName-header {
+        width: 100%;
+        display: flex;
+        margin-top: 40px;
+        align-items: center;
+        justify-content: space-between;
+
+        .searchUser {
+            width: 500px;
+            position: relative;
+
+            .searchInput {
+                width: 500px;
+                height: 52px;
+                font-size: 24px;
+                text-align: center;
+                background: #FFF;
+                border-radius: 30px;
+                border: 1px solid #000;
+            }
+    
+            .searchInput:focus-visible {
+                outline: none;
+            }
+    
+            .searchInput:focus-visible + .searchIcon {
+                display: none;
+            }
+    
+            .searchIcon {
+                top: 8px;
+                right: 8px;
+                height: 36px;
+                position: absolute;
+            }
+        }
+
+        .addUser {
+            width: 158px;
+            height: 48px;
+            border: none;
+            display: flex;
+            padding: 0 10px;
+            font-size: 20px;
+            color: #FFFBFB;
+            font-weight: 700;
+            align-items: center;
+            border-radius: 26px;
+            justify-content: center;
+            background-color: #007BFF;
+
+            img {
+                margin-left: 8px;
+            }
+        }
+    }
+
+    .userMana-body {
+        width: 100%;
+        margin-top: 52px;
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border:1px solid #B9B9B9;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
+        }
+
+        th {
+            background-color: #EDFFFA;
+            color: #FFC107;
+        }
+
+        td:hover {
+            cursor: pointer;
+        }
+
+        .editIcon, .deteleIcon {
+            background-color: white;
+            border: none;
+
+            img {
+                height: 30px;
+            }
+        }
+    }
+}
