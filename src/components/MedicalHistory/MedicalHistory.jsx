@@ -4,7 +4,7 @@ import searchIcon from "../../assets/icons/search.svg"
 const MedicalHistory = () => {
     return(
         <div className="medical-history-container">
-            <h1 className="medical-history-header">booking management</h1>
+            <h1 className="medical-history-header">Medical Record</h1>
             <div className="history-header">
                 <div className="history-header-search">
                     <input className="search-input" type="text" placeholder="Enter search information"/>
