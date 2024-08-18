@@ -5,7 +5,7 @@ import editIcon from "../../assets/icons/edit.svg"
 const Profile = () => {
     return (
         <div className="profile-container">
-            <h1 className="profile-name">personal information</h1>
+            <h1 className="profile-name">Profile</h1>
             <div className="profile-name-infor">
                 <div className="infor-avatar">
                     <img className="infor-img-avatar" src={avatar} alt="Avatar" />  
