@@ -15,16 +15,16 @@ const Home = () => {
 
                 <div className="body-header-table">
                     <table>
-                    <tr>
-                        <td>Nguyen Van A</td>
-                        <td>dd/mm/yyyy</td>
-                        <td>Male</td>
-                    </tr>
-                    <tr>
-                        <td>VanANguyen@gmail.com</td>
-                        <td>0394328473</td>
-                        <td>BinhTan, HoChiMinh</td>
-                    </tr>
+                        <tr>
+                            <td>Nguyen Van A</td>
+                            <td>dd/mm/yyyy</td>
+                            <td>Male</td>
+                        </tr>
+                        <tr>
+                            <td>VanANguyen@gmail.com</td>
+                            <td>0394328473</td>
+                            <td>BinhTan, HoChiMinh</td>
+                        </tr>
                     </table>
                 </div>
             </div>
