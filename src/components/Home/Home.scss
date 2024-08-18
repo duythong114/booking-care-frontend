@@ -1,0 +1,118 @@
+.home-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 0 40px;
+    position: relative;
+    align-items: center;
+    flex-direction: column;
+
+    .home-body-header {
+        width: 100%;
+
+        .body-header-name {
+            width: 100%;
+            display: flex;
+            margin-top: 20px;
+            position: relative;
+            justify-content: center;
+
+            .home-body-name {
+                margin: 0;
+                font-size: 32px;
+                color: #FFC107;
+                font-weight: 500;
+                font-style: normal;
+                font-family: Inter;
+                line-height: normal;
+                text-transform: uppercase;
+                text-decoration-line: underline;
+            }
+    
+            .btn {
+                top: 0;
+                right: 0;
+                display: flex;
+                font-weight: 500;
+                align-items: center;
+                position: absolute;
+    
+                img {
+                    margin-left: 4px;
+                }
+            }
+        }
+
+        .body-header-table {
+            width: 100%;
+            margin-top: 20px;
+
+            table {
+                width: 100%;
+            }
+    
+            table, th, td {
+                border:1px solid #B9B9B9;
+                border-collapse: collapse;
+                text-align: center;
+                font-size: 16px;
+                color: #000;
+                font-weight: 400;
+            }
+    
+            th {
+                background-color: #EDFFFA;
+                color: #FFC107;
+            }
+    
+            td:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .home-body-infor {
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+        flex-direction: column;
+
+        .body-infor-name {
+            margin: 0;
+            font-size: 32px;
+            color: #FFC107;
+            font-weight: 500;
+            font-style: normal;
+            font-family: Inter;
+            line-height: normal;
+            text-transform: uppercase;
+            text-decoration-line: underline;
+        }
+
+        .body-infor-medical {
+            margin: 20px 0 20px;
+            padding: 20px;
+            width: 700px;
+            height: auto;
+            border-radius: 50px;
+            border: 1px solid;
+            background-color: white;
+
+            .infor-medical {
+                width: 100%;
+                height: auto;
+                padding: 8px;
+                display: flex;
+                align-items: center;
+
+                strong {
+                    margin-right: 12px;
+                }
+
+                span {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
