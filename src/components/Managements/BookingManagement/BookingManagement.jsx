@@ -97,35 +97,6 @@ const BookingManagement = () => {
                     </tr>
                 </table>
             </div>
-
-            <div className="model-add-container">
-                <div className="add-body">
-                    <button id="add-close" className="btn btn-danger">X</button>
-                    <h2 className="add-name">Create booking</h2>
-
-                    <div class="add-info">
-                        <div class="input-group">
-                            <label for="date-input">Date:</label>
-                            <input type="date" id="date-input" placeholder="dd/mm/yy" />
-                        </div>
-                        <div class="input-group">
-                            <label>Time:</label>
-                            <div className="time-options">
-                                <label>
-                                    <input type="radio" name="time" value="morning" />
-                                    Morning
-                                </label>
-                                <label>
-                                    <input type="radio" name="time" value="afternoon" />
-                                    Afternoon
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="button" id="add-submit" class="btn btn-success">Submit</button>
-                </div>
-            </div>
         </div>
     )
 }
