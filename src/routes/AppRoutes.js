@@ -12,6 +12,7 @@ import MedicalHistory from "../components/MedicalHistory/MedicalHistory"
 import BookingManagement from "../components/Managements/BookingManagement/BookingManagement"
 import UserManagement from "../components/Managements/UserManagement/UserManagement"
 import Profile from "../components/Profile/Profile"
+import NotFound from "../components/NotFound/NotFound"; 
 
 import PrivateRoute from "./PrivateRoute"
 
@@ -39,7 +40,7 @@ const AppRoutes = () => {
             {/* Profile */}
             <Route path="/profile" element={<PrivateRoute element={Profile} />} />
 
-            <Route path="*" element={<div>404 NOT FOUND</div>} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }
