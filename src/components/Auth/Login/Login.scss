@@ -50,6 +50,8 @@
                 font-weight: 500;
                 align-items: center;
                 justify-content: space-between;
+                position: relative;
+
 
                 input {
                     width: 320px;
@@ -61,6 +63,12 @@
 
                 input:focus-visible {
                     outline: none;
+                }
+
+                .form-pass-icon {
+                    height: 24px;
+                    position: absolute;
+                    right: 12px;
                 }
             }
 
