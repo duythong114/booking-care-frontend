@@ -1,7 +1,12 @@
 import "./Login.scss"
 import backgroudImg from "../../../assets/images/side-image.jpg"
+import eyeIcon from "../../../assets/icons/eye.svg"
+import eyeoffIcon from "../../../assets/icons/eye-off.svg"
+import { useState } from "react";
 
 const Login = () => {
+    const [showPassword, setshowPassword] = useState(false)
+
     return (
         <div className="login-container">
             <div className="login-infor">
@@ -14,7 +19,10 @@ const Login = () => {
                     </div>
                     <div className="login-form-password">
                         <label>Password:</label>
-                        <input type="password" placeholder="Enter password" />
+                        <input type={showPassword ? 'text' : 'password'} placeholder="Enter password" />
+                        <img className="form-pass-icon" 
+                        onClick={() => {setshowPassword(!showPassword)}}
+                        src={showPassword ? `${eyeIcon}` : `${eyeoffIcon}`} alt="Eye-off" />
                     </div>
                     <div className="login-form-btn">
                         <button type="button" class="btn btn-primary">Login</button>
