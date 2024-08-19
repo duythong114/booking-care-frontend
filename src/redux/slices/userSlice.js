@@ -1,21 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { registerUserService } from '../../services/userServices'
+import { loginUserService } from '../../services/userServices'
 
-export const registerNewUser = createAsyncThunk(
-    'user/registerNewUser',
-    async (userData) => {
-        const response = await registerUserService(userData)
-        return response
-    },
-)
+export const loginUser = createAsyncThunk(
+    'user/loginUser',
+    async (userData, { rejectWithValue }) => {
+        try {
+            const response = await loginUserService(userData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 const initialState = {
     // common state
     isUserError: null,
 
-    // register new user
-    isRegistering: false,
-
+    // login user
+    isLogging: false,
+    isAuthenticated: false,
+    token: null,
 }
 
 export const userSlice = createSlice({
@@ -25,16 +30,18 @@ export const userSlice = createSlice({
 
     },
     extraReducers: (builder) => {
-        // register new user
+        // login user
         builder
-            .addCase(registerNewUser.pending, (state, action) => {
-                state.isRegistering = true
+            .addCase(loginUser.pending, (state, action) => {
+                state.isLogging = true
             })
-            .addCase(registerNewUser.fulfilled, (state, action) => {
-                state.isRegistering = false
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.isLogging = false
+                state.isAuthenticated = true
+                state.token = action.payload?.data
             })
-            .addCase(registerNewUser.rejected, (state, action) => {
-                state.isRegistering = false
+            .addCase(loginUser.rejected, (state, action) => {
+                state.isLogging = false
                 state.isUserError = action.error.message
             })
     },

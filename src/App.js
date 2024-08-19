@@ -1,4 +1,5 @@
 import './styles/App.scss';
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import AppRoutes from './routes/AppRoutes';
 import {
@@ -25,10 +26,9 @@ function App() {
       {/* React-toastify */}
       <ToastContainer
         position="top-center"
-        limit={1}
         autoClose={5000}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop={true}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss

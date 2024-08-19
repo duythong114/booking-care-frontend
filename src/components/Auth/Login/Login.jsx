@@ -1,11 +1,48 @@
-import "./Login.scss"
-import backgroudImg from "../../../assets/images/side-image.jpg"
-import eyeIcon from "../../../assets/icons/eye.svg"
-import eyeoffIcon from "../../../assets/icons/eye-off.svg"
-import { useState } from "react";
+import "./Login.scss";
+import backgroudImg from "../../../assets/images/side-image.jpg";
+import eyeIcon from "../../../assets/icons/eye.svg";
+import eyeoffIcon from "../../../assets/icons/eye-off.svg";
+import { toast } from 'react-toastify';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { loginUser } from "../../../redux/slices/userSlice";
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 
 const Login = () => {
-    const [showPassword, setshowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const isLogging = useSelector(state => state.user.isLogging);
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/")
+        }
+    }, [navigate, isAuthenticated])
+
+    const handleLogin = async () => {
+        const userData = { email, password };
+        const response = await dispatch(loginUser(userData));
+
+        if (response?.error?.message === "Rejected" && response?.payload) {
+            toast.error(response.payload);
+        }
+        if (response?.payload?.message) {
+            toast.success(response.payload.message);
+        }
+    };
+
+    const handleSignUpBtn = () => {
+        navigate('/register');
+    }
+
+    if (isLogging) {
+        return <LoadingSpinner />
+    }
 
     return (
         <div className="login-container">
@@ -14,19 +51,46 @@ const Login = () => {
                     <h1 className="login-form-name">Login</h1>
                     <span>Welcome back! Please login to your account</span>
                     <div className="login-form-email">
-                        <label>Email:</label>
-                        <input type="email" placeholder="Enter email" />
+                        <label htmlFor="email">Email:</label>
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="Enter email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
                     </div>
                     <div className="login-form-password">
-                        <label>Password:</label>
-                        <input type={showPassword ? 'text' : 'password'} placeholder="Enter password" />
-                        <img className="form-pass-icon" 
-                        onClick={() => {setshowPassword(!showPassword)}}
-                        src={showPassword ? `${eyeIcon}` : `${eyeoffIcon}`} alt="Eye-off" />
+                        <label htmlFor="password">Password:</label>
+                        <input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Enter password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <img
+                            className="form-pass-icon"
+                            src={showPassword ? eyeIcon : eyeoffIcon}
+                            alt={showPassword ? 'Hide password' : 'Show password'}
+                            onClick={() => setShowPassword(prev => !prev)}
+                        />
                     </div>
                     <div className="login-form-btn">
-                        <button type="button" class="btn btn-primary">Login</button>
-                        <button type="button" class="btn btn-outline-primary">SignUp</button>
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={handleLogin}
+                        >
+                            Login
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={() => handleSignUpBtn()}
+                        >
+                            SignUp
+                        </button>
                     </div>
                 </div>
             </div>
@@ -34,7 +98,7 @@ const Login = () => {
                 <img src={backgroudImg} alt="Background" />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

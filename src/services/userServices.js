@@ -1,22 +1,23 @@
 import axios from "../axiosConfig";
 
-const registerUserService = async (userData) => {
+const loginUserService = async (userData) => {
     try {
-        const response = await axios.post('/api/register', {
-            fullname: userData.fullname,
-            email: userData.email,
-            phone: userData.phone,
-            gender: userData.gender,
-            dob: userData.dob,
-            password: userData.password
-        })
-        return response
+        const response = await axios.get(`/api/login?email=${userData.email}&password=${userData.password}`);
+        return response;
     } catch (error) {
-        console.error('Error registering user:', error);
-        throw error;
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
     }
 }
 
 export {
-    registerUserService,
+    loginUserService
 }

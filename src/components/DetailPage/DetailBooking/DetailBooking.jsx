@@ -20,7 +20,7 @@ const DetailBooking = () => {
                 </table>
             </div>
             <div className="detail-infor-medical">
-                <button type="button" class="btn btn-warning">Edit</button>
+                <button type="button" className="btn btn-warning">Edit</button>
 
                 <div className="infor-medical">
                     <span><strong>Record ID:</strong>001</span>
