@@ -8,20 +8,20 @@ import Header from "./components/Header/Header"
 import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
-
   return (
     <div className="app-container">
-      <div className='header-content'>
-        <Header />
-      </div>
-      <div className='sidebar-content'>
-        <Sidebar />
-      </div>
-      <div className='main-content'>
-        <Router>
+      <Router>
+        <div className="header-content">
+          <Header />
+        </div>
+        <div className="sidebar-content">
+          <Sidebar />
+        </div>
+        <div className='main-content'>
           <AppRoutes />
-        </Router>
-      </div>
+        </div>
+      </Router>
+
       {/* React-toastify */}
       <ToastContainer
         position="top-center"

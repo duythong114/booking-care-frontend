@@ -1,0 +1,50 @@
+.sidebar-container {
+    padding-top: 40px;
+    color      : #000;
+    font-family: Inter;
+    font-size  : 24px;
+    font-style : normal;
+    font-weight: 500;
+    line-height: normal;
+
+    ul {
+        list-style: none;
+        padding   : 0;
+
+        li {
+            padding         : 16px 32px;
+            margin-top      : 10px;
+            background-color: #D9D9D9;
+            cursor          : pointer;
+            transition      : background-color 0.3s ease;
+
+            &:hover {
+                background-color: #F3D57C;
+                animation       : bounce 0.5s ease;
+            }
+
+            &.active {
+                background-color: #FFC107;
+            }
+        }
+
+        #logout-section {
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+        }
+    }
+
+    // Bounce keyframes
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+}
