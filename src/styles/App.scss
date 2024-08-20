@@ -1,4 +1,4 @@
-.app-container {
+.layout-container {
     display: grid;
     grid-template-areas:
         "header header"
@@ -20,5 +20,11 @@
 
     .main-content {
         grid-area: main;
+    }
+
+    .full-content {
+        grid-area  : main;
+        grid-column: 1 / -1;
+        grid-row   : 1 / -1;
     }
 }

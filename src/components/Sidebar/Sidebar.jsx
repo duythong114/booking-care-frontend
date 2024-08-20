@@ -1,11 +1,15 @@
 import { useState } from "react";
 import "./Sidebar.scss";
 import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '../../redux/slices/userSlice'
 import logoutIcon from '../../assets/icons/logout.svg'
+import { useDispatch } from "react-redux";
+import { toast } from 'react-toastify';
 
 const Sidebar = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleNavigation = (index, path) => {
         setActiveIndex(index);
@@ -13,8 +17,9 @@ const Sidebar = () => {
     };
 
     const handleLogout = () => {
-        // handle logout here
-        alert("Logout")
+        dispatch(logoutUser());
+        navigate('/login')
+        toast.success("User logged out")
     }
 
     return (
