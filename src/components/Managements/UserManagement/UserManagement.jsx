@@ -21,69 +21,73 @@ const UserManagement = () => {
             </div>
             <div className="user-mana-body">
                 <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr>
-                        <td>001</td>
-                        <td>Nguyen Van A</td>
-                        <td>VanANguyen@gmail.com</td>
-                        <td>Docter</td>
-                        <td>
-                            <button className="edit-icon">
-                                <img src={editIcon} alt="Edit" />
-                            </button>
-                            <button className="detele-icon">
-                                <img src={deleteIcon} alt="Delete" />
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>002</td>
-                        <td>Nguyen Van B</td>
-                        <td>VanBNguyen@gmail.com</td>
-                        <td>Docter</td>
-                        <td>
-                            <button className="edit-icon">
-                                <img src={editIcon} alt="Edit" />
-                            </button>
-                            <button className="detele-icon">
-                                <img src={deleteIcon} alt="Delete" />
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>003</td>
-                        <td>Nguyen Van C</td>
-                        <td>VanCNguyen@gmail.com</td>
-                        <td>Patient</td>
-                        <td>
-                            <button className="edit-icon">
-                                <img src={editIcon} alt="Edit" />
-                            </button>
-                            <button className="detele-icon">
-                                <img src={deleteIcon} alt="Delete" />
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>004</td>
-                        <td>Nguyen Van D</td>
-                        <td>VanDNguyen@gmail.com</td>
-                        <td>Patient</td>
-                        <td>
-                            <button className="edit-icon">
-                                <img src={editIcon} alt="Edit" />
-                            </button>
-                            <button className="detele-icon">
-                                <img src={deleteIcon} alt="Delete" />
-                            </button>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Nguyen Van A</td>
+                            <td>VanANguyen@gmail.com</td>
+                            <td>Docter</td>
+                            <td>
+                                <button className="edit-icon">
+                                    <img src={editIcon} alt="Edit" />
+                                </button>
+                                <button className="detele-icon">
+                                    <img src={deleteIcon} alt="Delete" />
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Nguyen Van B</td>
+                            <td>VanBNguyen@gmail.com</td>
+                            <td>Docter</td>
+                            <td>
+                                <button className="edit-icon">
+                                    <img src={editIcon} alt="Edit" />
+                                </button>
+                                <button className="detele-icon">
+                                    <img src={deleteIcon} alt="Delete" />
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Nguyen Van C</td>
+                            <td>VanCNguyen@gmail.com</td>
+                            <td>Patient</td>
+                            <td>
+                                <button className="edit-icon">
+                                    <img src={editIcon} alt="Edit" />
+                                </button>
+                                <button className="detele-icon">
+                                    <img src={deleteIcon} alt="Delete" />
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>004</td>
+                            <td>Nguyen Van D</td>
+                            <td>VanDNguyen@gmail.com</td>
+                            <td>Patient</td>
+                            <td>
+                                <button className="edit-icon">
+                                    <img src={editIcon} alt="Edit" />
+                                </button>
+                                <button className="detele-icon">
+                                    <img src={deleteIcon} alt="Delete" />
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
