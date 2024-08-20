@@ -15,41 +15,45 @@ const MedicalHistory = () => {
             <div className="medical-history-body">
                 <input className="history-date" type="date" placeholder="dd/mm/yyyy" />
                 <table>
-                    <tr>
-                        <th>No.</th>
-                        <th>Docter</th>
-                        <th>Date</th>
-                        <th>Diagnosis</th>
-                        <th>Traeatment</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Nguyen Van A</td>
-                        <td>dd/mm/yyyy</td>
-                        <td>Cold with cough and mild fever</td>
-                        <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Nguyen Van B</td>
-                        <td>dd/mm/yyyy</td>
-                        <td>Cold with cough and mild fever</td>
-                        <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Nguyen Van C</td>
-                        <td>dd/mm/yyyy</td>
-                        <td>Cold with cough and mild fever</td>
-                        <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Nguyen Van D</td>
-                        <td>dd/mm/yyyy</td>
-                        <td>Cold with cough and mild fever</td>
-                        <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Docter</th>
+                            <th>Date</th>
+                            <th>Diagnosis</th>
+                            <th>Traeatment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Nguyen Van A</td>
+                            <td>dd/mm/yyyy</td>
+                            <td>Cold with cough and mild fever</td>
+                            <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Nguyen Van B</td>
+                            <td>dd/mm/yyyy</td>
+                            <td>Cold with cough and mild fever</td>
+                            <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Nguyen Van C</td>
+                            <td>dd/mm/yyyy</td>
+                            <td>Cold with cough and mild fever</td>
+                            <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Nguyen Van D</td>
+                            <td>dd/mm/yyyy</td>
+                            <td>Cold with cough and mild fever</td>
+                            <td>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
