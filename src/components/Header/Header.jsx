@@ -2,8 +2,11 @@ import "./Header.scss"
 import logo from "../../assets/icons/logo.svg"
 import bellIcon from "../../assets/icons/bell.svg"
 import avatar from "../../assets/icons/Avatar.svg"
+import { useSelector } from "react-redux"
 
 const Header = () => {
+    const userInfo = useSelector(state => state.user.userInfo)
+
     return (
         <div className="header-container">
             <div className="header-logo">
@@ -15,7 +18,7 @@ const Header = () => {
             </div>
             <div className="header-infor">
                 <img src={bellIcon} alt="Notification" />
-                <span>Welcome, <strong>Nguyen Van A</strong></span>
+                <span>Welcome, <strong>{userInfo && userInfo.fullname}</strong></span>
                 <div className="header-infor-avatar">
                     <img src={avatar} alt="Avatar" />
                 </div>

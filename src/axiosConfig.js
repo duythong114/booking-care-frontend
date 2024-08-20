@@ -13,18 +13,18 @@ const axiosInstance = axios.create({
 // axiosInstance.defaults.withCredentials = true;
 
 // add interceptors for request 
-// axiosInstance.interceptors.request.use(
-//     (config) => {
-//         const token = localStorage.getItem('token');
-//         if (token) {
-//             config.headers.Authorization = `Bearer ${token}`;
-//         }
-//         return config;
-//     },
-//     (error) => {
-//         return Promise.reject(error);
-//     }
-// );
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 // add interceptors for response
 axiosInstance.interceptors.response.use(

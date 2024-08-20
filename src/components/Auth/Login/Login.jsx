@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from "../../../redux/slices/userSlice";
+import { loginUser, getUserInfo } from "../../../redux/slices/userSlice";
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 
 const Login = () => {
@@ -18,6 +18,7 @@ const Login = () => {
     const isLogging = useSelector(state => state.user.isLogging);
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
+    // Prevent user access login page when logged in
     useEffect(() => {
         if (isAuthenticated) {
             navigate("/")
@@ -32,6 +33,8 @@ const Login = () => {
             toast.error(response.payload);
         }
         if (response?.payload?.message) {
+            dispatch(getUserInfo())
+            navigate("/")
             toast.success(response.payload.message);
         }
     };

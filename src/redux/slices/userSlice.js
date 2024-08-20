@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { loginUserService } from '../../services/userServices'
+import {
+    loginUserService,
+    getUserInfoService,
+} from '../../services/userServices'
 
 export const loginUser = createAsyncThunk(
     'user/loginUser',
@@ -13,8 +16,22 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+export const getUserInfo = createAsyncThunk(
+    'user/getUserInfo',
+    async () => {
+        try {
+            const response = await getUserInfoService();
+            return response;
+        } catch (error) {
+            return error
+        }
+    }
+);
+
 // Load state from localStorage
-const tokenFromLocalStorage = localStorage.getItem('token');
+const loadToken = localStorage.getItem('token');
+const loadUserInfoJSON = localStorage.getItem('userInfo');
+const loadUserInfo = JSON.parse(loadUserInfoJSON)
 
 const initialState = {
     // common state
@@ -22,8 +39,12 @@ const initialState = {
 
     // login user
     isLogging: false,
-    token: tokenFromLocalStorage,
-    isAuthenticated: tokenFromLocalStorage ? true : false,
+    token: loadToken,
+    isAuthenticated: loadToken ? true : false,
+
+    // get user info
+    isGettingUserInfo: false,
+    userInfo: loadUserInfo,
 }
 
 export const userSlice = createSlice({
@@ -33,7 +54,7 @@ export const userSlice = createSlice({
         logoutUser: (state) => {
             state.isAuthenticated = false;
             state.token = null;
-            localStorage.removeItem('token');
+            localStorage.clear();;
         }
     },
     extraReducers: (builder) => {
@@ -50,6 +71,20 @@ export const userSlice = createSlice({
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.isLogging = false
+                state.isUserError = action.error.message
+            })
+        // get user info
+        builder
+            .addCase(getUserInfo.pending, (state, action) => {
+                state.isGettingUserInfo = true
+            })
+            .addCase(getUserInfo.fulfilled, (state, action) => {
+                state.isGettingUserInfo = false
+                state.userInfo = action.payload?.data
+                localStorage.setItem('userInfo', JSON.stringify(action.payload?.data));
+            })
+            .addCase(getUserInfo.rejected, (state, action) => {
+                state.isGettingUserInfo = false
                 state.isUserError = action.error.message
             })
     },
