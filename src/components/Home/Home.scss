@@ -6,6 +6,7 @@
     position: relative;
     align-items: center;
     flex-direction: column;
+    background-image: url(../../assets/images/homebg.jpg);
 
     .home-body-header {
         width: 100%;
@@ -14,99 +15,55 @@
             width: 100%;
             display: flex;
             margin-top: 20px;
-            position: relative;
-            justify-content: center;
-
-            .home-body-name {
-                margin: 0;
-                font-size: 32px;
-                color: #FFC107;
-                font-weight: 500;
-                font-style: normal;
-                font-family: Inter;
-                line-height: normal;
-                text-transform: uppercase;
-                text-decoration-line: underline;
-            }
+            justify-content: flex-end;
     
             .btn {
-                top: 0;
-                right: 0;
                 display: flex;
                 font-weight: 500;
                 align-items: center;
-                position: absolute;
     
                 img {
                     margin-left: 4px;
                 }
             }
         }
-
-        .body-header-table {
-            width: 100%;
-            margin-top: 20px;
-
-            table {
-                width: 100%;
-            }
-    
-            table, th, td {
-                border:1px solid #B9B9B9;
-                border-collapse: collapse;
-                text-align: center;
-                font-size: 16px;
-                color: #000;
-                font-weight: 400;
-            }
-    
-            td:hover {
-                cursor: pointer;
-            }
-        }
     }
 
     .home-body-infor {
         display: flex;
-        margin-top: 20px;
+        width: 100%;
+        margin-top: 8px;
         align-items: center;
         flex-direction: column;
 
-        .body-infor-name {
-            margin: 0;
-            font-size: 32px;
-            color: #FFC107;
-            font-weight: 500;
-            font-style: normal;
-            font-family: Inter;
-            line-height: normal;
-            text-transform: uppercase;
-            text-decoration-line: underline;
-        }
-
-        .body-infor-medical {
-            margin: 20px 0 20px;
-            padding: 20px;
-            width: 700px;
-            height: auto;
-            border-radius: 50px;
-            border: 1px solid;
+        .body-panel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px; 
+            height: 300px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
             background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-            .infor-medical {
-                width: 100%;
-                height: auto;
-                padding: 8px;
-                display: flex;
-                align-items: center;
+            .body-panel-text {
+                text-align: center;
+                margin: 0;
+                padding: 20px;
+                font-size: 1.2em; 
+            }
+        }   
+          
+        .panel-item {
+            width: 100%;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
 
-                strong {
-                    margin-right: 12px;
-                }
-
-                span {
-                    font-size: 16px;
-                }
+            img {
+                height: 140px;
             }
         }
     }
