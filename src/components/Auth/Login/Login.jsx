@@ -25,7 +25,22 @@ const Login = () => {
         }
     }, [navigate, isAuthenticated])
 
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
     const handleLogin = async () => {
+        if (!validateEmail(email)) {
+            toast.error("Please enter a valid email address.");
+            return;
+        }
+
+        if (!email || !password) {
+            toast.error("Please fill in all fields.");
+            return;
+        }
+
         const userData = { email, password };
         const response = await dispatch(loginUser(userData));
 
@@ -33,6 +48,8 @@ const Login = () => {
             toast.error(response.payload);
         }
         if (response?.payload?.message) {
+            setEmail("")
+            setPassword("")
             dispatch(getUserInfo())
             navigate("/")
             toast.success(response.payload.message);
@@ -41,6 +58,12 @@ const Login = () => {
 
     const handleSignUpBtn = () => {
         navigate('/register');
+    }
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
     }
 
     if (isLogging) {
@@ -71,6 +94,7 @@ const Login = () => {
                             placeholder="Enter password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(e) => handleKeyDown(e)}
                         />
                         <img
                             className="form-pass-icon"

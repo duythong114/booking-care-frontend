@@ -2,7 +2,7 @@ import axios from "../axiosConfig";
 
 const loginUserService = async (userData) => {
     try {
-        const response = await axios.get(`/api/login?email=${userData.email}&password=${userData.password}`);
+        const response = await axios.get(`/api/user/login?email=${userData.email}&password=${userData.password}`);
         return response;
     } catch (error) {
         if (error.response) {
@@ -20,7 +20,7 @@ const loginUserService = async (userData) => {
 
 const getUserInfoService = async () => {
     try {
-        const response = await axios.get('/api/userinfo');
+        const response = await axios.get('/api/user/get-user');
         return response;
     } catch (error) {
         if (error.response) {

@@ -18,7 +18,7 @@ const Header = () => {
             </div>
             <div className="header-infor">
                 <img src={bellIcon} alt="Notification" />
-                <span>Welcome, <strong>{userInfo && userInfo.fullname}</strong></span>
+                <span>Welcome, <strong>{userInfo?.fullname}</strong></span>
                 <div className="header-infor-avatar">
                     <img src={avatar} alt="Avatar" />
                 </div>
