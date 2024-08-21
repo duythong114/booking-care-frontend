@@ -13,33 +13,52 @@ import BookingManagement from "../components/Managements/BookingManagement/Booki
 import UserManagement from "../components/Managements/UserManagement/UserManagement"
 import Profile from "../components/Profile/Profile"
 import NotFound from "../components/NotFound/NotFound";
-
 import PrivateRoute from "./PrivateRoute"
+import { useSelector } from "react-redux";
 
 const AppRoutes = () => {
+    const userInfo = useSelector(state => state.user.userInfo)
+    const roleId = userInfo?.roleId
+
+    const menuRoutes = {
+        // roll admin
+        1: [
+            { path: "/", component: Home },
+            { path: "/management/booking", component: BookingManagement },
+            { path: "/management/user", component: UserManagement },
+        ],
+        // roll doctor
+        2: [
+            { path: "/", component: Home },
+            { path: "/management/booking", component: BookingManagement },
+            { path: "/profile", component: Profile },
+            { path: "/detail/booking", component: DetailBooking },
+        ],
+        // roll patient
+        3: [
+            { path: "/", component: Home },
+            { path: "/history/medical", component: MedicalHistory },
+            { path: "/profile", component: Profile },
+            { path: "/detail/booking", component: DetailBooking },
+            { path: "/detail/user", component: DetailUser },
+        ]
+    };
+
     return (
         <Routes>
-            {/* Home */}
-            <Route path="/" element={<PrivateRoute element={Home} />} />
+            {roleId && menuRoutes[roleId]?.map((item, index) => (
+                <Route
+                    key={index}
+                    path={item.path}
+                    element={<PrivateRoute element={item.component} />}
+                />
+            ))}
 
             {/* Auth */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Detail Page */}
-            <Route path="/detail/booking" element={<PrivateRoute element={DetailBooking} />} />
-            <Route path="/detail/user" element={<PrivateRoute element={DetailUser} />} />
-
-            {/* History */}
-            <Route path="/history/medical" element={<PrivateRoute element={MedicalHistory} />} />
-
-            {/* Managements */}
-            <Route path="/management/booking" element={<PrivateRoute element={BookingManagement} />} />
-            <Route path="/management/user" element={<PrivateRoute element={UserManagement} />} />
-
-            {/* Profile */}
-            <Route path="/profile" element={<PrivateRoute element={Profile} />} />
-
+            {/* Catch undefined routes */}
             <Route path="*" element={<NotFound />} />
         </Routes>
     );
