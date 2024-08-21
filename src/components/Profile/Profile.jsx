@@ -16,22 +16,22 @@ const Profile = () => {
                     <img className="infor-img-edit" src={editIcon} alt="Edit" />
                 </div>
                 <div className="info-fields">
-                    <span>{userInfo.fullName}</span>
+                    <span>{userInfo?.fullName}</span>
                 </div>
                 <div className="info-fields">
-                    <span>{userInfo.dob}</span>
+                    <span>{userInfo?.dob}</span>
                 </div>
                 <div className="info-fields">
-                    <span>{userInfo.gender}</span>
+                    <span>{userInfo?.gender}</span>
                 </div>
                 <div className="info-fields">
-                    <span>{userInfo.phone}</span>
+                    <span>{userInfo?.phone}</span>
                 </div>
                 <div className="info-fields">
-                    <span>{userInfo.email}</span>
+                    <span>{userInfo?.email}</span>
                 </div>
                 <div className="info-fields">
-                    <span>{userInfo.address}</span>
+                    <span>{userInfo?.address}</span>
                 </div>
             </div>
         </div>

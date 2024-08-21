@@ -20,14 +20,14 @@ const Home = () => {
                     <table>
                         <tbody>
                             <tr>
-                                <td>{userInfo.fullName}</td>
-                                <td>{userInfo.dob}</td>
-                                <td>{userInfo.gender}</td>
+                                <td>{userInfo?.fullName}</td>
+                                <td>{userInfo?.dob}</td>
+                                <td>{userInfo?.gender}</td>
                             </tr>
                             <tr>
-                                <td>{userInfo.email}</td>
-                                <td>{userInfo.phone}</td>
-                                <td>{userInfo.address}</td>
+                                <td>{userInfo?.email}</td>
+                                <td>{userInfo?.phone}</td>
+                                <td>{userInfo?.address}</td>
                             </tr>
                         </tbody>
                     </table>
