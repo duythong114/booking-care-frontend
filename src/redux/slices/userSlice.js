@@ -1,8 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
+    registerUserService,
     loginUserService,
     getUserInfoService,
 } from '../../services/userServices'
+
+export const registerUser = createAsyncThunk(
+    'user/registerUser',
+    async (userData, { rejectWithValue }) => {
+        try {
+            const response = await registerUserService(userData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 export const loginUser = createAsyncThunk(
     'user/loginUser',
@@ -37,6 +50,9 @@ const initialState = {
     // common state
     isUserError: null,
 
+    // register user
+    isRegisting: false,
+
     // login user
     isLogging: false,
     token: loadToken,
@@ -58,6 +74,19 @@ export const userSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        // register user
+        builder
+            .addCase(registerUser.pending, (state, action) => {
+                state.isRegisting = true
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.isRegisting = false
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.isRegisting = false
+                state.isUserError = action.error.message
+            })
+
         // login user
         builder
             .addCase(loginUser.pending, (state, action) => {
@@ -73,6 +102,7 @@ export const userSlice = createSlice({
                 state.isLogging = false
                 state.isUserError = action.error.message
             })
+
         // get user info
         builder
             .addCase(getUserInfo.pending, (state, action) => {

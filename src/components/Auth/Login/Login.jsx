@@ -25,17 +25,7 @@ const Login = () => {
         }
     }, [navigate, isAuthenticated])
 
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
-
     const handleLogin = async () => {
-        if (!validateEmail(email)) {
-            toast.error("Please enter a valid email address.");
-            return;
-        }
-
         if (!email || !password) {
             toast.error("Please fill in all fields.");
             return;
