@@ -1,7 +1,10 @@
 import "./Home.scss"
 import addIcon from "../../assets/icons/Add.svg"
+import { useSelector } from "react-redux"
 
 const Home = () => {
+    const userInfo = useSelector(state => state.user.userInfo)
+
     return (
         <div className="home-container">
             <div className="home-body-header">
@@ -17,14 +20,14 @@ const Home = () => {
                     <table>
                         <tbody>
                             <tr>
-                                <td>Nguyen Van A</td>
-                                <td>dd/mm/yyyy</td>
-                                <td>Male</td>
+                                <td>{userInfo?.fullName}</td>
+                                <td>{userInfo?.dob}</td>
+                                <td>{userInfo?.gender}</td>
                             </tr>
                             <tr>
-                                <td>VanANguyen@gmail.com</td>
-                                <td>0394328473</td>
-                                <td>BinhTan, HoChiMinh</td>
+                                <td>{userInfo?.email}</td>
+                                <td>{userInfo?.phone}</td>
+                                <td>{userInfo?.address}</td>
                             </tr>
                         </tbody>
                     </table>
