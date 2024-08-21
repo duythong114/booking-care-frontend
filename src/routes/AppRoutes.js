@@ -23,20 +23,17 @@ const AppRoutes = () => {
     const menuRoutes = {
         // roll admin
         1: [
-            { path: "/", component: Home },
             { path: "/management/booking", component: BookingManagement },
             { path: "/management/user", component: UserManagement },
         ],
         // roll doctor
         2: [
-            { path: "/", component: Home },
             { path: "/management/booking", component: BookingManagement },
             { path: "/profile", component: Profile },
             { path: "/detail/booking", component: DetailBooking },
         ],
         // roll patient
         3: [
-            { path: "/", component: Home },
             { path: "/history/medical", component: MedicalHistory },
             { path: "/profile", component: Profile },
             { path: "/detail/booking", component: DetailBooking },
@@ -53,6 +50,9 @@ const AppRoutes = () => {
                     element={<PrivateRoute element={item.component} />}
                 />
             ))}
+
+            {/* Home */}
+            <Route path="/" element={<PrivateRoute element={Home} />} />
 
             {/* Auth */}
             <Route path="/login" element={<Login />} />
