@@ -3,6 +3,7 @@ import {
     registerUserService,
     loginUserService,
     getUserInfoService,
+    getAllUserService,
 } from '../../services/userServices'
 
 export const registerUser = createAsyncThunk(
@@ -41,6 +42,18 @@ export const getUserInfo = createAsyncThunk(
     }
 );
 
+export const getAllUser = createAsyncThunk(
+    'user/getAllUser',
+    async (pagination, { rejectWithValue }) => {
+        try {
+            const response = await getAllUserService(pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadToken = localStorage.getItem('token');
 const loadUserInfoJSON = localStorage.getItem('userInfo');
@@ -61,6 +74,11 @@ const initialState = {
     // get user info
     isGettingUserInfo: false,
     userInfo: loadUserInfo,
+
+    // get all users
+    isGettingAllUsers: false,
+    userList: null,
+    totalPage: 0,
 }
 
 export const userSlice = createSlice({
@@ -115,6 +133,21 @@ export const userSlice = createSlice({
             })
             .addCase(getUserInfo.rejected, (state, action) => {
                 state.isGettingUserInfo = false
+                state.isUserError = action.error.message
+            })
+
+        // get all users
+        builder
+            .addCase(getAllUser.pending, (state, action) => {
+                state.isGettingAllUsers = true
+            })
+            .addCase(getAllUser.fulfilled, (state, action) => {
+                state.isGettingAllUsers = false
+                state.userList = action.payload?.data?.result
+                state.totalPage = action.payload?.data?.meta?.pages
+            })
+            .addCase(getAllUser.rejected, (state, action) => {
+                state.isGettingAllUsers = false
                 state.isUserError = action.error.message
             })
     },

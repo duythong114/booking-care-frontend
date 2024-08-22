@@ -6,12 +6,12 @@ import deleteIcon from "../../../assets/icons/delete.svg"
 
 const BookingManagement = () => {
 
-    return(
+    return (
         <div className="booking-mana-container">
             <h1 className="booking-name-header">booking management</h1>
             <div className="booking-header">
                 <div className="booking-header-search">
-                    <input className="search-input" type="text" placeholder="Enter search information"/>
+                    <input className="search-input" type="text" placeholder="Enter search information" />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
                 <button className="btn btn-primary">
@@ -45,7 +45,7 @@ const BookingManagement = () => {
                                 <button className="edit-icon">
                                     <img src={editIcon} alt="Edit" />
                                 </button>
-                                <button className="detele-icon">
+                                <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
                                 </button>
                             </td>
@@ -61,7 +61,7 @@ const BookingManagement = () => {
                                 <button className="edit-icon">
                                     <img src={editIcon} alt="Edit" />
                                 </button>
-                                <button className="detele-icon">
+                                <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
                                 </button>
                             </td>
@@ -77,7 +77,7 @@ const BookingManagement = () => {
                                 <button className="edit-icon">
                                     <img src={editIcon} alt="Edit" />
                                 </button>
-                                <button className="detele-icon">
+                                <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
                                 </button>
                             </td>
@@ -93,7 +93,7 @@ const BookingManagement = () => {
                                 <button className="edit-icon">
                                     <img src={editIcon} alt="Edit" />
                                 </button>
-                                <button className="detele-icon">
+                                <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
                                 </button>
                             </td>
