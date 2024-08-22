@@ -25,6 +25,8 @@ const AppRoutes = () => {
         1: [
             { path: "/management/booking", component: BookingManagement },
             { path: "/management/user", component: UserManagement },
+            { path: "/detail/booking", component: DetailBooking },
+            { path: "/detail/user", component: DetailUser },
         ],
         // roll doctor
         2: [
@@ -36,8 +38,6 @@ const AppRoutes = () => {
         3: [
             { path: "/history/medical", component: MedicalHistory },
             { path: "/profile", component: Profile },
-            { path: "/detail/booking", component: DetailBooking },
-            { path: "/detail/user", component: DetailUser },
         ]
     };
 

@@ -6,17 +6,20 @@ import deleteIcon from "../../../assets/icons/delete.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllUser, deleteUser } from "../../../redux/slices/userSlice"
+import { getAllUser, deleteUser, getDetailUser } from "../../../redux/slices/userSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
+import { useNavigate } from "react-router-dom"
 
 const UserManagement = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const userList = useSelector(state => state.user.userList)
     const totalPage = useSelector(state => state.user.totalPage)
     const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
+    const isGettingDetailUser = useSelector(state => state.user.isGettingDetailUser)
     const [current, setCurrent] = useState(1)
     // eslint-disable-next-line
     const [pageSize, setPageSize] = useState(4)
@@ -32,7 +35,8 @@ const UserManagement = () => {
     useEffect(() => {
         let pagination = { current, pageSize }
         dispatch(getAllUser(pagination))
-    }, [dispatch, current, pageSize])
+        // eslint-disable-next-line
+    }, [current])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -50,7 +54,6 @@ const UserManagement = () => {
 
     const handleConfirmDelete = async () => {
         const userId = userData.id
-        // const userId = 100
         if (userId) {
             const response = await dispatch(deleteUser(userId))
             if (response?.error?.message === "Rejected" && response?.payload) {
@@ -63,6 +66,19 @@ const UserManagement = () => {
                 setShowModal(!showModal)
             }
         }
+    }
+
+    const handleDetailBtn = (user) => {
+        const userId = user.id
+        if (userId) {
+            dispatch(getDetailUser(userId))
+            localStorage.setItem("currentPath", "/detail/user")
+            navigate("/detail/user");
+        }
+    }
+
+    if (isGettingDetailUser) {
+        return <LoadingSpinner />
     }
 
     return (
@@ -98,15 +114,18 @@ const UserManagement = () => {
                         </tbody>
                         :
                         <tbody>
-                            {userList && userList.length > 0 ? (
-                                userList.map((user) => (
+                            {userList && userList.length > 0
+                                ?
+                                (userList.map((user) => (
                                     <tr key={user?.id}>
                                         <td>{user?.id}</td>
                                         <td>{user?.fullName}</td>
                                         <td>{user?.email}</td>
                                         <td>{roleMap[user?.roleId] || "unknow"}</td>
                                         <td>
-                                            <button className="detail-icon">
+                                            <button
+                                                onClick={() => handleDetailBtn(user)}
+                                                className="detail-icon">
                                                 <img src={detailIcon} alt="detail" />
                                             </button>
                                             <button
@@ -116,12 +135,11 @@ const UserManagement = () => {
                                             </button>
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
+                                )))
+                                :
+                                (<tr>
                                     <td colSpan="5">No users found</td>
-                                </tr>
-                            )}
+                                </tr>)}
                         </tbody>
                     }
                 </table>

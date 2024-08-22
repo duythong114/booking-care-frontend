@@ -82,7 +82,25 @@ const getAllUserService = async (pagination) => {
 
 const deleteUserService = async (userId) => {
     try {
-        const response = await axios.delete(`http://localhost:8080/api/user/delete/${userId}`);
+        const response = await axios.delete(`/api/user/delete/${userId}`);
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
+const getDetailUserService = async (userId) => {
+    try {
+        const response = await axios.get(`/api/user/getById/${userId}`);
         return response;
     } catch (error) {
         if (error.response) {
@@ -104,4 +122,5 @@ export {
     getUserInfoService,
     getAllUserService,
     deleteUserService,
+    getDetailUserService,
 }

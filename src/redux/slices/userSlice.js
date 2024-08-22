@@ -5,6 +5,7 @@ import {
     getUserInfoService,
     getAllUserService,
     deleteUserService,
+    getDetailUserService,
 } from '../../services/userServices'
 
 export const registerUser = createAsyncThunk(
@@ -67,10 +68,24 @@ export const deleteUser = createAsyncThunk(
     }
 );
 
+export const getDetailUser = createAsyncThunk(
+    'user/getDetailUser',
+    async (userId, { rejectWithValue }) => {
+        try {
+            const response = await getDetailUserService(userId);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadToken = localStorage.getItem('token');
 const loadUserInfoJSON = localStorage.getItem('userInfo');
 const loadUserInfo = JSON.parse(loadUserInfoJSON)
+const loadDetailUserJSON = localStorage.getItem('detailUser');
+const loadDetailUser = JSON.parse(loadDetailUserJSON)
 
 const initialState = {
     // common state
@@ -95,6 +110,11 @@ const initialState = {
 
     // delete user
     isDeletingUser: false,
+
+    // get detail user
+    isGettingDetailUser: false,
+    detailUser: loadDetailUser,
+
 }
 
 export const userSlice = createSlice({
@@ -177,6 +197,21 @@ export const userSlice = createSlice({
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 state.isDeletingUser = false
+                state.isUserError = action.error.message
+            })
+
+        // get detail user
+        builder
+            .addCase(getDetailUser.pending, (state, action) => {
+                state.isGettingDetailUser = true
+            })
+            .addCase(getDetailUser.fulfilled, (state, action) => {
+                state.isGettingDetailUser = false
+                state.detailUser = action.payload?.data
+                localStorage.setItem('detailUser', JSON.stringify(action.payload?.data));
+            })
+            .addCase(getDetailUser.rejected, (state, action) => {
+                state.isGettingDetailUser = false
                 state.isUserError = action.error.message
             })
     },
