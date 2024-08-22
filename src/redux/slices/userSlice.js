@@ -4,6 +4,7 @@ import {
     loginUserService,
     getUserInfoService,
     getAllUserService,
+    deleteUserService,
 } from '../../services/userServices'
 
 export const registerUser = createAsyncThunk(
@@ -54,6 +55,18 @@ export const getAllUser = createAsyncThunk(
     }
 );
 
+export const deleteUser = createAsyncThunk(
+    'user/deleteUser',
+    async (userId, { rejectWithValue }) => {
+        try {
+            const response = await deleteUserService(userId);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadToken = localStorage.getItem('token');
 const loadUserInfoJSON = localStorage.getItem('userInfo');
@@ -79,6 +92,9 @@ const initialState = {
     isGettingAllUsers: false,
     userList: null,
     totalPage: 0,
+
+    // delete user
+    isDeletingUser: false,
 }
 
 export const userSlice = createSlice({
@@ -148,6 +164,19 @@ export const userSlice = createSlice({
             })
             .addCase(getAllUser.rejected, (state, action) => {
                 state.isGettingAllUsers = false
+                state.isUserError = action.error.message
+            })
+
+        // delete user
+        builder
+            .addCase(deleteUser.pending, (state, action) => {
+                state.isDeletingUser = true
+            })
+            .addCase(deleteUser.fulfilled, (state, action) => {
+                state.isDeletingUser = false
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
+                state.isDeletingUser = false
                 state.isUserError = action.error.message
             })
     },

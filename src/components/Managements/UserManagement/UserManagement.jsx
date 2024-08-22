@@ -1,12 +1,14 @@
 import "./UserManagement.scss"
 import searchIcon from "../../../assets/icons/search.svg"
 import addIcon from "../../../assets/icons/Add.svg"
-import editIcon from "../../../assets/icons/edit.svg"
+import detailIcon from "../../../assets/icons/detail.svg"
 import deleteIcon from "../../../assets/icons/delete.svg"
 import ReactPaginate from 'react-paginate';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllUser } from "../../../redux/slices/userSlice"
+import { getAllUser, deleteUser } from "../../../redux/slices/userSlice"
 import { useEffect, useState } from "react"
+import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 
 const UserManagement = () => {
@@ -14,9 +16,13 @@ const UserManagement = () => {
     const userList = useSelector(state => state.user.userList)
     const totalPage = useSelector(state => state.user.totalPage)
     const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
+    const isDeletingUser = useSelector(state => state.user.isDeletingUser)
     const [current, setCurrent] = useState(1)
     // eslint-disable-next-line
-    const [pageSize, setPageSize] = useState(2)
+    const [pageSize, setPageSize] = useState(4)
+    const [showModal, setShowModal] = useState(false)
+    const [userData, setUserData] = useState(null)
+
     const roleMap = {
         1: 'admin',
         2: 'doctor',
@@ -31,6 +37,32 @@ const UserManagement = () => {
     // this function is from react-paginate
     const handlePageClick = (event) => {
         setCurrent(event.selected + 1)
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(!showModal)
+    }
+
+    const handleDeleteBtn = (user) => {
+        setShowModal(!showModal)
+        setUserData(user)
+    }
+
+    const handleConfirmDelete = async () => {
+        const userId = userData.id
+        // const userId = 100
+        if (userId) {
+            const response = await dispatch(deleteUser(userId))
+            if (response?.error?.message === "Rejected" && response?.payload) {
+                toast.error(response.payload);
+            }
+            if (response?.payload?.message) {
+                let pagination = { current, pageSize }
+                dispatch(getAllUser(pagination))
+                toast.success(response.payload.message);
+                setShowModal(!showModal)
+            }
+        }
     }
 
     return (
@@ -57,7 +89,7 @@ const UserManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {isGettingAllUsers
+                    {(isGettingAllUsers || isDeletingUser)
                         ?
                         <tbody>
                             <tr>
@@ -74,10 +106,12 @@ const UserManagement = () => {
                                         <td>{user?.email}</td>
                                         <td>{roleMap[user?.roleId] || "unknow"}</td>
                                         <td>
-                                            <button className="edit-icon">
-                                                <img src={editIcon} alt="Edit" />
+                                            <button className="detail-icon">
+                                                <img src={detailIcon} alt="detail" />
                                             </button>
-                                            <button className="delete-icon">
+                                            <button
+                                                onClick={() => handleDeleteBtn(user)}
+                                                className="delete-icon">
                                                 <img src={deleteIcon} alt="Delete" />
                                             </button>
                                         </td>
@@ -117,6 +151,16 @@ const UserManagement = () => {
                     />
                 }
             </div>
+
+            {/* Modal for delete confirmation */}
+            <ModalComponent
+                show={showModal}
+                handleClose={handleCloseModal}
+                title="Confirm Delete"
+                body={`Are you sure to delete ${userData?.fullName}?`}
+                handlePrimaryBtnClick={handleConfirmDelete}
+                primaryBtnText="Delete"
+            />
         </div>
     )
 }

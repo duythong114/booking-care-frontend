@@ -1,7 +1,7 @@
 import "./BookingManagement.scss"
 import searchIcon from "../../../assets/icons/search.svg"
 import addIcon from "../../../assets/icons/Add.svg"
-import editIcon from "../../../assets/icons/edit.svg"
+import detailIcon from "../../../assets/icons/detail.svg"
 import deleteIcon from "../../../assets/icons/delete.svg"
 
 const BookingManagement = () => {
@@ -42,8 +42,8 @@ const BookingManagement = () => {
                             <td>Morning</td>
                             <td>Pending</td>
                             <td>
-                                <button className="edit-icon">
-                                    <img src={editIcon} alt="Edit" />
+                                <button className="detail-icon">
+                                    <img src={detailIcon} alt="Detail" />
                                 </button>
                                 <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
@@ -58,8 +58,8 @@ const BookingManagement = () => {
                             <td>Morning</td>
                             <td>processing</td>
                             <td>
-                                <button className="edit-icon">
-                                    <img src={editIcon} alt="Edit" />
+                                <button className="detail-icon">
+                                    <img src={detailIcon} alt="Detail" />
                                 </button>
                                 <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
@@ -74,8 +74,8 @@ const BookingManagement = () => {
                             <td>Afternoon</td>
                             <td>Completed</td>
                             <td>
-                                <button className="edit-icon">
-                                    <img src={editIcon} alt="Edit" />
+                                <button className="detail-icon">
+                                    <img src={detailIcon} alt="Detail" />
                                 </button>
                                 <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
@@ -90,8 +90,8 @@ const BookingManagement = () => {
                             <td>Afternoon</td>
                             <td>Cancel</td>
                             <td>
-                                <button className="edit-icon">
-                                    <img src={editIcon} alt="Edit" />
+                                <button className="detail-icon">
+                                    <img src={detailIcon} alt="Detail" />
                                 </button>
                                 <button className="delete-icon">
                                     <img src={deleteIcon} alt="Delete" />
