@@ -122,9 +122,8 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         logoutUser: (state) => {
-            state.isAuthenticated = false;
-            state.token = null;
-            localStorage.clear();;
+            localStorage.clear();
+            Object.assign(state, initialState);
         }
     },
     extraReducers: (builder) => {
@@ -132,6 +131,7 @@ export const userSlice = createSlice({
         builder
             .addCase(registerUser.pending, (state, action) => {
                 state.isRegisting = true
+                state.isUserError = null
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.isRegisting = false
@@ -145,6 +145,7 @@ export const userSlice = createSlice({
         builder
             .addCase(loginUser.pending, (state, action) => {
                 state.isLogging = true
+                state.isUserError = null
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.isLogging = false
@@ -161,6 +162,7 @@ export const userSlice = createSlice({
         builder
             .addCase(getUserInfo.pending, (state, action) => {
                 state.isGettingUserInfo = true
+                state.isUserError = null
             })
             .addCase(getUserInfo.fulfilled, (state, action) => {
                 state.isGettingUserInfo = false
@@ -176,6 +178,7 @@ export const userSlice = createSlice({
         builder
             .addCase(getAllUser.pending, (state, action) => {
                 state.isGettingAllUsers = true
+                state.isUserError = null
             })
             .addCase(getAllUser.fulfilled, (state, action) => {
                 state.isGettingAllUsers = false
@@ -191,6 +194,7 @@ export const userSlice = createSlice({
         builder
             .addCase(deleteUser.pending, (state, action) => {
                 state.isDeletingUser = true
+                state.isUserError = null
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
                 state.isDeletingUser = false
@@ -204,6 +208,7 @@ export const userSlice = createSlice({
         builder
             .addCase(getDetailUser.pending, (state, action) => {
                 state.isGettingDetailUser = true
+                state.isUserError = null
             })
             .addCase(getDetailUser.fulfilled, (state, action) => {
                 state.isGettingDetailUser = false

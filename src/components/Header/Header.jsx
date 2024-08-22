@@ -20,7 +20,7 @@ const Header = () => {
                 <img src={bellIcon} alt="Notification" />
                 <span>Welcome, <strong>{userInfo?.fullName}</strong></span>
                 <div className="header-infor-avatar">
-                    <img src={avatar} alt="Avatar" />
+                    <img src={userInfo?.avatarUrl ? userInfo.avatarUrl : avatar} alt="Avatar" />
                 </div>
             </div>
         </div>

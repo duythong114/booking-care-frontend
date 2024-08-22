@@ -64,7 +64,7 @@ const getUserInfoService = async () => {
 
 const getAllUserService = async (pagination) => {
     try {
-        const response = await axios.get(`/api/user/get-all?current=${pagination.current}&pageSize=${pagination.pageSize}`);
+        const response = await axios.get(`api/user?current=${pagination.current}&pageSize=${pagination.pageSize}`);
         return response;
     } catch (error) {
         if (error.response) {
@@ -100,7 +100,7 @@ const deleteUserService = async (userId) => {
 
 const getDetailUserService = async (userId) => {
     try {
-        const response = await axios.get(`/api/user/getById/${userId}`);
+        const response = await axios.get(`/api/user/find-user?id=${userId}`);
         return response;
     } catch (error) {
         if (error.response) {

@@ -12,7 +12,7 @@ const Profile = () => {
             <h1 className="profile-name">Profile</h1>
             <div className="profile-name-infor">
                 <div className="infor-avatar">
-                    <img className="infor-img-avatar" src={userInfo?.avatarUrl ? userInfo.avatarUrl : avatar}use alt="Avatar" />  
+                    <img className="infor-img-avatar" src={userInfo?.avatarUrl ? userInfo.avatarUrl : avatar} use alt="Avatar" />
                     <img className="infor-img-edit" src={editIcon} alt="Edit" />
                 </div>
                 <div className="info-fields">
