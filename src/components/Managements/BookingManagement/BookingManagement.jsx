@@ -106,7 +106,7 @@ const BookingManagement = () => {
                         ?
                         <tbody>
                             <tr>
-                                <td colSpan={5}><LoadingSpinner /></td>
+                                <td colSpan={7}><LoadingSpinner /></td>
                             </tr>
                         </tbody>
                         :
