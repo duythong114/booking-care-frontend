@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
+import { searchUser } from "../../../redux/slices/userSlice"
 
 const UserManagement = () => {
     const dispatch = useDispatch()
@@ -20,16 +21,18 @@ const UserManagement = () => {
     const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
     const isGettingDetailUser = useSelector(state => state.user.isGettingDetailUser)
+    const searchUserData = useSelector(state => state.user.searchUser)
     const [current, setCurrent] = useState(1)
     // eslint-disable-next-line
     const [pageSize, setPageSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
     const [userData, setUserData] = useState(null)
+    const [searchData, setSearchData] = useState(null)
 
     const roleMap = {
-        1: 'admin',
-        2: 'doctor',
-        3: 'patient'
+        1: 'Admin',
+        2: 'Doctor',
+        3: 'Patient'
     };
 
     useEffect(() => {
@@ -77,6 +80,20 @@ const UserManagement = () => {
         }
     }
 
+    const handleKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            handleSearchUser()
+        }
+    }
+
+    const handleSearchUser = () => {
+        if(searchData) {
+            dispatch(searchUser(searchData))
+        }
+    }
+
+    
+
     if (isGettingDetailUser) {
         return <LoadingSpinner />
     }
@@ -86,7 +103,14 @@ const UserManagement = () => {
             <h1 className="user-name-header">user management</h1>
             <div className="user-header">
                 <div className="user-header-search">
-                    <input className="search-input" type="text" placeholder="Enter search information" />
+                    <input 
+                        className="search-input" 
+                        type="text" 
+                        onChange={(e)=>setSearchData(e.target.value)}
+                        onKeyDown={(e)=>handleKeyPress(e)}
+                        value={searchData}
+                        placeholder="Enter search information" 
+                    />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
                 <button className="btn btn-primary">

@@ -6,6 +6,7 @@ import {
     getAllUserService,
     deleteUserService,
     getDetailUserService,
+    searchUserService
 } from '../../services/userServices'
 
 export const registerUser = createAsyncThunk(
@@ -80,12 +81,26 @@ export const getDetailUser = createAsyncThunk(
     }
 );
 
+export const searchUser = createAsyncThunk(
+    'user/searchUser',
+    async (searchData, { rejectWithValue }) => {
+        try {
+            const response = await searchUserService(searchData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadToken = localStorage.getItem('token');
 const loadUserInfoJSON = localStorage.getItem('userInfo');
 const loadUserInfo = JSON.parse(loadUserInfoJSON)
 const loadDetailUserJSON = localStorage.getItem('detailUser');
 const loadDetailUser = JSON.parse(loadDetailUserJSON)
+const loadSearchUserJSON = localStorage.getItem('searchUser')
+const loadSearchUser = JSON.parse(loadSearchUserJSON)
 
 const initialState = {
     // common state
@@ -114,6 +129,10 @@ const initialState = {
     // get detail user
     isGettingDetailUser: false,
     detailUser: loadDetailUser,
+
+    // search user
+    isSearchingUser: false,
+    searchUser: loadSearchUser ? loadSearchUser : null,
 
 }
 
@@ -220,6 +239,23 @@ export const userSlice = createSlice({
                 state.isGettingDetailUser = false
                 state.isUserError = action.error.message
             })
+
+        // search user
+        builder
+            .addCase(searchUser.pending, (state, action) => {
+                state.isSearchingUser = true
+                state.isUserError = null
+            })
+            .addCase(searchUser.fulfilled, (state, action) => {
+                state.isSearchingUser = false
+                state.searchUser = action.payload?.data
+                localStorage.setItem('searchUser', JSON.stringify(action.payload?.data));
+            })
+            .addCase(searchUser.rejected, (state, action) => {
+                state.isSearchingUser = false
+                state.isUserError = action.error.message
+            })
+
     },
 })
 
