@@ -2,14 +2,20 @@ import "./DetailBooking.scss"
 import editIcon from "../../../assets/icons/edit.svg"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 
 const DetailBooking = () => {
     const navigate = useNavigate()
     const detailBooking = useSelector(state => state.booking.detailBooking)
+    const isGettingDetailBooking = useSelector(state => state.booking.isGettingDetailBooking)
 
     const handleComback = () => {
         localStorage.setItem("currentPath", "/management/booking")
         navigate("/management/booking")
+    }
+
+    if (isGettingDetailBooking) {
+        return <LoadingSpinner />
     }
 
     return (

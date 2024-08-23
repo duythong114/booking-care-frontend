@@ -19,7 +19,6 @@ const BookingManagement = () => {
     const totalPage = useSelector(state => state.booking.totalPage)
     const isGettingAllBookings = useSelector(state => state.booking.isGettingAllBookings)
     const isDeletingBooking = useSelector(state => state.booking.isDeletingBooking)
-    const isGettingDetailBooking = useSelector(state => state.booking.isGettingDetailBooking)
     const [current, setCurrent] = useState(1)
     // eslint-disable-next-line
     const [pageSize, setPageSize] = useState(4)
@@ -69,10 +68,6 @@ const BookingManagement = () => {
             localStorage.setItem("currentPath", "/detail/booking")
             navigate("/detail/booking");
         }
-    }
-
-    if (isGettingDetailBooking) {
-        return <LoadingSpinner />
     }
 
     return (

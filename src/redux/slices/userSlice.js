@@ -123,7 +123,11 @@ export const userSlice = createSlice({
     reducers: {
         logoutUser: (state) => {
             localStorage.clear();
-            Object.assign(state, initialState)
+            Object.assign(state, initialState, {
+                token: null,
+                isAuthenticated: false,
+                detailUser: null,
+            });
         }
     },
     extraReducers: (builder) => {

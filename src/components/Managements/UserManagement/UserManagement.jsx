@@ -19,7 +19,6 @@ const UserManagement = () => {
     const totalPage = useSelector(state => state.user.totalPage)
     const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
-    const isGettingDetailUser = useSelector(state => state.user.isGettingDetailUser)
     const [current, setCurrent] = useState(1)
     // eslint-disable-next-line
     const [pageSize, setPageSize] = useState(4)
@@ -75,10 +74,6 @@ const UserManagement = () => {
             localStorage.setItem("currentPath", "/detail/user")
             navigate("/detail/user");
         }
-    }
-
-    if (isGettingDetailUser) {
-        return <LoadingSpinner />
     }
 
     return (

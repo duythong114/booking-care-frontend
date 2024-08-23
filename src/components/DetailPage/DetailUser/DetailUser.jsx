@@ -2,14 +2,20 @@ import "./DetailUser.scss"
 import avatar from "../../../assets/icons/Avatar.svg"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 
 const DetailUser = () => {
     const navigate = useNavigate()
+    const isGettingDetailUser = useSelector(state => state.user.isGettingDetailUser)
     const detailUser = useSelector(state => state.user.detailUser)
 
     const handleComback = () => {
         localStorage.setItem("currentPath", "/management/user")
         navigate("/management/user")
+    }
+
+    if (isGettingDetailUser) {
+        return <LoadingSpinner />
     }
 
     return (
