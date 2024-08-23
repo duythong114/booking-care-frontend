@@ -19,21 +19,21 @@ const BookingManagement = () => {
     const totalPage = useSelector(state => state.booking.totalPage)
     const isGettingAllBookings = useSelector(state => state.booking.isGettingAllBookings)
     const isDeletingBooking = useSelector(state => state.booking.isDeletingBooking)
-    const [current, setCurrent] = useState(1)
+    const [page, setPage] = useState(1)
     // eslint-disable-next-line
-    const [pageSize, setPageSize] = useState(4)
+    const [size, setSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
     const [bookingData, setBookingData] = useState(null)
 
     useEffect(() => {
-        let pagination = { current, pageSize }
+        let pagination = { page, size }
         dispatch(getAllBookings(pagination))
         // eslint-disable-next-line
-    }, [current])
+    }, [page])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
-        setCurrent(event.selected + 1)
+        setPage(event.selected + 1)
     }
 
     const handleToggleDeleteModal = () => {
@@ -53,7 +53,7 @@ const BookingManagement = () => {
                 toast.error(response.payload);
             }
             if (response?.payload?.message) {
-                let pagination = { current, pageSize }
+                let pagination = { page, size }
                 dispatch(getAllBookings(pagination))
                 toast.success(response.payload.message);
                 handleToggleDeleteModal()

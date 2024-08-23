@@ -90,7 +90,7 @@ const getUserInfoService = async () => {
 
 const getAllUserService = async (pagination) => {
     try {
-        const response = await axios.get(`api/user?current=${pagination.current}&pageSize=${pagination.pageSize}`);
+        const response = await axios.get(`/api/user?page=${pagination.page}&size=${pagination.size}`);
         return response;
     } catch (error) {
         if (error.response) {

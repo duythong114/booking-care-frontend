@@ -2,7 +2,7 @@ import axios from "../axiosConfig";
 
 const getAllBookingsService = async (pagination) => {
     try {
-        const response = await axios.get(`/api/appointments?current=${pagination.current}&pageSize=${pagination.pageSize}`);
+        const response = await axios.get(`/api/appointments?page=${pagination.page}&size=${pagination.size}`);
         return response;
     } catch (error) {
         if (error.response) {

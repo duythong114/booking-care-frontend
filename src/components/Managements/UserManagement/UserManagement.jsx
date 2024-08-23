@@ -33,23 +33,23 @@ const UserManagement = () => {
     const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
     const isRegistingDoctor = useSelector(state => state.user.isRegistingDoctor)
-    const [current, setCurrent] = useState(1)
+    const [page, setPage] = useState(1)
     // eslint-disable-next-line
-    const [pageSize, setPageSize] = useState(4)
+    const [size, setSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
     const [userData, setUserData] = useState(null)
     const [doctorData, setDoctorData] = useState(initialState);
     const [showCreateDoctorModal, setShowCreateDoctorModal] = useState(false);
 
     useEffect(() => {
-        let pagination = { current, pageSize }
+        let pagination = { page, size }
         dispatch(getAllUser(pagination))
         // eslint-disable-next-line
-    }, [current])
+    }, [page])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
-        setCurrent(event.selected + 1)
+        setPage(event.selected + 1)
     }
 
     const handleToggleDeleteModal = () => {
@@ -69,7 +69,7 @@ const UserManagement = () => {
                 toast.error(response.payload);
             }
             if (response?.payload?.message) {
-                let pagination = { current, pageSize }
+                let pagination = { page, size }
                 dispatch(getAllUser(pagination))
                 toast.success(response.payload.message);
                 handleToggleDeleteModal()
@@ -125,7 +125,7 @@ const UserManagement = () => {
         if (response?.payload?.message) {
             toast.success(response.payload.message);
             handleToggleCreateModal()
-            let pagination = { current, pageSize };
+            let pagination = { page, size };
             dispatch(getAllUser(pagination));
         }
     }
