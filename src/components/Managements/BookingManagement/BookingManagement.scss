@@ -72,6 +72,10 @@
         width     : 100%;
         margin-top: 20px;
 
+        .pagination {
+            margin-top: 20px;
+        }
+
         .booking-date {
             margin-bottom: 12px;
             border       : 1px solid;
@@ -100,12 +104,9 @@
             color           : #FFC107;
         }
 
-        td:hover {
-            cursor: pointer;
-        }
-
         .detail-icon,
         .delete-icon {
+            cursor          : pointer;
             background-color: white;
             border          : none;
 

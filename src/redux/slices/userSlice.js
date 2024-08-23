@@ -96,12 +96,12 @@ const initialState = {
 
     // login user
     isLogging: false,
-    token: loadToken,
+    token: loadToken ? loadToken : null,
     isAuthenticated: loadToken ? true : false,
 
     // get user info
     isGettingUserInfo: false,
-    userInfo: loadUserInfo,
+    userInfo: loadUserInfo ? loadUserInfo : null,
 
     // get all users
     isGettingAllUsers: false,
@@ -123,7 +123,8 @@ export const userSlice = createSlice({
     reducers: {
         logoutUser: (state) => {
             localStorage.clear();
-            Object.assign(state, initialState);
+            Object.assign(state, initialState)
+            window.location.reload();
         }
     },
     extraReducers: (builder) => {

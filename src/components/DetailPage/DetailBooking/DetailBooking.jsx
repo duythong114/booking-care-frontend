@@ -1,47 +1,59 @@
 import "./DetailBooking.scss"
+import editIcon from "../../../assets/icons/edit.svg"
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 const DetailBooking = () => {
+    const navigate = useNavigate()
+    const detailBooking = useSelector(state => state.booking.detailBooking)
+
+    const handleComback = () => {
+        localStorage.setItem("currentPath", "/management/booking")
+        navigate("/management/booking")
+    }
+
     return (
         <div className="detail-container">
             <h1 className="detail-name">detail booking</h1>
 
-            <div className="detail-infor-table">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Nguyen Van A</td>
-                            <td>dd/mm/yyyy</td>
-                            <td>Male</td>
-                        </tr>
-                        <tr>
-                            <td>VanANguyen@gmail.com</td>
-                            <td>0394328473</td>
-                            <td>BinhTan, HoChiMinh</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
             <div className="detail-infor-medical">
-                <button type="button" className="btn btn-warning">Edit</button>
+                <div className="infor-medical-wrapper">
+                    <div className="infor-medical">
+                        <span><strong>Record ID:</strong>{detailBooking?.id}</span>
+                    </div>
+                    <div className="infor-medical">
+                        <span><strong>Patient:</strong>{detailBooking?.patientName}</span>
+                    </div>
+                    <div className="infor-medical">
+                        <span><strong>Doctor:</strong>{detailBooking?.doctorName}</span>
+                    </div>
+                    <div className="infor-medical">
+                        <span><strong>Date:</strong>{detailBooking?.appointmentDate}</span>
+                    </div>
+                    <div className="infor-medical">
+                        <span><strong>Time:</strong>{detailBooking?.appointmentTime}</span>
+                    </div>
+                    <div className="infor-medical">
+                        <span><strong>Status:</strong>{detailBooking?.appointmentStatus}</span>
+                    </div>
+                    <div className="infor-medical">
+                        <span><strong>Diagnosis:</strong>{detailBooking?.diagnosis}</span>
+                    </div>
+                    <div className="infor-medical">
+                        <span><strong>Treatment:</strong>{detailBooking?.treatment}</span>
+                    </div>
 
-                <div className="infor-medical">
-                    <span><strong>Record ID:</strong>001</span>
+                    <button
+                        onClick={() => handleComback()}
+                        className="btn btn-primary"
+                    >
+                        Come Back
+                    </button>
                 </div>
-                <div className="infor-medical">
-                    <span><strong>Doctor:</strong>Nguyen Van A</span>
-                </div>
-                <div className="infor-medical">
-                    <span><strong>Date:</strong>dd/mm/yyyy</span>
-                </div>
-                <div className="infor-medical">
-                    <span><strong>Status:</strong>Pending</span>
-                </div>
-                <div className="infor-medical">
-                    <span><strong>Diagnosis:</strong>Cold with cough and mild fever</span>
-                </div>
-                <div className="infor-medical">
-                    <span><strong>Treatment:</strong>Paracetamol 500mg, twice daily. Rest and drink plenty of fluids</span>
-                </div>
+
+                <button type="button" className="edit-icon">
+                    <img src={editIcon} alt="edit" />
+                </button>
             </div>
         </div>
     )
