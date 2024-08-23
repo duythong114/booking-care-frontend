@@ -124,7 +124,6 @@ export const userSlice = createSlice({
         logoutUser: (state) => {
             localStorage.clear();
             Object.assign(state, initialState)
-            window.location.reload();
         }
     },
     extraReducers: (builder) => {

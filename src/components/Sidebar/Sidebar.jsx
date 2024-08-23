@@ -43,6 +43,7 @@ const Sidebar = () => {
 
     const handleLogout = () => {
         dispatch(logoutUser());
+        window.location.reload();
         navigate('/login');
         toast.success("User logged out");
     };
