@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../../redux/slices/userSlice"
+import { registerPatient } from "../../../redux/slices/userSlice"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 
 const Register = () => {
@@ -24,7 +24,7 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [userData, setUserData] = useState(initialUserData)
-    const isRegisting = useSelector(state => state.user.isRegisting)
+    const isRegistingPatient = useSelector(state => state.user.isRegistingPatient)
 
     const handleComeBackBtn = () => {
         navigate(-1)
@@ -63,7 +63,7 @@ const Register = () => {
             return;
         }
 
-        const response = await dispatch(registerUser(userData))
+        const response = await dispatch(registerPatient(userData))
 
         if (response?.error?.message === "Rejected" && response?.payload) {
             toast.error(response.payload);
@@ -80,7 +80,7 @@ const Register = () => {
         }
     }
 
-    if (isRegisting) {
+    if (isRegistingPatient) {
         return <LoadingSpinner />
     }
 

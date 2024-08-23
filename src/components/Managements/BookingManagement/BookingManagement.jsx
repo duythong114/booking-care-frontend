@@ -36,12 +36,12 @@ const BookingManagement = () => {
         setCurrent(event.selected + 1)
     }
 
-    const handleCloseModal = () => {
+    const handleToggleDeleteModal = () => {
         setShowModal(!showModal)
     }
 
     const handleDeleteBtn = (booking) => {
-        setShowModal(!showModal)
+        handleToggleDeleteModal()
         setBookingData(booking)
     }
 
@@ -56,7 +56,7 @@ const BookingManagement = () => {
                 let pagination = { current, pageSize }
                 dispatch(getAllBookings(pagination))
                 toast.success(response.payload.message);
-                setShowModal(!showModal)
+                handleToggleDeleteModal()
             }
         }
     }
@@ -167,7 +167,7 @@ const BookingManagement = () => {
             {/* Modal for delete confirmation */}
             <ModalComponent
                 show={showModal}
-                handleClose={handleCloseModal}
+                handleClose={handleToggleDeleteModal}
                 title="Confirm Delete"
                 body="Are you sure to delete this booking?"
                 handlePrimaryBtnClick={handleConfirmDelete}

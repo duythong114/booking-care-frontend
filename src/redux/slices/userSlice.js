@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
-    registerUserService,
+    registerPatientService,
+    registerDoctorService,
     loginUserService,
     getUserInfoService,
     getAllUserService,
@@ -8,11 +9,23 @@ import {
     getDetailUserService,
 } from '../../services/userServices'
 
-export const registerUser = createAsyncThunk(
-    'user/registerUser',
+export const registerPatient = createAsyncThunk(
+    'user/registerPatient',
     async (userData, { rejectWithValue }) => {
         try {
-            const response = await registerUserService(userData);
+            const response = await registerPatientService(userData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const registerDoctor = createAsyncThunk(
+    'user/registerDoctor',
+    async (doctorData, { rejectWithValue }) => {
+        try {
+            const response = await registerDoctorService(doctorData);
             return response;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -91,8 +104,11 @@ const initialState = {
     // common state
     isUserError: null,
 
-    // register user
-    isRegisting: false,
+    // register patient
+    isRegistingPatient: false,
+
+    // register doctor
+    isRegistingDoctor: false,
 
     // login user
     isLogging: false,
@@ -114,7 +130,6 @@ const initialState = {
     // get detail user
     isGettingDetailUser: false,
     detailUser: loadDetailUser,
-
 }
 
 export const userSlice = createSlice({
@@ -131,17 +146,31 @@ export const userSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // register user
+        // register patient
         builder
-            .addCase(registerUser.pending, (state, action) => {
-                state.isRegisting = true
+            .addCase(registerPatient.pending, (state, action) => {
+                state.isRegistingPatient = true
                 state.isUserError = null
             })
-            .addCase(registerUser.fulfilled, (state, action) => {
-                state.isRegisting = false
+            .addCase(registerPatient.fulfilled, (state, action) => {
+                state.isRegistingPatient = false
             })
-            .addCase(registerUser.rejected, (state, action) => {
-                state.isRegisting = false
+            .addCase(registerPatient.rejected, (state, action) => {
+                state.isRegistingPatient = false
+                state.isUserError = action.error.message
+            })
+
+        // register doctor
+        builder
+            .addCase(registerDoctor.pending, (state, action) => {
+                state.isRegistingDoctor = true
+                state.isUserError = null
+            })
+            .addCase(registerDoctor.fulfilled, (state, action) => {
+                state.isRegistingDoctor = false
+            })
+            .addCase(registerDoctor.rejected, (state, action) => {
+                state.isRegistingDoctor = false
                 state.isUserError = action.error.message
             })
 

@@ -1,6 +1,6 @@
 import axios from "../axiosConfig";
 
-const registerUserService = async (userData) => {
+const registerPatientService = async (userData) => {
     try {
         const response = await axios.post('/api/user/register', {
             fullName: userData.fullName,
@@ -10,6 +10,32 @@ const registerUserService = async (userData) => {
             dob: userData.dob,
             address: "vietnam",
             password: userData.password,
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
+const registerDoctorService = async (doctorData) => {
+    try {
+        const response = await axios.post('/api/user/doctor/register', {
+            fullName: doctorData.fullName,
+            email: doctorData.email,
+            phone: "0123456789",
+            gender: doctorData.gender,
+            dob: "0000-00-00",
+            address: "vietnam",
+            password: doctorData.password,
         });
         return response;
     } catch (error) {
@@ -117,7 +143,8 @@ const getDetailUserService = async (userId) => {
 }
 
 export {
-    registerUserService,
+    registerPatientService,
+    registerDoctorService,
     loginUserService,
     getUserInfoService,
     getAllUserService,

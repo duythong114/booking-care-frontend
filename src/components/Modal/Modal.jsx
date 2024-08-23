@@ -1,12 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import "./Modal.scss"
 
 function ModalComponent(props) {
-    const { show, handleClose, title, body, handlePrimaryBtnClick, primaryBtnText } = props;
+    const { show, handleClose, title, body, handlePrimaryBtnClick, primaryBtnText, size } = props;
 
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal size={size || "md"} show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>

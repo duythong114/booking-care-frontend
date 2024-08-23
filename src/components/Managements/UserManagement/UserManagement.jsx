@@ -6,30 +6,40 @@ import deleteIcon from "../../../assets/icons/delete.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllUser, deleteUser, getDetailUser } from "../../../redux/slices/userSlice"
+import { getAllUser, deleteUser, getDetailUser, registerDoctor } from "../../../redux/slices/userSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
 
 const UserManagement = () => {
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const userList = useSelector(state => state.user.userList)
-    const totalPage = useSelector(state => state.user.totalPage)
-    const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
-    const isDeletingUser = useSelector(state => state.user.isDeletingUser)
-    const [current, setCurrent] = useState(1)
-    // eslint-disable-next-line
-    const [pageSize, setPageSize] = useState(4)
-    const [showModal, setShowModal] = useState(false)
-    const [userData, setUserData] = useState(null)
+    const initialState = {
+        fullName: "",
+        email: "",
+        gender: "",
+        password: ""
+    }
 
     const roleMap = {
         1: 'admin',
         2: 'doctor',
         3: 'patient'
     };
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const userList = useSelector(state => state.user.userList)
+    const totalPage = useSelector(state => state.user.totalPage)
+    const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
+    const isDeletingUser = useSelector(state => state.user.isDeletingUser)
+    const isRegistingDoctor = useSelector(state => state.user.isRegistingDoctor)
+    const [current, setCurrent] = useState(1)
+    // eslint-disable-next-line
+    const [pageSize, setPageSize] = useState(4)
+    const [showModal, setShowModal] = useState(false)
+    const [userData, setUserData] = useState(null)
+    const [doctorData, setDoctorData] = useState(initialState);
+    const [showCreateDoctorModal, setShowCreateDoctorModal] = useState(false);
 
     useEffect(() => {
         let pagination = { current, pageSize }
@@ -42,12 +52,12 @@ const UserManagement = () => {
         setCurrent(event.selected + 1)
     }
 
-    const handleCloseModal = () => {
+    const handleToggleDeleteModal = () => {
         setShowModal(!showModal)
     }
 
     const handleDeleteBtn = (user) => {
-        setShowModal(!showModal)
+        handleToggleDeleteModal()
         setUserData(user)
     }
 
@@ -62,7 +72,7 @@ const UserManagement = () => {
                 let pagination = { current, pageSize }
                 dispatch(getAllUser(pagination))
                 toast.success(response.payload.message);
-                setShowModal(!showModal)
+                handleToggleDeleteModal()
             }
         }
     }
@@ -76,6 +86,50 @@ const UserManagement = () => {
         }
     }
 
+    const handleToggleCreateModal = () => {
+        setShowCreateDoctorModal(!showCreateDoctorModal)
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setDoctorData({
+            ...doctorData,
+            [name]: value
+        });
+    }
+
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const handleCreateDoctor = async () => {
+        const requiredFields = ['fullName', 'email', 'gender', 'password'];
+
+        for (let field of requiredFields) {
+            if (!doctorData[field]) {
+                toast.error(`Please enter ${field}`);
+                return;
+            }
+        }
+
+        if (!validateEmail(doctorData.email)) {
+            toast.error("Please enter a valid email address.");
+            return;
+        }
+
+        const response = await dispatch(registerDoctor(doctorData));
+        if (response?.error?.message === "Rejected" && response?.payload) {
+            toast.error(response.payload);
+        }
+        if (response?.payload?.message) {
+            toast.success(response.payload.message);
+            handleToggleCreateModal()
+            let pagination = { current, pageSize };
+            dispatch(getAllUser(pagination));
+        }
+    }
+
     return (
         <div className="user-mana-container">
             <h1 className="user-name-header">user management</h1>
@@ -84,8 +138,10 @@ const UserManagement = () => {
                     <input className="search-input" type="text" placeholder="Enter search information" />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
-                <button className="btn btn-primary">
-                    Create User
+                <button
+                    onClick={() => handleToggleCreateModal()}
+                    className="btn btn-primary">
+                    Create Doctor
                     <img src={addIcon} alt="Add" />
                 </button>
             </div>
@@ -100,7 +156,7 @@ const UserManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllUsers || isDeletingUser)
+                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor)
                         ?
                         <tbody>
                             <tr>
@@ -168,12 +224,61 @@ const UserManagement = () => {
             {/* Modal for delete confirmation */}
             <ModalComponent
                 show={showModal}
-                handleClose={handleCloseModal}
+                handleClose={handleToggleDeleteModal}
                 title="Confirm Delete"
                 body={`Are you sure to delete ${userData?.fullName}?`}
                 handlePrimaryBtnClick={handleConfirmDelete}
                 primaryBtnText="Delete"
             />
+
+            <ModalComponent
+                show={showCreateDoctorModal}
+                size="lg"
+                handleClose={handleToggleCreateModal}
+                title="Create New Doctor"
+                body={
+                    <div className="create-doctor-form">
+                        <label>Fullname:</label>
+                        <input
+                            type="text"
+                            name="fullName"
+                            placeholder="Full Name"
+                            value={doctorData.fullName}
+                            onChange={handleInputChange}
+                        />
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={doctorData.email}
+                            onChange={handleInputChange}
+                        />
+                        <label>Gender:</label>
+                        <select
+                            name="gender"
+                            value={doctorData.gender}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <label>Password:</label>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={doctorData.password}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                }
+                handlePrimaryBtnClick={handleCreateDoctor}
+                primaryBtnText="Create"
+            />
+
         </div>
     )
 }
