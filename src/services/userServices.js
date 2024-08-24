@@ -142,6 +142,60 @@ const getDetailUserService = async (userId) => {
     }
 }
 
+const searchUserService = async (searchData) => {
+    try {
+        const response = await axios.get(`/api/user?name=${searchData}`);
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
+const getAllPatientservice = async (roleId) => {
+    try {
+        const response = await axios.get(`/api/user/?roleId=${roleId}`);
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
+const getAllDoctorservice = async (roleId,pagination) => {
+    try {
+        const response = await axios.get(`/api/user/?page=${pagination.page}&size=${pagination.size}&roleId=${roleId}`);
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
 export {
     registerPatientService,
     registerDoctorService,
@@ -150,4 +204,7 @@ export {
     getAllUserService,
     deleteUserService,
     getDetailUserService,
+    searchUserService,
+    getAllPatientservice,
+    getAllDoctorservice
 }

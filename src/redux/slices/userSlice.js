@@ -7,6 +7,9 @@ import {
     getAllUserService,
     deleteUserService,
     getDetailUserService,
+    searchUserService,
+    getAllPatientservice,
+    getAllDoctorservice
 } from '../../services/userServices'
 
 export const registerPatient = createAsyncThunk(
@@ -93,6 +96,42 @@ export const getDetailUser = createAsyncThunk(
     }
 );
 
+export const searchUser = createAsyncThunk(
+    'user/searchUser',
+    async (searchData, { rejectWithValue }) => {
+        try {
+            const response = await searchUserService(searchData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getAllPatient = createAsyncThunk(
+    'user/getAllPatient',
+    async (roleId, { rejectWithValue }) => {
+        try {
+            const response = await getAllPatientservice(roleId);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getAllDoctor = createAsyncThunk(
+    'user/getAllDoctor',
+    async (roleId, pagination, { rejectWithValue }) => {
+        try {
+            const response = await getAllDoctorservice(roleId, pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadToken = localStorage.getItem('token');
 const loadUserInfoJSON = localStorage.getItem('userInfo');
@@ -130,6 +169,16 @@ const initialState = {
     // get detail user
     isGettingDetailUser: false,
     detailUser: loadDetailUser,
+
+    // search user
+    isSearchingUser: false,
+    
+    // get all patient
+    isGettingAllPatient: false,
+
+    // get all doctor
+    isGettingAllDoctor: false,
+    
 }
 
 export const userSlice = createSlice({
@@ -250,6 +299,54 @@ export const userSlice = createSlice({
             })
             .addCase(getDetailUser.rejected, (state, action) => {
                 state.isGettingDetailUser = false
+                state.isUserError = action.error.message
+            })
+
+        // search user
+        builder
+            .addCase(searchUser.pending, (state, action) => {
+                state.isSearchingUser = true
+                state.isUserError = null
+            })
+            .addCase(searchUser.fulfilled, (state, action) => {
+                state.isSearchingUser = false
+                state.totalPage = action.payload?.data?.meta?.pages
+                state.userList = action.payload?.data?.result
+            })
+            .addCase(searchUser.rejected, (state, action) => {
+                state.isSearchingUser = false
+                state.isUserError = action.error.message
+            })
+
+        // get all patients
+        builder
+            .addCase(getAllPatient.pending, (state, action) => {
+                state.isGettingAllPatient = true
+                state.isUserError = null
+            })
+            .addCase(getAllPatient.fulfilled, (state, action) => {
+                state.isGettingAllPatient = false
+                state.totalPage = action.payload?.data?.meta?.pages
+                state.userList = action.payload?.data?.result
+            })
+            .addCase(getAllPatient.rejected, (state, action) => {
+                state.isGettingAllPatient = false
+                state.isUserError = action.error.message
+            })
+
+        // get all doctors
+        builder
+            .addCase(getAllDoctor.pending, (state, action) => {
+                state.isGettingAllDoctor = true
+                state.isUserError = null
+            })
+            .addCase(getAllDoctor.fulfilled, (state, action) => {
+                state.isGettingAllDoctor = false
+                state.totalPage = action.payload?.data?.meta?.pages
+                state.userList = action.payload?.data?.result
+            })
+            .addCase(getAllDoctor.rejected, (state, action) => {
+                state.isGettingAllDoctor = false
                 state.isUserError = action.error.message
             })
     },
