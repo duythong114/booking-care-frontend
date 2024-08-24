@@ -48,3 +48,34 @@
         }
     }
 }
+
+/* Màn hình lớn hơn 1200px */
+@media screen and (min-width: 1200px) {}
+
+/* Màn hình từ 992px đến 1199px */
+@media screen and (min-width: 992px) and (max-width: 1199px) {}
+
+/* Màn hình từ 768px đến 991px */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .sidebar-container {
+        width: 100%;
+        padding: 0;
+        height: 80px;
+        display: flex;
+        align-items: center;
+
+        ul {
+            display: flex;
+            overflow-y: hidden;
+            align-items: center;
+            width: 100%;
+            justify-content: space-evenly;
+            margin: 0;
+
+            li {
+                padding: 20px 0;
+                margin: 0;
+            }
+        }
+    }
+}

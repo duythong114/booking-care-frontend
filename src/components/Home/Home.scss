@@ -68,3 +68,14 @@
         }
     }
 }
+
+/* Màn hình lớn hơn 1200px */
+@media screen and (min-width: 1200px) {}
+
+/* Màn hình từ 992px đến 1199px */
+@media screen and (min-width: 992px) and (max-width: 1199px) {}
+
+/* Màn hình từ 768px đến 991px */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    
+}
