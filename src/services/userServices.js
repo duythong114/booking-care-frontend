@@ -142,6 +142,58 @@ const getDetailUserService = async (userId) => {
     }
 }
 
+const editUserService = async (userData) => {
+    try {
+        const response = await axios.put('/api/user/update', {
+            password: userData.password,
+            phone: userData.phone,
+            gender: userData.gender,
+            address: userData.address,
+            dob: userData.dob,
+            fullName: userData.fullName,
+        });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
+const uploadAvatarService = async (image) => {
+    try {
+        const formData = new FormData();
+        formData.append('image', image);
+
+        const response = await axios.post('/api/user/upload-image',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
 export {
     registerPatientService,
     registerDoctorService,
@@ -150,4 +202,6 @@ export {
     getAllUserService,
     deleteUserService,
     getDetailUserService,
+    editUserService,
+    uploadAvatarService,
 }

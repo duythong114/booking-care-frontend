@@ -7,6 +7,8 @@ import {
     getAllUserService,
     deleteUserService,
     getDetailUserService,
+    editUserService,
+    uploadAvatarService,
 } from '../../services/userServices'
 
 export const registerPatient = createAsyncThunk(
@@ -93,6 +95,30 @@ export const getDetailUser = createAsyncThunk(
     }
 );
 
+export const editUser = createAsyncThunk(
+    'user/editUser',
+    async (userData, { rejectWithValue }) => {
+        try {
+            const response = await editUserService(userData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const uploadAvatar = createAsyncThunk(
+    'user/uploadAvatar',
+    async (image, { rejectWithValue }) => {
+        try {
+            const response = await uploadAvatarService(image);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadToken = localStorage.getItem('token');
 const loadUserInfoJSON = localStorage.getItem('userInfo');
@@ -130,6 +156,12 @@ const initialState = {
     // get detail user
     isGettingDetailUser: false,
     detailUser: loadDetailUser,
+
+    // edit user
+    isEditingUser: false,
+
+    // upload avatar
+    isUploadingAvatar: false,
 }
 
 export const userSlice = createSlice({
@@ -250,6 +282,34 @@ export const userSlice = createSlice({
             })
             .addCase(getDetailUser.rejected, (state, action) => {
                 state.isGettingDetailUser = false
+                state.isUserError = action.error.message
+            })
+
+        // edit user
+        builder
+            .addCase(editUser.pending, (state, action) => {
+                state.isEditingUser = true
+                state.isUserError = null
+            })
+            .addCase(editUser.fulfilled, (state, action) => {
+                state.isEditingUser = false
+            })
+            .addCase(editUser.rejected, (state, action) => {
+                state.isEditingUser = false
+                state.isUserError = action.error.message
+            })
+
+        // upload avatar
+        builder
+            .addCase(uploadAvatar.pending, (state, action) => {
+                state.isUploadingAvatar = true
+                state.isUserError = null
+            })
+            .addCase(uploadAvatar.fulfilled, (state, action) => {
+                state.isUploadingAvatar = false
+            })
+            .addCase(uploadAvatar.rejected, (state, action) => {
+                state.isUploadingAvatar = false
                 state.isUserError = action.error.message
             })
     },

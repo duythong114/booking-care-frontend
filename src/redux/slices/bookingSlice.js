@@ -3,6 +3,8 @@ import {
     getAllBookingsService,
     deleteBookingService,
     getDetailBookingService,
+    getAvailableBookingService,
+    createBookingService,
 } from '../../services/bookingServices'
 
 export const getAllBookings = createAsyncThunk(
@@ -41,6 +43,30 @@ export const getDetailBooking = createAsyncThunk(
     }
 );
 
+export const getAvailableBooking = createAsyncThunk(
+    'booking/getAvailableBooking',
+    async () => {
+        try {
+            const response = await getAvailableBookingService();
+            return response;
+        } catch (error) {
+            return error.message;
+        }
+    }
+);
+
+export const createBooking = createAsyncThunk(
+    'booking/createBooking',
+    async (bookingData, { rejectWithValue }) => {
+        try {
+            const response = await createBookingService(bookingData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadDetailBookingJSON = localStorage.getItem('detailBooking');
 const loadDetailBooking = JSON.parse(loadDetailBookingJSON)
@@ -60,6 +86,13 @@ const initialState = {
     // get detail booking
     isGettingDetailBooking: false,
     detailBooking: loadDetailBooking ? loadDetailBooking : null,
+
+    // get available booking
+    isGettingAvailable: false,
+    availableBookingList: null,
+
+    // create booking
+    isCreatingBooking: false,
 }
 
 export const bookingSlice = createSlice({
@@ -111,6 +144,35 @@ export const bookingSlice = createSlice({
             })
             .addCase(getDetailBooking.rejected, (state, action) => {
                 state.isGettingDetailBooking = false
+                state.isBookingError = action.error.message
+            })
+
+        // get available bookings
+        builder
+            .addCase(getAvailableBooking.pending, (state, action) => {
+                state.isGettingAvailable = true
+                state.isBookingError = null
+            })
+            .addCase(getAvailableBooking.fulfilled, (state, action) => {
+                state.isGettingAvailable = false
+                state.availableBookingList = action.payload?.data
+            })
+            .addCase(getAvailableBooking.rejected, (state, action) => {
+                state.isGettingAvailable = false
+                state.isBookingError = action.error.message
+            })
+
+        // create booking
+        builder
+            .addCase(createBooking.pending, (state, action) => {
+                state.isCreatingBooking = true
+                state.isBookingError = null
+            })
+            .addCase(createBooking.fulfilled, (state, action) => {
+                state.isCreatingBooking = false
+            })
+            .addCase(createBooking.rejected, (state, action) => {
+                state.isCreatingBooking = false
                 state.isBookingError = action.error.message
             })
     },
