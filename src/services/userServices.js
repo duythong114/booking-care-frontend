@@ -142,7 +142,6 @@ const getDetailUserService = async (userId) => {
     }
 }
 
-<<<<<<< HEAD
 const editUserService = async (userData) => {
     try {
         const response = await axios.put('/api/user/update', {
@@ -153,11 +152,6 @@ const editUserService = async (userData) => {
             dob: userData.dob,
             fullName: userData.fullName,
         });
-=======
-const searchUserService = async (searchData) => {
-    try {
-        const response = await axios.get(`/api/user?name=${searchData}`);
->>>>>>> origin/main
         return response;
     } catch (error) {
         if (error.response) {
@@ -173,7 +167,6 @@ const searchUserService = async (searchData) => {
     }
 }
 
-<<<<<<< HEAD
 const uploadAvatarService = async (image) => {
     try {
         const formData = new FormData();
@@ -186,29 +179,6 @@ const uploadAvatarService = async (image) => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-=======
-const getAllPatientservice = async (roleId) => {
-    try {
-        const response = await axios.get(`/api/user/?roleId=${roleId}`);
-        return response;
-    } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
-    }
-}
-
-const getAllDoctorservice = async (roleId,pagination) => {
-    try {
-        const response = await axios.get(`/api/user/?page=${pagination.page}&size=${pagination.size}&roleId=${roleId}`);
->>>>>>> origin/main
         return response;
     } catch (error) {
         if (error.response) {
@@ -232,12 +202,6 @@ export {
     getAllUserService,
     deleteUserService,
     getDetailUserService,
-<<<<<<< HEAD
     editUserService,
     uploadAvatarService,
-=======
-    searchUserService,
-    getAllPatientservice,
-    getAllDoctorservice
->>>>>>> origin/main
 }
