@@ -172,12 +172,11 @@ const UserManagement = () => {
         let pagination = { page, size, roleId: newSortRole };
     
         if (selectedRole === "All") {
-            dispatch(getAllUser({ page, size }));
+            let pagination = { page, size }
+            dispatch(getAllUser(pagination));
         } else {
             dispatch(getAllUserByRole(pagination));
         }
-        
-        console.log("🚀 ~ handleSortRole ~ pagination:", pagination);       
     };
 
     return (
