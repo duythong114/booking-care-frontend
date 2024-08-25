@@ -3,6 +3,8 @@ import searchIcon from "../../../assets/icons/search.svg"
 import addIcon from "../../../assets/icons/Add.svg"
 import detailIcon from "../../../assets/icons/detail.svg"
 import deleteIcon from "../../../assets/icons/delete.svg"
+import ascIcon from "../../../assets/icons/asc.svg"
+import descIcon from "../../../assets/icons/desc.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
@@ -42,12 +44,13 @@ const UserManagement = () => {
     const [doctorData, setDoctorData] = useState(initialState);
     const [showCreateDoctorModal, setShowCreateDoctorModal] = useState(false);
     const [searchData, setSearchData] = useState("")
+    const [sortOrder, setSortOrder] = useState("asc");
 
     useEffect(() => {
-        let pagination = { page, size }
+        let pagination = { page, size, sortOrder }
         dispatch(getAllUser(pagination))
         // eslint-disable-next-line
-    }, [page])
+    }, [page, sortOrder])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -149,6 +152,10 @@ const UserManagement = () => {
         }
     }
 
+    const toggleOrderSort = () => {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    }
+
     return (
         <div className="user-mana-container">
             <h1 className="user-name-header">user management</h1>
@@ -175,7 +182,12 @@ const UserManagement = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th onClick={() => toggleOrderSort()}>
+                                ID
+                                {sortOrder === "asc"
+                                    ? <img className="asc-icon" src={ascIcon} alt="asc" />
+                                    : <img className="desc-icon" src={descIcon} alt="desc" />}
+                            </th>
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Role</th>

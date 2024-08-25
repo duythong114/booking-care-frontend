@@ -67,7 +67,7 @@ const getUserInfoService = async () => {
 
 const getAllUserService = async (pagination) => {
     try {
-        const response = await axios.get(`/api/user?page=${pagination.page}&size=${pagination.size}`);
+        const response = await axios.get(`/api/user?page=${pagination.page}&size=${pagination.size}&sort=id,${pagination.sortOrder}`);
         return response;
     } catch (error) {
         handleError(error)

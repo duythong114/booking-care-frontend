@@ -15,7 +15,7 @@ const handleError = (error) => {
 
 const getAllBookingsService = async (pagination) => {
     try {
-        const response = await axios.get(`/api/appointments?page=${pagination.page}&size=${pagination.size}`);
+        const response = await axios.get(`/api/appointments?page=${pagination.page}&size=${pagination.size}&sort=id,${pagination.sortOrder}`);
         return response;
     } catch (error) {
         handleError(error)

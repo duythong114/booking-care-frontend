@@ -102,6 +102,14 @@
         th {
             background-color: #EDFFFA;
             color           : #FFC107;
+
+            .desc-icon,
+            .asc-icon {
+                cursor     : pointer;
+                margin-left: 5px;
+                width      : 24px;
+                height     : 24px;
+            }
         }
 
         .detail-icon,

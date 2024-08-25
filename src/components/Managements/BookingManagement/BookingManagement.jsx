@@ -3,6 +3,8 @@ import searchIcon from "../../../assets/icons/search.svg"
 import addIcon from "../../../assets/icons/Add.svg"
 import detailIcon from "../../../assets/icons/detail.svg"
 import deleteIcon from "../../../assets/icons/delete.svg"
+import ascIcon from "../../../assets/icons/asc.svg"
+import descIcon from "../../../assets/icons/desc.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
@@ -47,12 +49,13 @@ const BookingManagement = () => {
     }
     const [selectedAppointment, setSelectedAppointment] = useState(initialState);
     const [searchData, setSearchData] = useState("")
+    const [sortOrder, setSortOrder] = useState("asc");
 
     useEffect(() => {
-        let pagination = { page, size }
+        let pagination = { page, size, sortOrder }
         dispatch(getAllBookings(pagination))
         // eslint-disable-next-line
-    }, [page])
+    }, [page, sortOrder])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -155,6 +158,10 @@ const BookingManagement = () => {
         }
     }
 
+    const toggleOrderSort = () => {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    }
+
     if (isCreatingBooking || isGettingAvailable) {
         return <LoadingSpinner />
     }
@@ -182,11 +189,15 @@ const BookingManagement = () => {
                 </button>
             </div>
             <div className="booking-mana-body">
-                <input className="booking-date" type="date" placeholder="dd/mm/yyyy" />
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th onClick={() => toggleOrderSort()}>
+                                ID
+                                {sortOrder === "asc"
+                                    ? <img className="asc-icon" src={ascIcon} alt="asc" />
+                                    : <img className="desc-icon" src={descIcon} alt="desc" />}
+                            </th>
                             <th>Patient</th>
                             <th>Doctor</th>
                             <th>Date</th>
