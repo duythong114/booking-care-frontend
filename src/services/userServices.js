@@ -1,5 +1,18 @@
 import axios from "../axiosConfig";
 
+const handleError = (error) => {
+    if (error.response) {
+        // Server responded with a status other than 2xx
+        throw new Error(error.response.data.message || 'An error occurred.');
+    } else if (error.request) {
+        // Request was made but no response received
+        throw new Error('No response from the server.');
+    } else {
+        // Something else happened
+        throw new Error('An unexpected error occurred.');
+    }
+};
+
 const registerPatientService = async (userData) => {
     try {
         const response = await axios.post('/api/user/register', {
@@ -13,16 +26,7 @@ const registerPatientService = async (userData) => {
         });
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -39,16 +43,7 @@ const registerDoctorService = async (doctorData) => {
         });
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -57,16 +52,7 @@ const loginUserService = async (userData) => {
         const response = await axios.get(`/api/user/login?email=${userData.email}&password=${userData.password}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -75,16 +61,7 @@ const getUserInfoService = async () => {
         const response = await axios.get('/api/user/get-user');
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 };
 
@@ -93,16 +70,7 @@ const getAllUserService = async (pagination) => {
         const response = await axios.get(`/api/user?page=${pagination.page}&size=${pagination.size}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 };
 
@@ -111,16 +79,7 @@ const deleteUserService = async (userId) => {
         const response = await axios.delete(`/api/user/delete/${userId}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -129,16 +88,7 @@ const getDetailUserService = async (userId) => {
         const response = await axios.get(`/api/user/find-user?id=${userId}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -154,16 +104,7 @@ const editUserService = async (userData) => {
         });
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -181,16 +122,7 @@ const uploadAvatarService = async (image) => {
             });
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -199,16 +131,7 @@ const searchUserService = async (searchPayload) => {
         const response = await axios.get(`/api/user?page=${searchPayload.page}&size=${searchPayload.size}&name=${searchPayload.searchData}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 

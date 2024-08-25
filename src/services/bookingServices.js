@@ -1,20 +1,24 @@
 import axios from "../axiosConfig";
 
+const handleError = (error) => {
+    if (error.response) {
+        // Server responded with a status other than 2xx
+        throw new Error(error.response.data.message || 'An error occurred.');
+    } else if (error.request) {
+        // Request was made but no response received
+        throw new Error('No response from the server.');
+    } else {
+        // Something else happened
+        throw new Error('An unexpected error occurred.');
+    }
+};
+
 const getAllBookingsService = async (pagination) => {
     try {
         const response = await axios.get(`/api/appointments?page=${pagination.page}&size=${pagination.size}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 };
 
@@ -23,16 +27,7 @@ const deleteBookingService = async (bookingId) => {
         const response = await axios.delete(`/api/appointments/${bookingId}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -41,16 +36,7 @@ const getDetailBookingService = async (bookingId) => {
         const response = await axios.get(`/api/appointments/${bookingId}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -59,16 +45,7 @@ const getAvailableBookingService = async () => {
         const response = await axios.get('api/appointments/appointment-available');
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -81,16 +58,7 @@ const createBookingService = async (bookingData) => {
         });
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -99,16 +67,7 @@ const getMedicalHistoryService = async (pagination) => {
         const response = await axios.get(`/api/appointments/patient?page=${pagination.page}&size=${pagination.size}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -123,16 +82,7 @@ const updateBookingService = async (bookingData) => {
         });
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
@@ -141,16 +91,7 @@ const searchBookingService = async (searchPayload) => {
         const response = await axios.get(`/api/appointments?page=${searchPayload.page}&size=${searchPayload.size}&patientName=${searchPayload.searchData}`);
         return response;
     } catch (error) {
-        if (error.response) {
-            // Server responded with a status other than 2xx
-            throw new Error(error.response.data.message || 'An error occurred during login.');
-        } else if (error.request) {
-            // Request was made but no response received
-            throw new Error('No response from the server.');
-        } else {
-            // Something else happened
-            throw new Error('An unexpected error occurred.');
-        }
+        handleError(error)
     }
 }
 
