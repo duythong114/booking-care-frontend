@@ -12,8 +12,7 @@ import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
 import { searchUser } from "../../../redux/slices/userSlice"
-import { getAllPatient } from "../../../redux/slices/userSlice"
-import { getAllDoctor } from "../../../redux/slices/userSlice"
+import { getAllUserByRole } from "../../../redux/slices/userSlice"
 
 const UserManagement = () => {
     const initialState = {
@@ -37,8 +36,7 @@ const UserManagement = () => {
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
     const isRegistingDoctor = useSelector(state => state.user.isRegistingDoctor)
     const isSearchingUser = useSelector(state => state.user.isSearchingUser)
-    const isGettingAllPatient = useSelector(state => state.user.isGettingAllPatient)
-    const isGettingAllDoctor = useSelector(state => state.user.isGettingAllPatient)
+    const isGettingAllUserByRole = useSelector(state => state.user.isGettingAllUserByRole)
     
     
     const [page, setPage] = useState(1)
@@ -147,8 +145,10 @@ const UserManagement = () => {
     }
 
     const handleSearchUser = () => {
+        let pagination = { page, size, searchData };
+
         if(searchData) {
-            dispatch(searchUser(searchData))
+            dispatch(searchUser( pagination))
         } else {
             let pagination = { page, size }
             dispatch(getAllUser(pagination))
@@ -157,25 +157,28 @@ const UserManagement = () => {
 
     const handleSortRole = (e) => {
         const selectedRole = e.target.value;
-        setSortRole(selectedRole);
-
-        let pagination = { page, size }
-
-        switch (selectedRole) {
-            case 'All':
-                dispatch(getAllUser(pagination))
-                break;
-            case 'Doctor':
-                dispatch(getAllDoctor(2, pagination))
-                console.log(pagination)
-                break;
-            case 'Patient':
-                dispatch(getAllPatient(3))
-                break;
-            default:
-                break;
+        let newSortRole;
+    
+        if (selectedRole === "All") {
+            newSortRole = '1';
+        } else if (selectedRole === "Doctor") {
+            newSortRole = '2';
+        } else {
+            newSortRole = '3';
         }
-    }
+        
+        setSortRole(selectedRole);
+    
+        let pagination = { page, size, roleId: newSortRole };
+    
+        if (selectedRole === "All") {
+            dispatch(getAllUser({ page, size }));
+        } else {
+            dispatch(getAllUserByRole(pagination));
+        }
+        
+        console.log("🚀 ~ handleSortRole ~ pagination:", pagination);       
+    };
 
     return (
         <div className="user-mana-container">
@@ -211,17 +214,17 @@ const UserManagement = () => {
                                 <select 
                                     onChange={handleSortRole}
                                     className="filter-role"
-                                    value={sortRole}
                                 >
-                                    <option value="All">All</option>
-                                    <option value="Patient">Patient</option>
-                                    <option value="Doctor">Doctor</option>
+                                    <option value={sortRole}>Select</option>
+                                    <option >All</option>
+                                    <option >Doctor</option>
+                                    <option >Patient</option>
                                 </select>
                             </th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor || isSearchingUser || isGettingAllPatient || isGettingAllDoctor)
+                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor || isSearchingUser || isGettingAllUserByRole)
                         ?
                         <tbody>
                             <tr>

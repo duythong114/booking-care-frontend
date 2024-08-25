@@ -5,9 +5,11 @@ import {
     loginUserService,
     getUserInfoService,
     getAllUserService,
+    searchUserService,
     deleteUserService,
     getDetailUserService,
     editUserService,
+    getAllByRole,
     uploadAvatarService,
 } from '../../services/userServices'
 
@@ -71,6 +73,18 @@ export const getAllUser = createAsyncThunk(
     }
 );
 
+export const searchUser = createAsyncThunk(
+    'user/searchUser',
+    async (pagination, { rejectWithValue }) => {
+        try {
+            const response = await searchUserService(pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const deleteUser = createAsyncThunk(
     'user/deleteUser',
     async (userId, { rejectWithValue }) => {
@@ -107,6 +121,18 @@ export const editUser = createAsyncThunk(
     }
 );
 
+export const getAllUserByRole = createAsyncThunk(
+    'user/getAllByRole',
+    async (pagination, { rejectWithValue }) => {
+        try {
+            const response = await getAllByRole(pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const uploadAvatar = createAsyncThunk(
     'user/uploadAvatar',
     async (image, { rejectWithValue }) => {
@@ -125,6 +151,10 @@ const loadUserInfoJSON = localStorage.getItem('userInfo');
 const loadUserInfo = JSON.parse(loadUserInfoJSON)
 const loadDetailUserJSON = localStorage.getItem('detailUser');
 const loadDetailUser = JSON.parse(loadDetailUserJSON)
+const loadSearchUserJSON = localStorage.getItem('searchUser')
+const loadSearchUser = JSON.parse(loadSearchUserJSON)
+const loadGetUserByRoleJSON = localStorage.getItem('loadGetUserByRole')
+const loadGetUserByRole = JSON.parse(loadGetUserByRoleJSON)
 
 const initialState = {
     // common state
@@ -150,6 +180,10 @@ const initialState = {
     userList: null,
     totalPage: 0,
 
+    // search user
+    isSearchingUser: false,
+    searchUser: loadSearchUser ? loadSearchUser : null,
+
     // delete user
     isDeletingUser: false,
 
@@ -159,6 +193,10 @@ const initialState = {
 
     // edit user
     isEditingUser: false,
+
+    // get all user by roles
+    isGettingAllUserByRole: false,
+    getbyRole: loadGetUserByRole ? loadGetUserByRole : null,
 
     // upload avatar
     isUploadingAvatar: false,
@@ -255,6 +293,22 @@ export const userSlice = createSlice({
                 state.isUserError = action.error.message
             })
 
+         // search user
+        builder
+        .addCase(searchUser.pending, (state, action) => {
+            state.isSearchingUser = true
+            state.isUserError = null
+        })
+        .addCase(searchUser.fulfilled, (state, action) => {
+            state.isSearchingUser = false
+            state.searchUser = action.payload?.data
+            localStorage.setItem('searchUser', JSON.stringify(action.payload?.data));
+        })
+        .addCase(searchUser.rejected, (state, action) => {
+            state.isSearchingUser = false
+            state.isUserError = action.error.message
+        })
+
         // delete user
         builder
             .addCase(deleteUser.pending, (state, action) => {
@@ -296,6 +350,22 @@ export const userSlice = createSlice({
             })
             .addCase(editUser.rejected, (state, action) => {
                 state.isEditingUser = false
+                state.isUserError = action.error.message
+            })
+
+            // get all user by role
+            builder
+            .addCase(getAllUserByRole.pending, (state, action) => {
+                state.isGettingAllUserByRole = true
+                state.isUserError = null
+            })
+            .addCase(getAllUserByRole.fulfilled, (state, action) => {
+                state.isGettingAllUserByRole = false
+                state.searchUser = action.payload?.data
+                localStorage.setItem('loadGetUserByRole', JSON.stringify(action.payload?.data));
+            })
+            .addCase(getAllUserByRole.rejected, (state, action) => {
+                state.isGettingAllUserByRole = false
                 state.isUserError = action.error.message
             })
 

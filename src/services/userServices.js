@@ -106,6 +106,24 @@ const getAllUserService = async (pagination) => {
     }
 };
 
+const searchUserService = async ( pagination) => {
+    try {
+        const response = await axios.get(`/api/user?page=${pagination.page}&size=${pagination.size}&name=${pagination.searchData}`);
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
 const deleteUserService = async (userId) => {
     try {
         const response = await axios.delete(`/api/user/delete/${userId}`);
@@ -167,6 +185,24 @@ const editUserService = async (userData) => {
     }
 }
 
+const getAllByRole = async (pagination) => {
+    try {
+        const response = await axios.get(`/api/user?page=${pagination.page}&size=${pagination.size}&roleId=${pagination.roleId}`);
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 2xx
+            throw new Error(error.response.data.message || 'An error occurred during login.');
+        } else if (error.request) {
+            // Request was made but no response received
+            throw new Error('No response from the server.');
+        } else {
+            // Something else happened
+            throw new Error('An unexpected error occurred.');
+        }
+    }
+}
+
 const uploadAvatarService = async (image) => {
     try {
         const formData = new FormData();
@@ -200,8 +236,10 @@ export {
     loginUserService,
     getUserInfoService,
     getAllUserService,
+    searchUserService,
     deleteUserService,
     getDetailUserService,
     editUserService,
+    getAllByRole,
     uploadAvatarService,
 }
