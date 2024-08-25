@@ -5,34 +5,40 @@ import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo, editUser, uploadAvatar } from "../../redux/slices/userSlice"
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner"
 import ModalComponent from "../Modal/Modal"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from 'react-toastify';
 
 const Profile = () => {
     const dispatch = useDispatch()
     const userInfo = useSelector(state => state.user.userInfo)
-    const initialState = {
-        avatar: null,
-        fullName: userInfo?.fullName || '',
-        dob: userInfo?.dob || '',
-        gender: userInfo?.gender || 'male',
-        password: '',
-        phone: userInfo?.phone || '',
-        address: userInfo?.address || ''
-    }
     const isGettingUserInfo = useSelector(state => state.user.isGettingUserInfo)
     const isEditingUser = useSelector(state => state.user.isEditingUser)
     const isUploadingAvatar = useSelector(state => state.user.isUploadingAvatar)
     const [showEditModal, setShowEditModal] = useState(false)
-    const [editData, setEditData] = useState(initialState)
+    const [editData, setEditData] = useState({
+        avatar: null,
+        fullName: '',
+        dob: '',
+        gender: '',
+        password: '',
+        phone: '',
+        address: ''
+    });
+
+    useEffect(() => {
+        if (userInfo) {
+            setEditData({
+                fullName: userInfo?.fullName,
+                dob: userInfo?.dob,
+                gender: userInfo?.gender,
+                phone: userInfo?.phone,
+                address: userInfo?.address,
+            })
+        }
+    }, [userInfo]);
 
     const handleToggleEditModal = () => {
         setShowEditModal(!showEditModal)
-    }
-
-    const handleCloseEditModal = () => {
-        setShowEditModal()
-        setEditData(initialState)
     }
 
     const handleInputChange = (e) => {
@@ -67,7 +73,7 @@ const Profile = () => {
             if (response?.message) {
                 toast.success(response.message);
                 dispatch(getUserInfo());
-                handleCloseEditModal();
+                handleToggleEditModal();
             }
         } catch (error) {
             if (error?.message === "Rejected") {
@@ -117,7 +123,7 @@ const Profile = () => {
             <ModalComponent
                 show={showEditModal}
                 size="lg"
-                handleClose={handleCloseEditModal}
+                handleClose={handleToggleEditModal}
                 title="Edit Profile"
                 body={
                     <div className="edit-profile-container">
