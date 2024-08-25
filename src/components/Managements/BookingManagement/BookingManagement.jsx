@@ -6,7 +6,14 @@ import deleteIcon from "../../../assets/icons/delete.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllBookings, deleteBooking, getDetailBooking, getAvailableBooking, createBooking } from "../../../redux/slices/bookingSlice"
+import {
+    getAllBookings,
+    deleteBooking,
+    getDetailBooking,
+    getAvailableBooking,
+    createBooking,
+    searchBooking,
+} from "../../../redux/slices/bookingSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
@@ -19,6 +26,7 @@ const BookingManagement = () => {
     const totalPage = useSelector(state => state.booking.totalPage)
     const isGettingAllBookings = useSelector(state => state.booking.isGettingAllBookings)
     const isDeletingBooking = useSelector(state => state.booking.isDeletingBooking)
+    const isSearchingBooking = useSelector(state => state.booking.isSearchingBooking)
     const [page, setPage] = useState(1)
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
@@ -38,6 +46,7 @@ const BookingManagement = () => {
         patientId: ""
     }
     const [selectedAppointment, setSelectedAppointment] = useState(initialState);
+    const [searchData, setSearchData] = useState("")
 
     useEffect(() => {
         let pagination = { page, size }
@@ -129,6 +138,23 @@ const BookingManagement = () => {
         }
     }
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearchBooking()
+        }
+    }
+
+    const handleSearchBooking = () => {
+        let searchPayload = { page, size, searchData };
+        let pagination = { page, size }
+
+        if (searchData) {
+            dispatch(searchBooking(searchPayload))
+        } else {
+            dispatch(getAllBookings(pagination))
+        }
+    }
+
     if (isCreatingBooking || isGettingAvailable) {
         return <LoadingSpinner />
     }
@@ -138,7 +164,14 @@ const BookingManagement = () => {
             <h1 className="booking-name-header">booking management</h1>
             <div className="booking-header">
                 <div className="booking-header-search">
-                    <input className="search-input" type="text" placeholder="Enter search information" />
+                    <input
+                        className="search-input"
+                        type="text"
+                        value={searchData}
+                        onKeyDown={(e) => handleKeyPress(e)}
+                        onChange={(e) => setSearchData(e.target.value)}
+                        placeholder="Enter Patient Name"
+                    />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
                 <button
@@ -162,7 +195,7 @@ const BookingManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllBookings || isDeletingBooking)
+                    {(isGettingAllBookings || isDeletingBooking || isSearchingBooking)
                         ?
                         <tbody>
                             <tr>
