@@ -58,11 +58,11 @@ const Home = () => {
                 const response = await dispatch(createBooking(selectedAppointment)).unwrap();
                 if (response?.message) {
                     handleToggleBookingModal();
-                    toast.success("Appointment is created successfully")
+                    toast.success(response.message)
                 }
             } catch (error) {
-                if (error?.message === "Rejected") {
-                    toast.error(error.payload || "Booking failed.");
+                if (error) {
+                    toast.error(error || "Booking failed.");
                 } else {
                     toast.error("An unexpected error occurred.");
                 }
