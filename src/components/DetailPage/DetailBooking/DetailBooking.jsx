@@ -1,20 +1,93 @@
 import "./DetailBooking.scss"
 import editIcon from "../../../assets/icons/edit.svg"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
+import { updateBooking, getDetailBooking } from "../../../redux/slices/bookingSlice"
+import { toast } from 'react-toastify';
+import ModalComponent from "../../Modal/Modal"
+import { useEffect, useState } from "react"
 
 const DetailBooking = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const detailBooking = useSelector(state => state.booking.detailBooking)
     const isGettingDetailBooking = useSelector(state => state.booking.isGettingDetailBooking)
+    const isUpdatingBooking = useSelector(state => state.booking.isUpdatingBooking)
+
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [updateData, setUpdateData] = useState({
+        bookingId: '',
+        appointmentTime: '',
+        appointmentDate: '',
+        appointmentStatus: '',
+        diagnosis: '',
+        treatment: ''
+    });
+
+    useEffect(() => {
+        if (detailBooking) {
+            setUpdateData({
+                bookingId: detailBooking.id,
+                appointmentTime: detailBooking.appointmentTime,
+                appointmentDate: detailBooking.appointmentDate,
+                appointmentStatus: detailBooking.appointmentStatus,
+                diagnosis: detailBooking.diagnosis,
+                treatment: detailBooking.treatment,
+            });
+        }
+    }, [detailBooking]);
 
     const handleComback = () => {
         localStorage.setItem("currentPath", "/management/booking")
         navigate("/management/booking")
     }
 
-    if (isGettingDetailBooking) {
+
+    const handleToggleEditModal = () => {
+        setShowEditModal(!showEditModal)
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUpdateData({
+            ...updateData,
+            [name]: value
+        })
+    };
+
+    const validateInputs = () => {
+        const requiredFields = ['appointmentStatus', 'diagnosis', 'treatment'];
+        for (const field of requiredFields) {
+            if (!updateData[field]?.trim()) {
+                toast.error(`Please fill out the ${field} field.`);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const handleEdit = async () => {
+        if (!validateInputs()) return;
+
+        try {
+            const response = await dispatch(updateBooking(updateData)).unwrap();
+
+            if (response?.message) {
+                dispatch(getDetailBooking(updateData?.bookingId));
+                handleToggleEditModal();
+                toast.success(response.message);
+            }
+        } catch (error) {
+            if (error?.message === "Rejected") {
+                toast.error(error.payload || "Profile update failed.");
+            } else {
+                toast.error("An unexpected error occurred.");
+            }
+        }
+    };
+
+    if (isGettingDetailBooking || isUpdatingBooking) {
         return <LoadingSpinner />
     }
 
@@ -57,10 +130,52 @@ const DetailBooking = () => {
                     </button>
                 </div>
 
-                <button type="button" className="edit-icon">
+                <button
+                    onClick={() => handleToggleEditModal()}
+                    type="button" className="edit-icon">
                     <img src={editIcon} alt="edit" />
                 </button>
             </div>
+
+            <ModalComponent
+                show={showEditModal}
+                size="lg"
+                handleClose={handleToggleEditModal}
+                title="Edit Profile"
+                body={
+                    <div className="edit-booking-container">
+                        <label>AppointmentStatus:</label>
+                        <select
+                            name="appointmentStatus"
+                            value={updateData?.appointmentStatus}
+                            onChange={handleInputChange}
+                        >
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancel">Cancel</option>
+                        </select>
+                        <label>Diagnosis:</label>
+                        <input
+                            type="text"
+                            placeholder="diagnosis"
+                            name="diagnosis"
+                            value={updateData?.diagnosis}
+                            onChange={handleInputChange}
+                        />
+                        <label>Treatment:</label>
+                        <input
+                            type="text"
+                            placeholder="treatment"
+                            name="treatment"
+                            value={updateData?.treatment}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                }
+                handlePrimaryBtnClick={handleEdit}
+                primaryBtnText="Save"
+            />
         </div>
     )
 }

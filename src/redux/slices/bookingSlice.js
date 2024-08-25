@@ -5,6 +5,8 @@ import {
     getDetailBookingService,
     getAvailableBookingService,
     createBookingService,
+    getMedicalHistoryService,
+    updateBookingService,
 } from '../../services/bookingServices'
 
 export const getAllBookings = createAsyncThunk(
@@ -67,6 +69,30 @@ export const createBooking = createAsyncThunk(
     }
 );
 
+export const getMedicalHistory = createAsyncThunk(
+    'booking/getMedicalHistory',
+    async (pagination, { rejectWithValue }) => {
+        try {
+            const response = await getMedicalHistoryService(pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const updateBooking = createAsyncThunk(
+    'booking/updateBooking',
+    async (bookingData, { rejectWithValue }) => {
+        try {
+            const response = await updateBookingService(bookingData);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadDetailBookingJSON = localStorage.getItem('detailBooking');
 const loadDetailBooking = JSON.parse(loadDetailBookingJSON)
@@ -93,6 +119,14 @@ const initialState = {
 
     // create booking
     isCreatingBooking: false,
+
+    // get medical history
+    isGettingMedicalHistory: false,
+    historyList: null,
+    totalHistoryPages: 0,
+
+    // update booking
+    isUpdatingBooking: false,
 }
 
 export const bookingSlice = createSlice({
@@ -173,6 +207,36 @@ export const bookingSlice = createSlice({
             })
             .addCase(createBooking.rejected, (state, action) => {
                 state.isCreatingBooking = false
+                state.isBookingError = action.error.message
+            })
+
+        // get medical history
+        builder
+            .addCase(getMedicalHistory.pending, (state, action) => {
+                state.isGettingMedicalHistory = true
+                state.isBookingError = null
+            })
+            .addCase(getMedicalHistory.fulfilled, (state, action) => {
+                state.isGettingMedicalHistory = false
+                state.historyList = action.payload?.data?.result
+                state.totalHistoryPages = action.payload?.data?.meta?.pages
+            })
+            .addCase(getMedicalHistory.rejected, (state, action) => {
+                state.isGettingMedicalHistory = false
+                state.isBookingError = action.error.message
+            })
+
+        // update booking
+        builder
+            .addCase(updateBooking.pending, (state, action) => {
+                state.isUpdatingBooking = true
+                state.isBookingError = null
+            })
+            .addCase(updateBooking.fulfilled, (state, action) => {
+                state.isUpdatingBooking = false
+            })
+            .addCase(updateBooking.rejected, (state, action) => {
+                state.isUpdatingBooking = false
                 state.isBookingError = action.error.message
             })
     },

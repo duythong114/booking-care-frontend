@@ -6,7 +6,7 @@ import deleteIcon from "../../../assets/icons/delete.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllBookings, deleteBooking, getDetailBooking } from "../../../redux/slices/bookingSlice"
+import { getAllBookings, deleteBooking, getDetailBooking, getAvailableBooking, createBooking } from "../../../redux/slices/bookingSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
@@ -24,6 +24,20 @@ const BookingManagement = () => {
     const [size, setSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
     const [bookingData, setBookingData] = useState(null)
+
+    // state for modal booking
+    const isGettingAvailable = useSelector(state => state.booking.isGettingAvailable)
+    const isCreatingBooking = useSelector(state => state.booking.isCreatingBooking)
+    const availableBookingList = useSelector(state => state.booking.availableBookingList)
+    const [morningAppointments, setMorningAppointments] = useState("")
+    const [afternoonAppointments, setAfternoonAppointments] = useState("")
+    const [showBookingModal, setShowBookingModal] = useState(false)
+    const initialState = {
+        appointmentDate: "",
+        appointmentTime: "",
+        patientId: ""
+    }
+    const [selectedAppointment, setSelectedAppointment] = useState(initialState);
 
     useEffect(() => {
         let pagination = { page, size }
@@ -70,6 +84,55 @@ const BookingManagement = () => {
         }
     }
 
+    useEffect(() => {
+        if (availableBookingList) {
+            setMorningAppointments(availableBookingList.filter(appointment => appointment.appointmentTime === 'Morning'));
+            setAfternoonAppointments(availableBookingList.filter(appointment => appointment.appointmentTime === 'Afternoon'));
+        }
+    }, [availableBookingList])
+
+    const handleToggleBookingModal = () => {
+        setShowBookingModal(!showBookingModal)
+    }
+
+    const handleBookingBtn = () => {
+        dispatch(getAvailableBooking())
+        handleToggleBookingModal()
+    }
+
+    const handleAppointmentChange = (appointmentDate, appointmentTime) => {
+        setSelectedAppointment({
+            ...selectedAppointment,
+            appointmentDate,
+            appointmentTime
+        })
+    };
+
+    const handleBooking = async () => {
+        if (selectedAppointment.appointmentDate && selectedAppointment.appointmentTime && selectedAppointment.patientId) {
+            try {
+                const response = await dispatch(createBooking(selectedAppointment)).unwrap();
+                if (response?.message) {
+                    handleToggleBookingModal();
+                    toast.success("Appointment is created successfully")
+                    setSelectedAppointment(initialState)
+                }
+            } catch (error) {
+                if (error?.message === "Rejected") {
+                    toast.error(error.payload || "Booking failed.");
+                } else {
+                    toast.error("An unexpected error occurred.");
+                }
+            }
+        } else {
+            toast.error("Please select date and time.");
+        }
+    }
+
+    if (isCreatingBooking || isGettingAvailable) {
+        return <LoadingSpinner />
+    }
+
     return (
         <div className="booking-mana-container">
             <h1 className="booking-name-header">booking management</h1>
@@ -78,7 +141,9 @@ const BookingManagement = () => {
                     <input className="search-input" type="text" placeholder="Enter search information" />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
-                <button className="btn btn-primary">
+                <button
+                    onClick={() => handleBookingBtn()}
+                    className="btn btn-primary">
                     Booking
                     <img src={addIcon} alt="Add" />
                 </button>
@@ -172,6 +237,45 @@ const BookingManagement = () => {
                 body="Are you sure to delete this booking?"
                 handlePrimaryBtnClick={handleConfirmDelete}
                 primaryBtnText="Delete"
+            />
+
+            {/* Modal for booking an appointment */}
+            <ModalComponent
+                show={showBookingModal}
+                size="lg"
+                handleClose={handleToggleBookingModal}
+                title="Booking An Appointment"
+                body={
+                    <div className="booking-container">
+                        <label>PatientId:</label>
+                        <input
+                            type="text"
+                            placeholder="Enter PatientId"
+                            value={selectedAppointment.patientId}
+                            onChange={(e) => setSelectedAppointment({ ...selectedAppointment, patientId: e.target.value })} />
+                        <label>Morning</label>
+                        <select onChange={(e) => handleAppointmentChange(e.target.value, 'Morning')}>
+                            <option value="">Select Morning Appointment</option>
+                            {morningAppointments && morningAppointments.map((appointment, index) => (
+                                <option key={index} value={appointment.appointmentDate}>
+                                    {appointment.appointmentDate}
+                                </option>
+                            ))}
+                        </select>
+
+                        <label>Afternoon</label>
+                        <select onChange={(e) => handleAppointmentChange(e.target.value, 'Afternoon')}>
+                            <option value="">Select Afternoon Appointment</option>
+                            {afternoonAppointments && afternoonAppointments.map((appointment, index) => (
+                                <option key={index} value={appointment.appointmentDate}>
+                                    {appointment.appointmentDate}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                }
+                handlePrimaryBtnClick={handleBooking}
+                primaryBtnText="Booking"
             />
         </div>
     )

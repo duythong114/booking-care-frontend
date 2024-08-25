@@ -52,7 +52,6 @@ const Home = () => {
         })
     };
 
-
     const handleBooking = async () => {
         if (selectedAppointment.appointmentDate && selectedAppointment.appointmentTime) {
             try {

@@ -11,9 +11,6 @@ import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
-import { searchUser } from "../../../redux/slices/userSlice"
-import { getAllPatient } from "../../../redux/slices/userSlice"
-import { getAllDoctor } from "../../../redux/slices/userSlice"
 
 const UserManagement = () => {
     const initialState = {
@@ -36,11 +33,6 @@ const UserManagement = () => {
     const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
     const isRegistingDoctor = useSelector(state => state.user.isRegistingDoctor)
-    const isSearchingUser = useSelector(state => state.user.isSearchingUser)
-    const isGettingAllPatient = useSelector(state => state.user.isGettingAllPatient)
-    const isGettingAllDoctor = useSelector(state => state.user.isGettingAllPatient)
-    
-    
     const [page, setPage] = useState(1)
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
@@ -48,8 +40,6 @@ const UserManagement = () => {
     const [userData, setUserData] = useState(null)
     const [doctorData, setDoctorData] = useState(initialState);
     const [showCreateDoctorModal, setShowCreateDoctorModal] = useState(false);
-    const [searchData, setSearchData] = useState(null)
-    const [sortRole, setSortRole] = useState('All')
 
     useEffect(() => {
         let pagination = { page, size }
@@ -140,56 +130,12 @@ const UserManagement = () => {
         }
     }
 
-    const handleKeyPress = (e) => {
-        if(e.key === 'Enter'){
-            handleSearchUser()
-        }
-    }
-
-    const handleSearchUser = () => {
-        if(searchData) {
-            dispatch(searchUser(searchData))
-        } else {
-            let pagination = { page, size }
-            dispatch(getAllUser(pagination))
-        }
-    }
-
-    const handleSortRole = (e) => {
-        const selectedRole = e.target.value;
-        setSortRole(selectedRole);
-
-        let pagination = { page, size }
-
-        switch (selectedRole) {
-            case 'All':
-                dispatch(getAllUser(pagination))
-                break;
-            case 'Doctor':
-                dispatch(getAllDoctor(2, pagination))
-                console.log(pagination)
-                break;
-            case 'Patient':
-                dispatch(getAllPatient(3))
-                break;
-            default:
-                break;
-        }
-    }
-
     return (
         <div className="user-mana-container">
             <h1 className="user-name-header">user management</h1>
             <div className="user-header">
                 <div className="user-header-search">
-                    <input 
-                        className="search-input" 
-                        type="text" 
-                        onChange={(e)=>setSearchData(e.target.value)}
-                        onKeyDown={(e)=>handleKeyPress(e)}
-                        value={searchData}
-                        placeholder="Enter search information" 
-                    />
+                    <input className="search-input" type="text" placeholder="Enter search information" />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
                 <button
@@ -206,22 +152,11 @@ const UserManagement = () => {
                             <th>ID</th>
                             <th>Full Name</th>
                             <th>Email</th>
-                            <th>
-                                Role
-                                <select 
-                                    onChange={handleSortRole}
-                                    className="filter-role"
-                                    value={sortRole}
-                                >
-                                    <option value="All">All</option>
-                                    <option value="Patient">Patient</option>
-                                    <option value="Doctor">Doctor</option>
-                                </select>
-                            </th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor || isSearchingUser || isGettingAllPatient || isGettingAllDoctor)
+                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor)
                         ?
                         <tbody>
                             <tr>
