@@ -63,14 +63,15 @@ const Register = () => {
             return;
         }
 
-        const response = await dispatch(registerPatient(userData))
-
-        if (response?.error?.message === "Rejected" && response?.payload) {
-            toast.error(response.payload);
-        }
-        if (response?.payload?.message) {
-            navigate("/login")
-            toast.success(response.payload.message);
+        try {
+            const response = await dispatch(registerPatient(userData)).unwrap();
+            if (response?.message) {
+                setUserData(initialUserData)
+                navigate("/login");
+                toast.success(response.message);
+            }
+        } catch (error) {
+            toast.error(error || "Failed to register");
         }
     }
 

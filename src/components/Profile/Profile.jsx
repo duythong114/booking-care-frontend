@@ -76,8 +76,8 @@ const Profile = () => {
                 handleToggleEditModal();
             }
         } catch (error) {
-            if (error?.message === "Rejected") {
-                toast.error(error.payload || "Profile update failed.");
+            if (error) {
+                toast.error(error || "Profile update failed.");
             } else {
                 toast.error("An unexpected error occurred.");
             }

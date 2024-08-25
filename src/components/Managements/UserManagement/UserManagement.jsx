@@ -64,20 +64,20 @@ const UserManagement = () => {
     }
 
     const handleConfirmDelete = async () => {
-        const userId = userData.id
+        const userId = userData.id;
         if (userId) {
-            const response = await dispatch(deleteUser(userId))
-            if (response?.error?.message === "Rejected" && response?.payload) {
-                toast.error(response.payload);
-            }
-            if (response?.payload?.message) {
-                let pagination = { page, size }
-                dispatch(getAllUser(pagination))
-                toast.success(response.payload.message);
-                handleToggleDeleteModal()
+            try {
+                const response = await dispatch(deleteUser(userId)).unwrap();
+                if (response?.message) {
+                    toast.success(response.message);
+                    handleToggleDeleteModal();
+                    dispatch(getAllUser({ page, size }));
+                }
+            } catch (error) {
+                toast.error(error || "Failed to delete user");
             }
         }
-    }
+    };
 
     const handleDetailBtn = (user) => {
         const userId = user.id
@@ -120,15 +120,16 @@ const UserManagement = () => {
             return;
         }
 
-        const response = await dispatch(registerDoctor(doctorData));
-        if (response?.error?.message === "Rejected" && response?.payload) {
-            toast.error(response.payload);
-        }
-        if (response?.payload?.message) {
-            toast.success(response.payload.message);
-            handleToggleCreateModal()
-            let pagination = { page, size };
-            dispatch(getAllUser(pagination));
+        try {
+            const response = await dispatch(registerDoctor(doctorData)).unwrap();
+            if (response?.message) {
+                handleToggleCreateModal();
+                dispatch(getAllUser({ page, size }));
+                toast.success(response.message);
+                setDoctorData(initialState)
+            }
+        } catch (error) {
+            toast.error(error || "Failed to create doctor");
         }
     }
 

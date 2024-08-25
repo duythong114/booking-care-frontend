@@ -60,20 +60,20 @@ const BookingManagement = () => {
     }
 
     const handleConfirmDelete = async () => {
-        const bookingId = bookingData.id
+        const bookingId = bookingData.id;
         if (bookingId) {
-            const response = await dispatch(deleteBooking(bookingId))
-            if (response?.error?.message === "Rejected" && response?.payload) {
-                toast.error(response.payload);
-            }
-            if (response?.payload?.message) {
-                let pagination = { page, size }
-                dispatch(getAllBookings(pagination))
-                toast.success(response.payload.message);
-                handleToggleDeleteModal()
+            try {
+                const response = await dispatch(deleteBooking(bookingId)).unwrap();
+                if (response?.message) {
+                    dispatch(getAllBookings({ page, size }));
+                    handleToggleDeleteModal();
+                    toast.success(response.message);
+                }
+            } catch (error) {
+                toast.error(error || "Failed to delete the booking");
             }
         }
-    }
+    };
 
     const handleDetailBtn = (booking) => {
         const bookingId = booking.id
@@ -114,12 +114,12 @@ const BookingManagement = () => {
                 const response = await dispatch(createBooking(selectedAppointment)).unwrap();
                 if (response?.message) {
                     handleToggleBookingModal();
-                    toast.success("Appointment is created successfully")
+                    toast.success(response.message);
                     setSelectedAppointment(initialState)
                 }
             } catch (error) {
-                if (error?.message === "Rejected") {
-                    toast.error(error.payload || "Booking failed.");
+                if (error) {
+                    toast.error(error || "Booking failed.");
                 } else {
                     toast.error("An unexpected error occurred.");
                 }
