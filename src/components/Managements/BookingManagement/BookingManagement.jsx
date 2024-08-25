@@ -6,7 +6,7 @@ import deleteIcon from "../../../assets/icons/delete.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllBookings, deleteBooking, getDetailBooking } from "../../../redux/slices/bookingSlice"
+import { getAllBookings, deleteBooking, getDetailBooking, searchPatient, getBookingDate, getBookingTime } from "../../../redux/slices/bookingSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
@@ -19,11 +19,16 @@ const BookingManagement = () => {
     const totalPage = useSelector(state => state.booking.totalPage)
     const isGettingAllBookings = useSelector(state => state.booking.isGettingAllBookings)
     const isDeletingBooking = useSelector(state => state.booking.isDeletingBooking)
+    const isSearchingPatient = useSelector(state => state.booking.isSearchingPatient)
+
     const [page, setPage] = useState(1)
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
     const [bookingData, setBookingData] = useState(null)
+    const [searchData, setSearchData] = useState(null)
+    const [date, setDate] = useState(null);
+    const [time, setTime] = useState(null)
 
     useEffect(() => {
         let pagination = { page, size }
@@ -70,12 +75,68 @@ const BookingManagement = () => {
         }
     }
 
+    const handleKeyPress = (e) => {
+        if(e.key === 'Enter'){
+            handleSearchPatient()
+        }
+    }
+
+    const handleSearchPatient = () => {
+        let pagination = { page, size, searchData };
+
+        if(searchData) {
+            dispatch(searchPatient(pagination))
+        } else {
+            let pagination = { page, size }
+            dispatch(getAllBookings(pagination))
+        }
+    }
+
+    const handleChange = (e) => {
+        const selectedDate =e.target.value
+        setDate(selectedDate);
+        handleGetByDate(selectedDate);
+      };
+
+    const handleGetByDate = (selectedDate) => {
+        let pagination = { page, size, date: selectedDate };
+
+        if (selectedDate === ''){
+            let pagination = { page, size }
+            dispatch(getAllBookings(pagination))
+        } else {
+            dispatch(getBookingDate(pagination))
+        }
+    };
+
+    const handleGetByTime = (e) => {
+        const selectedTime = e.target.value;
+
+        setTime(selectedTime);
+    
+        let pagination = { page, size, time: selectedTime};
+    
+        if (selectedTime === "All") {
+            let pagination = { page, size }
+            dispatch(getAllBookings(pagination));
+        } else {
+            dispatch(getBookingTime(pagination));
+        }   
+    };
+    
     return (
         <div className="booking-mana-container">
             <h1 className="booking-name-header">booking management</h1>
             <div className="booking-header">
                 <div className="booking-header-search">
-                    <input className="search-input" type="text" placeholder="Enter search information" />
+                    <input 
+                        className="search-input" 
+                        type="text" 
+                        value={searchData}
+                        onKeyDown={(e)=>handleKeyPress(e)}
+                        onChange={(e)=>setSearchData(e.target.value)}
+                        placeholder="Enter search information"
+                    />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
                 <button className="btn btn-primary">
@@ -84,7 +145,13 @@ const BookingManagement = () => {
                 </button>
             </div>
             <div className="booking-mana-body">
-                <input className="booking-date" type="date" placeholder="dd/mm/yyyy" />
+                <input 
+                    className="booking-date"
+                    type="date" 
+                    placeholder="yyyy/mm/dd" 
+                    value={date} 
+                    onChange={handleChange}
+                />
                 <table>
                     <thead>
                         <tr>
@@ -92,12 +159,23 @@ const BookingManagement = () => {
                             <th>Patient</th>
                             <th>Doctor</th>
                             <th>Date</th>
-                            <th>Time</th>
+                            <th>
+                                Time
+                                <select 
+                                    onChange={handleGetByTime}
+                                    className="filter-role"
+                                >
+                                    <option value={time}>Select</option>
+                                    <option >All</option>
+                                    <option >Morning</option>
+                                    <option >Afternoon</option>
+                                </select>
+                            </th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllBookings || isDeletingBooking)
+                    {(isGettingAllBookings || isDeletingBooking || isSearchingPatient)
                         ?
                         <tbody>
                             <tr>

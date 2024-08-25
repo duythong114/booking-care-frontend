@@ -5,6 +5,9 @@ import {
     getDetailBookingService,
     getAvailableBookingService,
     createBookingService,
+    searchBookingService,
+    getBookingByDate,
+    getBookingByTime,
 } from '../../services/bookingServices'
 
 export const getAllBookings = createAsyncThunk(
@@ -67,6 +70,42 @@ export const createBooking = createAsyncThunk(
     }
 );
 
+export const searchPatient = createAsyncThunk(
+    'booking/searchPatient',
+    async (pagination, { rejectWithValue }) => {
+        try {
+            const response = await searchBookingService(pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getBookingDate = createAsyncThunk(
+    'booking/BookingDate',
+    async (pagination, { rejectWithValue }) => {
+        try {
+            const response = await getBookingByDate(pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getBookingTime = createAsyncThunk(
+    'booking/BookingTime',
+    async (pagination, { rejectWithValue }) => {
+        try {
+            const response = await getBookingByTime(pagination);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadDetailBookingJSON = localStorage.getItem('detailBooking');
 const loadDetailBooking = JSON.parse(loadDetailBookingJSON)
@@ -93,6 +132,15 @@ const initialState = {
 
     // create booking
     isCreatingBooking: false,
+
+    // search patient
+    isSearchingBooking: false,
+
+    // get booking by date
+    isGettingBookingDate: false,
+
+    // get booking by time
+    isGettingBookingTime: false,
 }
 
 export const bookingSlice = createSlice({
@@ -173,6 +221,48 @@ export const bookingSlice = createSlice({
             })
             .addCase(createBooking.rejected, (state, action) => {
                 state.isCreatingBooking = false
+                state.isBookingError = action.error.message
+            })
+
+        // search patient
+        builder
+            .addCase(searchPatient.pending, (state, action) => {
+                state.isSearchingBooking = true
+                state.isBookingError = null
+            })
+            .addCase(searchPatient.fulfilled, (state, action) => {
+                state.isSearchingBooking = false
+            })
+            .addCase(searchPatient.rejected, (state, action) => {
+                state.isSearchingBooking = false
+                state.isBookingError = action.error.message
+            })
+
+        // get booking by date
+        builder
+            .addCase(getBookingDate.pending, (state, action) => {
+                state.isGettingBookingDate = true
+                state.isBookingError = null
+            })
+            .addCase(getBookingDate.fulfilled, (state, action) => {
+                state.isGettingBookingDate = false
+            })
+            .addCase(getBookingDate.rejected, (state, action) => {
+                state.isGettingBookingDate = false
+                state.isBookingError = action.error.message
+            })
+
+        // get booking by time
+        builder
+            .addCase(getBookingTime.pending, (state, action) => {
+                state.isGettingBookingTime = true
+                state.isBookingError = null
+            })
+            .addCase(getBookingTime.fulfilled, (state, action) => {
+                state.isGettingBookingTime = false
+            })
+            .addCase(getBookingTime.rejected, (state, action) => {
+                state.isGettingBookingTime = false
                 state.isBookingError = action.error.message
             })
     },
