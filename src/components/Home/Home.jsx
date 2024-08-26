@@ -18,6 +18,12 @@ const Home = () => {
     const availableBookingList = useSelector(state => state.booking.availableBookingList)
     const isCreatingBooking = useSelector(state => state.booking.isCreatingBooking)
     const userInfo = useSelector(state => state.user.userInfo)
+    const roleId = userInfo?.roleId
+    const menuRole = {
+        1: 'Admin',
+        2: 'Doctor',
+        3: 'Patient',
+    }
     const [morningAppointments, setMorningAppointments] = useState("")
     const [afternoonAppointments, setAfternoonAppointments] = useState("")
     const [showBookingModal, setShowBookingModal] = useState(false)
@@ -80,12 +86,14 @@ const Home = () => {
         <div className="home-container">
             <div className="home-body-header">
                 <div className="body-header-name">
-                    <button
-                        onClick={() => handleBookingBtn()}
-                        className="btn btn-primary">
-                        Booking
-                        <img src={addIcon} alt="Add" />
-                    </button>
+                    {roleId && menuRole[roleId] === "Patient" &&
+                        <button
+                            onClick={() => handleBookingBtn()}
+                            className="btn btn-primary">
+                            Booking
+                            <img src={addIcon} alt="Add" />
+                        </button>
+                    }
                 </div>
             </div>
 

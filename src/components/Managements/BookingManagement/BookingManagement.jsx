@@ -48,6 +48,13 @@ const BookingManagement = () => {
     const [sortOrder, setSortOrder] = useState("asc");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const userInfo = useSelector(state => state.user.userInfo)
+    const roleId = userInfo?.roleId
+    const menuRole = {
+        1: 'Admin',
+        2: 'Doctor',
+        3: 'Patient',
+    }
 
     useEffect(() => {
         let bookingPayload = { page, size, sortOrder, date, time, searchData };
@@ -165,12 +172,14 @@ const BookingManagement = () => {
                     />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
-                <button
-                    onClick={() => handleBookingBtn()}
-                    className="btn btn-primary">
-                    Booking
-                    <img src={addIcon} alt="Add" />
-                </button>
+                {roleId && menuRole[roleId] === "Admin" &&
+                    <button
+                        onClick={() => handleBookingBtn()}
+                        className="btn btn-primary">
+                        Booking
+                        <img src={addIcon} alt="Add" />
+                    </button>
+                }
             </div>
             <div className="booking-mana-body">
                 <div className="filter-section">
@@ -233,11 +242,13 @@ const BookingManagement = () => {
                                                     className="detail-icon">
                                                     <img src={detailIcon} alt="detail" />
                                                 </button>
-                                                <button
-                                                    onClick={() => handleDeleteBtn(booking)}
-                                                    className="delete-icon">
-                                                    <img src={deleteIcon} alt="Delete" />
-                                                </button>
+                                                {roleId && menuRole[roleId] === "Admin" &&
+                                                    <button
+                                                        onClick={() => handleDeleteBtn(booking)}
+                                                        className="delete-icon">
+                                                        <img src={deleteIcon} alt="Delete" />
+                                                    </button>
+                                                }
                                             </td>
                                         </tr>
                                     )))
