@@ -51,7 +51,6 @@ const BookingManagement = () => {
 
     useEffect(() => {
         let bookingPayload = { page, size, sortOrder, date, time, searchData };
-        console.log(bookingPayload);
         dispatch(getAllBookings(bookingPayload));
 
         // eslint-disable-next-line
@@ -77,7 +76,8 @@ const BookingManagement = () => {
             try {
                 const response = await dispatch(deleteBooking(bookingId)).unwrap();
                 if (response?.message) {
-                    dispatch(getAllBookings({ page, size }));
+                    let bookingPayload = { page, size, sortOrder, date, time, searchData };
+                    dispatch(getAllBookings(bookingPayload));
                     handleToggleDeleteModal();
                     toast.success(response.message);
                 }
@@ -125,6 +125,8 @@ const BookingManagement = () => {
             try {
                 const response = await dispatch(createBooking(selectedAppointment)).unwrap();
                 if (response?.message) {
+                    let bookingPayload = { page, size, sortOrder, date, time, searchData };
+                    dispatch(getAllBookings(bookingPayload));
                     handleToggleBookingModal();
                     toast.success(response.message);
                     setSelectedAppointment(initialState)

@@ -73,7 +73,8 @@ const UserManagement = () => {
                 if (response?.message) {
                     toast.success(response.message);
                     handleToggleDeleteModal();
-                    dispatch(getAllUser({ page, size }));
+                    let userPayload = { page, size, sortOrder, searchData }
+                    dispatch(getAllUser(userPayload))
                 }
             } catch (error) {
                 toast.error(error || "Failed to delete user");
@@ -126,7 +127,8 @@ const UserManagement = () => {
             const response = await dispatch(registerDoctor(doctorData)).unwrap();
             if (response?.message) {
                 handleToggleCreateModal();
-                dispatch(getAllUser({ page, size }));
+                let userPayload = { page, size, sortOrder, searchData }
+                dispatch(getAllUser(userPayload))
                 toast.success(response.message);
                 setDoctorData(initialState)
             }
