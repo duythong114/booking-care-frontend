@@ -68,7 +68,7 @@ const createBookingService = async (bookingData) => {
 
 const getMedicalHistoryService = async (pagination) => {
     try {
-        const response = await axios.get(`/api/appointments/patient?page=${pagination.page}&size=${pagination.size}`);
+        const response = await axios.get(`/api/appointments?page=${pagination.page}&size=${pagination.size}`);
         return response;
     } catch (error) {
         handleError(error)

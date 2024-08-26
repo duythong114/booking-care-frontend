@@ -116,3 +116,57 @@
         }
     }
 }
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .user-mana-container {
+        padding: 0;
+
+        .user-name-header {
+            font-size: 24px;
+        }
+
+        .user-header {
+            margin-top: 12px;
+
+            .user-header-search {
+                max-width: 260px;
+
+                .search-input {
+                    max-width: 260px;
+                    text-align: start;
+                    padding-left: 8px;
+                }
+            }
+
+            button {
+                height: 48px;
+                max-width: 120px;
+            }
+        }
+
+        .user-mana-body {
+            margin-top: 12px;
+            width: 100%;
+
+            .mana-body-table {
+                width: 100%;
+                overflow-y: hidden;
+
+                table {
+                    width: 100%;
+                    overflow: scroll;
+                    white-space: nowrap;
+                }
+    
+                td,
+                th {
+                    padding: 0 4px;
+                    overflow: hidden;
+                    text-align: center;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}

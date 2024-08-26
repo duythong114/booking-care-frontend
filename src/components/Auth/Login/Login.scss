@@ -110,3 +110,36 @@
         }
     }
 }
+
+/* Màn hình đến 768px */
+@media screen and (max-width: 767px) {
+    .login-container {
+
+        .login-infor {
+            .login-form {
+                .login-form-name {
+                    font-size: 24px;
+                    margin-top: 12px;
+                }
+
+                span {
+                    font-size: 16px;
+                }
+
+                .login-form-email,
+                .login-form-password {
+                    justify-content: center;
+
+                    label {
+                        display: none;
+                    }
+                }
+            }
+
+        }
+
+        .login-img {
+            display: none;
+        }
+    }
+}

@@ -1,27 +1,27 @@
 .medical-history-container {
-    width         : 100%;
-    height        : 100%;
-    display       : flex;
-    padding       : 0 40px;
-    position      : relative;
-    align-items   : center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 0 40px;
+    position: relative;
+    align-items: center;
     flex-direction: column;
 
     .medical-history-header {
-        margin              : 0;
-        font-size           : 32px;
-        color               : #FFC107;
-        font-weight         : 500;
-        padding-top         : 20px;
-        font-style          : normal;
-        font-family         : Inter;
-        line-height         : normal;
-        text-transform      : uppercase;
+        margin: 0;
+        font-size: 32px;
+        color: #FFC107;
+        font-weight: 500;
+        padding-top: 20px;
+        font-style: normal;
+        font-family: Inter;
+        line-height: normal;
+        text-transform: uppercase;
         text-decoration-line: underline;
     }
 
     .medical-history-body {
-        width     : 100%;
+        width: 100%;
         margin-top: 20px;
 
         table {
@@ -31,27 +31,63 @@
         table,
         th,
         td {
-            padding        : 10px 0;
-            border         : 1px solid #B9B9B9;
+            padding: 10px 0;
+            border: 1px solid #B9B9B9;
             border-collapse: collapse;
-            text-align     : center;
-            font-size      : 16px;
-            color          : #000;
-            font-weight    : 400;
+            text-align: center;
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
         }
 
         th {
             background-color: #EDFFFA;
-            color           : #FFC107;
+            color: #FFC107;
         }
 
         .edit-icon,
         .detele-icon {
             background-color: white;
-            border          : none;
+            border: none;
 
             img {
                 height: 30px;
+            }
+        }
+    }
+}
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .medical-history-container {
+        padding: 0;
+
+        .medical-history-header {
+            padding-top: 12px;
+            font-size: 24px;
+        }
+
+        .medical-history-body {
+            margin: 0;
+
+            .history-body-table {
+                width: 100%;
+                margin: 8px 0;
+                overflow-y: hidden;
+
+                table {
+                    width: 100%;
+                    overflow: scroll;
+                    white-space: nowrap;
+                }
+
+                td,
+                th {
+                    padding: 0 4px;
+                    overflow: hidden;
+                    text-align: center;
+                    white-space: nowrap;
+                }
             }
         }
     }

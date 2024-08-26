@@ -36,9 +36,7 @@
 
 /* Màn hình từ 992px đến 1199px */
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-    .layout-container {
-        
-    }
+    .layout-container {}
 }
 
 /* Màn hình từ 768px đến 991px */
@@ -51,5 +49,23 @@
             "main";
         grid-template-columns: 1fr;
         grid-template-rows: 80px auto 1fr;
+    }
+}
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .layout-container {
+        display: grid;
+        grid-template-areas:
+            "header"
+            "sidebar"
+            "main";
+        grid-template-columns: 1fr;
+        grid-template-rows: 80px auto 1fr;
+
+        .main-content {
+            width: 100vw;
+            overflow: hidden;
+        }
     }
 }

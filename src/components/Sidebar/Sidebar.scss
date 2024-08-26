@@ -79,3 +79,31 @@
         }
     }
 }
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .sidebar-container {
+        width: 100vw;
+        padding: 0;
+        height: 80px;
+        display: flex;
+        align-items: center;
+
+        .menu-container {
+            display: flex;
+            overflow-y: hidden;
+            align-items: center;
+            width: 100%;
+            justify-content: space-evenly;
+            margin: 0;
+            gap: 8px;
+
+            li {
+                width: auto;
+                white-space: nowrap;
+                padding: 20px 0;
+                margin: 0;
+            }
+        }
+    }
+}

@@ -1,44 +1,44 @@
 .booking-mana-container {
-    width         : 100%;
-    height        : 100%;
-    display       : flex;
-    padding       : 0 40px;
-    position      : relative;
-    align-items   : center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 0 40px;
+    position: relative;
+    align-items: center;
     flex-direction: column;
 
     .booking-name-header {
-        margin              : 0;
-        font-size           : 32px;
-        color               : #FFC107;
-        font-weight         : 500;
-        padding-top         : 20px;
-        font-style          : normal;
-        font-family         : Inter;
-        line-height         : normal;
-        text-transform      : uppercase;
+        margin: 0;
+        font-size: 32px;
+        color: #FFC107;
+        font-weight: 500;
+        padding-top: 20px;
+        font-style: normal;
+        font-family: Inter;
+        line-height: normal;
+        text-transform: uppercase;
         text-decoration-line: underline;
     }
 
     .booking-header {
-        width          : 100%;
-        display        : flex;
-        margin-top     : 40px;
-        align-items    : center;
+        width: 100%;
+        display: flex;
+        margin-top: 40px;
+        align-items: center;
         justify-content: space-between;
 
         .booking-header-search {
-            width   : 500px;
+            width: 500px;
             position: relative;
 
             .search-input {
-                width        : 500px;
-                height       : 48px;
-                font-size    : 20px;
-                text-align   : center;
-                background   : #FFF;
+                width: 500px;
+                height: 48px;
+                font-size: 20px;
+                text-align: center;
+                background: #FFF;
                 border-radius: 30px;
-                border       : 1px solid #000;
+                border: 1px solid #000;
             }
 
             .search-input:focus-visible {
@@ -50,15 +50,15 @@
             }
 
             .search-icon {
-                top     : 8px;
-                right   : 8px;
-                height  : 36px;
+                top: 8px;
+                right: 8px;
+                height: 36px;
                 position: absolute;
             }
         }
 
         .btn {
-            display    : flex;
+            display: flex;
             font-weight: 500;
             align-items: center;
 
@@ -69,7 +69,7 @@
     }
 
     .booking-mana-body {
-        width     : 100%;
+        width: 100%;
         margin-top: 20px;
 
         .pagination {
@@ -77,18 +77,18 @@
         }
 
         .filter-section {
-            width        : 400px;
+            width: 400px;
             margin-bottom: 20px;
-            padding      : 10px 0;
-            display      : flex;
-            align-items  : center;
-            gap          : 10px;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             border-radius: 24px;
 
             .booking-date,
             .booking-time {
-                padding      : 5px 10px;
-                border       : 1px solid;
+                padding: 5px 10px;
+                border: 1px solid;
                 border-radius: 12px;
             }
         }
@@ -100,36 +100,84 @@
         table,
         th,
         td {
-            padding        : 10px 0;
-            border         : 1px solid #B9B9B9;
+            padding: 10px 0;
+            border: 1px solid #B9B9B9;
             border-collapse: collapse;
-            text-align     : center;
-            font-size      : 16px;
-            color          : #000;
-            font-weight    : 400;
+            text-align: center;
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
         }
 
         th {
             background-color: #EDFFFA;
-            color           : #FFC107;
+            color: #FFC107;
 
             .desc-icon,
             .asc-icon {
-                cursor     : pointer;
+                cursor: pointer;
                 margin-left: 5px;
-                width      : 24px;
-                height     : 24px;
+                width: 24px;
+                height: 24px;
             }
         }
 
         .detail-icon,
         .delete-icon {
-            cursor          : pointer;
+            cursor: pointer;
             background-color: white;
-            border          : none;
+            border: none;
 
             img {
                 height: 30px;
+            }
+        }
+    }
+}
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .booking-mana-container {
+        width: 100%;
+        padding: 0;
+
+        .booking-name-header {
+            font-size: 24px;
+        }
+
+        .booking-header {
+            margin-top: 8px;
+
+            .booking-header-search {
+                width: auto;
+
+                .search-input {
+                    max-width: 260px;
+                    text-align: start;
+                    padding-left: 8px;
+                }
+            }
+        }
+
+        .booking-mana-body {
+
+            .mana-body-table {
+                width: 100%;
+                overflow-y: hidden;
+
+                table {
+                    width: 100%;
+                    overflow: scroll;
+                    white-space: nowrap;
+                }
+    
+                td,
+                th {
+                    padding: 0 4px;
+                    overflow: hidden;
+                    text-align: center;
+                    white-space: nowrap;
+                }
             }
         }
     }
