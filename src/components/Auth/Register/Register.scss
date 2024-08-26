@@ -1,56 +1,57 @@
 .register-container {
-    height: 100%;
-    display: flex;
+    height          : 100%;
+    display         : flex;
     background-color: white;
 
     .register-infor {
-        width: 100%;
-        height: 100%;
-        flex: 1;
-        display: flex;
-        align-items: center;
+        width          : 100%;
+        height         : 100%;
+        flex           : 1;
+        display        : flex;
+        align-items    : center;
         justify-content: center;
 
         .register-form {
-            width: 100%;
-            height: auto;
-            border-radius: 20px;
-            border: 1px solid;
-            display: flex;
+            padding       : 20px;
+            height        : auto;
+            border-radius : 20px;
+            border        : 1px solid;
+            display       : flex;
             flex-direction: column;
-            align-items: center;
+            align-items   : center;
 
             .register-form-name {
-                width: 100%;
-                text-align: center;
-                margin: 20px 0 0;
-                font-size: 50px;
-                font-weight: 400;
-                text-transform: uppercase;
-                background: linear-gradient(90deg, #007BFF 4%, #7CA9D9 65.5%);
+                width                  : 100%;
+                text-align             : center;
+                margin                 : 20px 0 0;
+                font-size              : 50px;
+                font-weight            : 400;
+                text-transform         : uppercase;
+                background             : linear-gradient(90deg, #007BFF 4%, #7CA9D9 65.5%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
 
             .form-infor {
-                height: 40px;
-                width: 100%;
-                padding: 0 20px;
-                margin-top: 20px;
-                display: flex;
-                font-size: 20px;
-                font-weight: 500;
-                align-items: center;
-                position: relative;
+                height         : 40px;
+                width          : 100%;
+                padding        : 0 20px;
+                margin-top     : 20px;
+                display        : flex;
+                font-size      : 20px;
+                font-weight    : 500;
+                align-items    : center;
+                position       : relative;
                 justify-content: space-between;
+                gap            : 10px;
 
                 input,
                 select {
-                    width: 320px;
-                    height: 40px;
+                    width        : 320px;
+                    height       : 40px;
                     border-radius: 30px;
-                    text-align: center;
-                    border: 1px solid;
+                    text-align   : center;
+                    border       : 1px solid;
                 }
 
                 input:focus-visible {
@@ -58,33 +59,33 @@
                 }
 
                 .form-infor-icon {
-                    height: 24px;
+                    height  : 24px;
                     position: absolute;
-                    right: 24px;
+                    right   : 24px;
                 }
             }
 
             .register-form-btn {
-                width: 100%;
-                display: flex;
-                align-items: center;
+                width          : 100%;
+                display        : flex;
+                align-items    : center;
                 justify-content: space-evenly;
-                margin: 20px 0;
+                margin         : 20px 0;
             }
         }
     }
 
     .register-img {
-        width: 100%;
-        height: 100%;
-        flex: 1;
+        width   : 100%;
+        height  : 100%;
+        flex    : 1;
         position: relative;
 
         img {
-            height: 100%;
-            width: 100%;
+            height    : 100%;
+            width     : 100%;
             object-fit: cover;
-            position: absolute;
+            position  : absolute;
         }
     }
 }
@@ -104,7 +105,7 @@
             }
         }
 
-        .register-img{
+        .register-img {
             display: none;
         }
     }

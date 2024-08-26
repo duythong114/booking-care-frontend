@@ -11,6 +11,7 @@ import {
     editUserService,
     getAllByRole,
     uploadAvatarService,
+    searchUserService,
 } from '../../services/userServices'
 
 export const registerPatient = createAsyncThunk(
@@ -145,6 +146,18 @@ export const uploadAvatar = createAsyncThunk(
     }
 );
 
+export const searchUser = createAsyncThunk(
+    'user/searchUser',
+    async (searchPayload, { rejectWithValue }) => {
+        try {
+            const response = await searchUserService(searchPayload);
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Load state from localStorage
 const loadToken = localStorage.getItem('token');
 const loadUserInfoJSON = localStorage.getItem('userInfo');
@@ -200,6 +213,9 @@ const initialState = {
 
     // upload avatar
     isUploadingAvatar: false,
+
+    // search user
+    isSearchingUser: false,
 }
 
 export const userSlice = createSlice({
@@ -380,6 +396,22 @@ export const userSlice = createSlice({
             })
             .addCase(uploadAvatar.rejected, (state, action) => {
                 state.isUploadingAvatar = false
+                state.isUserError = action.error.message
+            })
+
+        // search user
+        builder
+            .addCase(searchUser.pending, (state, action) => {
+                state.isSearchingUser = true
+                state.isUserError = null
+            })
+            .addCase(searchUser.fulfilled, (state, action) => {
+                state.isSearchingUser = false
+                state.userList = action.payload?.data?.result
+                state.totalPage = action.payload?.data?.meta?.pages
+            })
+            .addCase(searchUser.rejected, (state, action) => {
+                state.isSearchingUser = false
                 state.isUserError = action.error.message
             })
     },

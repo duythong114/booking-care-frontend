@@ -32,17 +32,19 @@ const Login = () => {
         }
 
         const userData = { email, password };
-        const response = await dispatch(loginUser(userData));
 
-        if (response?.error?.message === "Rejected" && response?.payload) {
-            toast.error(response.payload);
-        }
-        if (response?.payload?.message) {
-            setEmail("")
-            setPassword("")
-            dispatch(getUserInfo())
-            navigate("/")
-            toast.success(response.payload.message);
+        try {
+            const response = await dispatch(loginUser(userData)).unwrap();
+            if (response?.message) {
+                setEmail("");
+                setPassword("");
+                dispatch(getUserInfo());
+                navigate("/");
+                toast.success(response.message);
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(error || "Failed to login");
         }
     };
 

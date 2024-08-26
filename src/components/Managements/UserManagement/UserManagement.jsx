@@ -3,16 +3,16 @@ import searchIcon from "../../../assets/icons/search.svg"
 import addIcon from "../../../assets/icons/Add.svg"
 import detailIcon from "../../../assets/icons/detail.svg"
 import deleteIcon from "../../../assets/icons/delete.svg"
+import ascIcon from "../../../assets/icons/asc.svg"
+import descIcon from "../../../assets/icons/desc.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllUser, deleteUser, getDetailUser, registerDoctor } from "../../../redux/slices/userSlice"
+import { getAllUser, deleteUser, getDetailUser, registerDoctor, searchUser } from "../../../redux/slices/userSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
-import { searchUser } from "../../../redux/slices/userSlice"
-import { getAllUserByRole } from "../../../redux/slices/userSlice"
 
 const UserManagement = () => {
     const initialState = {
@@ -36,9 +36,6 @@ const UserManagement = () => {
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
     const isRegistingDoctor = useSelector(state => state.user.isRegistingDoctor)
     const isSearchingUser = useSelector(state => state.user.isSearchingUser)
-    const isGettingAllUserByRole = useSelector(state => state.user.isGettingAllUserByRole)
-    
-    
     const [page, setPage] = useState(1)
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
@@ -46,14 +43,14 @@ const UserManagement = () => {
     const [userData, setUserData] = useState(null)
     const [doctorData, setDoctorData] = useState(initialState);
     const [showCreateDoctorModal, setShowCreateDoctorModal] = useState(false);
-    const [searchData, setSearchData] = useState(null)
-    const [sortRole, setSortRole] = useState('All')
+    const [searchData, setSearchData] = useState("")
+    const [sortOrder, setSortOrder] = useState("asc");
 
     useEffect(() => {
-        let pagination = { page, size }
+        let pagination = { page, size, sortOrder }
         dispatch(getAllUser(pagination))
         // eslint-disable-next-line
-    }, [page])
+    }, [page, sortOrder])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -70,20 +67,20 @@ const UserManagement = () => {
     }
 
     const handleConfirmDelete = async () => {
-        const userId = userData.id
+        const userId = userData.id;
         if (userId) {
-            const response = await dispatch(deleteUser(userId))
-            if (response?.error?.message === "Rejected" && response?.payload) {
-                toast.error(response.payload);
-            }
-            if (response?.payload?.message) {
-                let pagination = { page, size }
-                dispatch(getAllUser(pagination))
-                toast.success(response.payload.message);
-                handleToggleDeleteModal()
+            try {
+                const response = await dispatch(deleteUser(userId)).unwrap();
+                if (response?.message) {
+                    toast.success(response.message);
+                    handleToggleDeleteModal();
+                    dispatch(getAllUser({ page, size }));
+                }
+            } catch (error) {
+                toast.error(error || "Failed to delete user");
             }
         }
-    }
+    };
 
     const handleDetailBtn = (user) => {
         const userId = user.id
@@ -126,71 +123,51 @@ const UserManagement = () => {
             return;
         }
 
-        const response = await dispatch(registerDoctor(doctorData));
-        if (response?.error?.message === "Rejected" && response?.payload) {
-            toast.error(response.payload);
-        }
-        if (response?.payload?.message) {
-            toast.success(response.payload.message);
-            handleToggleCreateModal()
-            let pagination = { page, size };
-            dispatch(getAllUser(pagination));
+        try {
+            const response = await dispatch(registerDoctor(doctorData)).unwrap();
+            if (response?.message) {
+                handleToggleCreateModal();
+                dispatch(getAllUser({ page, size }));
+                toast.success(response.message);
+                setDoctorData(initialState)
+            }
+        } catch (error) {
+            toast.error(error || "Failed to create doctor");
         }
     }
 
     const handleKeyPress = (e) => {
-        if(e.key === 'Enter'){
+        if (e.key === 'Enter') {
             handleSearchUser()
         }
     }
 
     const handleSearchUser = () => {
-        let pagination = { page, size, searchData };
-
-        if(searchData) {
-            dispatch(searchUser( pagination))
+        let searchPayload = { page, size, searchData }
+        let pagination = { page, size }
+        if (searchData) {
+            dispatch(searchUser(searchPayload))
         } else {
-            let pagination = { page, size }
             dispatch(getAllUser(pagination))
         }
     }
 
-    const handleSortRole = (e) => {
-        const selectedRole = e.target.value;
-        let newSortRole;
-    
-        if (selectedRole === "All") {
-            newSortRole = '1';
-        } else if (selectedRole === "Doctor") {
-            newSortRole = '2';
-        } else {
-            newSortRole = '3';
-        }
-        
-        setSortRole(selectedRole);
-    
-        let pagination = { page, size, roleId: newSortRole };
-    
-        if (selectedRole === "All") {
-            let pagination = { page, size }
-            dispatch(getAllUser(pagination));
-        } else {
-            dispatch(getAllUserByRole(pagination));
-        }
-    };
+    const toggleOrderSort = () => {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    }
 
     return (
         <div className="user-mana-container">
             <h1 className="user-name-header">user management</h1>
             <div className="user-header">
                 <div className="user-header-search">
-                    <input 
-                        className="search-input" 
-                        type="text" 
-                        onChange={(e)=>setSearchData(e.target.value)}
-                        onKeyDown={(e)=>handleKeyPress(e)}
+                    <input
+                        className="search-input"
+                        type="text"
+                        onChange={(e) => setSearchData(e.target.value)}
+                        onKeyDown={(e) => handleKeyPress(e)}
                         value={searchData}
-                        placeholder="Enter search information" 
+                        placeholder="Enter Username"
                     />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
@@ -205,25 +182,19 @@ const UserManagement = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th onClick={() => toggleOrderSort()}>
+                                ID
+                                {sortOrder === "asc"
+                                    ? <img className="asc-icon" src={ascIcon} alt="asc" />
+                                    : <img className="desc-icon" src={descIcon} alt="desc" />}
+                            </th>
                             <th>Full Name</th>
                             <th>Email</th>
-                            <th>
-                                Role
-                                <select 
-                                    onChange={handleSortRole}
-                                    className="filter-role"
-                                >
-                                    <option value={sortRole}>Select</option>
-                                    <option >All</option>
-                                    <option >Doctor</option>
-                                    <option >Patient</option>
-                                </select>
-                            </th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor || isSearchingUser || isGettingAllUserByRole)
+                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor || isSearchingUser)
                         ?
                         <tbody>
                             <tr>

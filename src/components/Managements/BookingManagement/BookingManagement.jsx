@@ -3,10 +3,20 @@ import searchIcon from "../../../assets/icons/search.svg"
 import addIcon from "../../../assets/icons/Add.svg"
 import detailIcon from "../../../assets/icons/detail.svg"
 import deleteIcon from "../../../assets/icons/delete.svg"
+import ascIcon from "../../../assets/icons/asc.svg"
+import descIcon from "../../../assets/icons/desc.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllBookings, deleteBooking, getDetailBooking, searchPatient, getBookingDate, getBookingTime } from "../../../redux/slices/bookingSlice"
+import {
+    getAllBookings,
+    deleteBooking,
+    getDetailBooking,
+    getAvailableBooking,
+    createBooking,
+    searchBooking,
+    getBookingByDate,
+} from "../../../redux/slices/bookingSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
@@ -19,22 +29,36 @@ const BookingManagement = () => {
     const totalPage = useSelector(state => state.booking.totalPage)
     const isGettingAllBookings = useSelector(state => state.booking.isGettingAllBookings)
     const isDeletingBooking = useSelector(state => state.booking.isDeletingBooking)
-    const isSearchingPatient = useSelector(state => state.booking.isSearchingPatient)
-
+    const isSearchingBooking = useSelector(state => state.booking.isSearchingBooking)
     const [page, setPage] = useState(1)
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
-    const [bookingData, setBookingData] = useState(null)
-    const [searchData, setSearchData] = useState(null)
-    const [date, setDate] = useState(null);
-    const [time, setTime] = useState(null)
+    const [bookingData, setBookingData] = useState("")
+
+    // state for modal booking
+    const isGettingAvailable = useSelector(state => state.booking.isGettingAvailable)
+    const isCreatingBooking = useSelector(state => state.booking.isCreatingBooking)
+    const availableBookingList = useSelector(state => state.booking.availableBookingList)
+    const isGettingBookingByDate = useSelector(state => state.booking.isGettingBookingByDate)
+    const [morningAppointments, setMorningAppointments] = useState("")
+    const [afternoonAppointments, setAfternoonAppointments] = useState("")
+    const [showBookingModal, setShowBookingModal] = useState(false)
+    const initialState = {
+        appointmentDate: "",
+        appointmentTime: "",
+        patientId: ""
+    }
+    const [selectedAppointment, setSelectedAppointment] = useState(initialState);
+    const [searchData, setSearchData] = useState("")
+    const [sortOrder, setSortOrder] = useState("asc");
+    const [date, setDate] = useState("");
 
     useEffect(() => {
-        let pagination = { page, size }
+        let pagination = { page, size, sortOrder }
         dispatch(getAllBookings(pagination))
         // eslint-disable-next-line
-    }, [page])
+    }, [page, sortOrder])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -51,20 +75,20 @@ const BookingManagement = () => {
     }
 
     const handleConfirmDelete = async () => {
-        const bookingId = bookingData.id
+        const bookingId = bookingData.id;
         if (bookingId) {
-            const response = await dispatch(deleteBooking(bookingId))
-            if (response?.error?.message === "Rejected" && response?.payload) {
-                toast.error(response.payload);
-            }
-            if (response?.payload?.message) {
-                let pagination = { page, size }
-                dispatch(getAllBookings(pagination))
-                toast.success(response.payload.message);
-                handleToggleDeleteModal()
+            try {
+                const response = await dispatch(deleteBooking(bookingId)).unwrap();
+                if (response?.message) {
+                    dispatch(getAllBookings({ page, size }));
+                    handleToggleDeleteModal();
+                    toast.success(response.message);
+                }
+            } catch (error) {
+                toast.error(error || "Failed to delete the booking");
             }
         }
-    }
+    };
 
     const handleDetailBtn = (booking) => {
         const bookingId = booking.id
@@ -75,87 +99,125 @@ const BookingManagement = () => {
         }
     }
 
+    useEffect(() => {
+        if (availableBookingList) {
+            setMorningAppointments(availableBookingList.filter(appointment => appointment.appointmentTime === 'Morning'));
+            setAfternoonAppointments(availableBookingList.filter(appointment => appointment.appointmentTime === 'Afternoon'));
+        }
+    }, [availableBookingList])
+
+    const handleToggleBookingModal = () => {
+        setShowBookingModal(!showBookingModal)
+    }
+
+    const handleBookingBtn = () => {
+        dispatch(getAvailableBooking())
+        handleToggleBookingModal()
+    }
+
+    const handleAppointmentChange = (appointmentDate, appointmentTime) => {
+        setSelectedAppointment({
+            ...selectedAppointment,
+            appointmentDate,
+            appointmentTime
+        })
+    };
+
+    const handleBooking = async () => {
+        if (selectedAppointment.appointmentDate && selectedAppointment.appointmentTime && selectedAppointment.patientId) {
+            try {
+                const response = await dispatch(createBooking(selectedAppointment)).unwrap();
+                if (response?.message) {
+                    handleToggleBookingModal();
+                    toast.success(response.message);
+                    setSelectedAppointment(initialState)
+                }
+            } catch (error) {
+                if (error) {
+                    toast.error(error || "Booking failed.");
+                } else {
+                    toast.error("An unexpected error occurred.");
+                }
+            }
+        } else {
+            toast.error("Please select date and time.");
+        }
+    }
+
     const handleKeyPress = (e) => {
-        if(e.key === 'Enter'){
-            handleSearchPatient()
+        if (e.key === 'Enter') {
+            handleSearchBooking()
         }
     }
 
-    const handleSearchPatient = () => {
-        let pagination = { page, size, searchData };
+    const handleSearchBooking = () => {
+        let searchPayload = { page, size, searchData };
+        let pagination = { page, size }
 
-        if(searchData) {
-            dispatch(searchPatient(pagination))
+        if (searchData) {
+            dispatch(searchBooking(searchPayload))
         } else {
-            let pagination = { page, size }
             dispatch(getAllBookings(pagination))
         }
     }
 
-    const handleChange = (e) => {
-        const selectedDate =e.target.value
-        setDate(selectedDate);
-        handleGetByDate(selectedDate);
-      };
+    const toggleOrderSort = () => {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    }
 
-    const handleGetByDate = (selectedDate) => {
-        let pagination = { page, size, date: selectedDate };
-
-        if (selectedDate === ''){
-            let pagination = { page, size }
-            dispatch(getAllBookings(pagination))
+    useEffect(() => {
+        if (date) {
+            let filterPayload = { page, size, date };
+            dispatch(getBookingByDate(filterPayload));
         } else {
-            dispatch(getBookingDate(pagination))
+            dispatch(getAllBookings({ page, size, sortOrder }));
         }
-    };
+        // eslint-disable-next-line
+    }, [date]);
 
-    const handleGetByTime = (e) => {
-        const selectedTime = e.target.value;
+    if (isCreatingBooking || isGettingAvailable) {
+        return <LoadingSpinner />
+    }
 
-        setTime(selectedTime);
-    
-        let pagination = { page, size, time: selectedTime};
-    
-        if (selectedTime === "All") {
-            let pagination = { page, size }
-            dispatch(getAllBookings(pagination));
-        } else {
-            dispatch(getBookingTime(pagination));
-        }   
-    };
-    
     return (
         <div className="booking-mana-container">
             <h1 className="booking-name-header">booking management</h1>
             <div className="booking-header">
                 <div className="booking-header-search">
-                    <input 
-                        className="search-input" 
-                        type="text" 
+                    <input
+                        className="search-input"
+                        type="text"
                         value={searchData}
-                        onKeyDown={(e)=>handleKeyPress(e)}
-                        onChange={(e)=>setSearchData(e.target.value)}
-                        placeholder="Enter search information"
+                        onKeyDown={(e) => handleKeyPress(e)}
+                        onChange={(e) => setSearchData(e.target.value)}
+                        placeholder="Enter Patient Name"
                     />
                     <img className="search-icon" src={searchIcon} alt="Search" />
                 </div>
-                <button className="btn btn-primary">
+                <button
+                    onClick={() => handleBookingBtn()}
+                    className="btn btn-primary">
                     Booking
                     <img src={addIcon} alt="Add" />
                 </button>
             </div>
             <div className="booking-mana-body">
-                <input 
+                <input
                     className="booking-date"
-                    type="date" 
-                    placeholder="yyyy/mm/dd" 
-                    value={date} 
-                    onChange={handleChange}
+                    type="date"
+                    placeholder="yyyy-mm-dd"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
                 />
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th onClick={() => toggleOrderSort()}>
+                                ID
+                                {sortOrder === "asc"
+                                    ? <img className="asc-icon" src={ascIcon} alt="asc" />
+                                    : <img className="desc-icon" src={descIcon} alt="desc" />}
+                            </th>
                             <th>Patient</th>
                             <th>Doctor</th>
                             <th>Date</th>
@@ -175,7 +237,7 @@ const BookingManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllBookings || isDeletingBooking || isSearchingPatient)
+                    {(isGettingAllBookings || isDeletingBooking || isSearchingBooking || isGettingBookingByDate)
                         ?
                         <tbody>
                             <tr>
@@ -250,6 +312,45 @@ const BookingManagement = () => {
                 body="Are you sure to delete this booking?"
                 handlePrimaryBtnClick={handleConfirmDelete}
                 primaryBtnText="Delete"
+            />
+
+            {/* Modal for booking an appointment */}
+            <ModalComponent
+                show={showBookingModal}
+                size="lg"
+                handleClose={handleToggleBookingModal}
+                title="Booking An Appointment"
+                body={
+                    <div className="booking-container">
+                        <label>PatientId:</label>
+                        <input
+                            type="text"
+                            placeholder="Enter PatientId"
+                            value={selectedAppointment.patientId}
+                            onChange={(e) => setSelectedAppointment({ ...selectedAppointment, patientId: e.target.value })} />
+                        <label>Morning</label>
+                        <select onChange={(e) => handleAppointmentChange(e.target.value, 'Morning')}>
+                            <option value="">Select Morning Appointment</option>
+                            {morningAppointments && morningAppointments.map((appointment, index) => (
+                                <option key={index} value={appointment.appointmentDate}>
+                                    {appointment.appointmentDate}
+                                </option>
+                            ))}
+                        </select>
+
+                        <label>Afternoon</label>
+                        <select onChange={(e) => handleAppointmentChange(e.target.value, 'Afternoon')}>
+                            <option value="">Select Afternoon Appointment</option>
+                            {afternoonAppointments && afternoonAppointments.map((appointment, index) => (
+                                <option key={index} value={appointment.appointmentDate}>
+                                    {appointment.appointmentDate}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                }
+                handlePrimaryBtnClick={handleBooking}
+                primaryBtnText="Booking"
             />
         </div>
     )
