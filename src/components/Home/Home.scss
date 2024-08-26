@@ -1,27 +1,28 @@
 .home-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    padding: 0 40px;
-    position: relative;
-    align-items: center;
-    flex-direction: column;
+    width           : 100%;
+    height          : 100%;
+    display         : flex;
+    padding         : 0 40px;
+    position        : relative;
+    align-items     : center;
+    flex-direction  : column;
+    background-size : cover;
     background-image: url(../../assets/images/homebg.jpg);
 
     .home-body-header {
         width: 100%;
 
         .body-header-name {
-            width: 100%;
-            display: flex;
-            margin-top: 20px;
+            width          : 100%;
+            display        : flex;
+            margin-top     : 20px;
             justify-content: flex-end;
-    
+
             .btn {
-                display: flex;
+                display    : flex;
                 font-weight: 500;
                 align-items: center;
-    
+
                 img {
                     margin-left: 4px;
                 }
@@ -30,36 +31,36 @@
     }
 
     .home-body-infor {
-        display: flex;
-        width: 100%;
-        margin-top: 8px;
-        align-items: center;
+        display       : flex;
+        width         : 100%;
+        margin-top    : 8px;
+        align-items   : center;
         flex-direction: column;
 
         .body-panel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 300px; 
-            height: 300px;
-            border: 2px solid #ccc;
-            border-radius: 50%;
+            display         : flex;
+            justify-content : center;
+            align-items     : center;
+            width           : 300px;
+            height          : 300px;
+            border          : 2px solid #ccc;
+            border-radius   : 50%;
             background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow      : 0 4px 8px rgba(0, 0, 0, 0.1);
 
             .body-panel-text {
                 text-align: center;
-                margin: 0;
-                padding: 20px;
-                font-size: 1.2em; 
+                margin    : 0;
+                padding   : 20px;
+                font-size : 1.2em;
             }
-        }   
-          
+        }
+
         .panel-item {
-            width: 100%;
-            height: 160px;
-            display: flex;
-            align-items: center;
+            width          : 100%;
+            height         : 160px;
+            display        : flex;
+            align-items    : center;
             justify-content: space-evenly;
 
             img {
@@ -76,6 +77,21 @@
 @media screen and (min-width: 992px) and (max-width: 1199px) {}
 
 /* Màn hình từ 768px đến 991px */
-@media screen and (min-width: 768px) and (max-width: 991px) {
-    
+@media screen and (min-width: 768px) and (max-width: 991px) {}
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .home-container {
+        width : 100%;
+        height: 100vh;
+
+        .home-body-infor {
+            // width: 100%;
+            // height: auto;
+
+            .panel-item {
+                display: none;
+            }
+        }
+    }
 }

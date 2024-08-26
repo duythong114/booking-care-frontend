@@ -163,59 +163,61 @@ const UserManagement = () => {
                 </button>
             </div>
             <div className="user-mana-body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th onClick={() => toggleOrderSort()}>
-                                ID
-                                {sortOrder === "asc"
-                                    ? <img className="asc-icon" src={ascIcon} alt="asc" />
-                                    : <img className="desc-icon" src={descIcon} alt="desc" />}
-                            </th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor)
-                        ?
-                        <tbody>
+                <div className="user-mana-body">
+                    <table>
+                        <thead>
                             <tr>
-                                <td colSpan={5}><LoadingSpinner /></td>
+                                <th onClick={() => toggleOrderSort()}>
+                                    ID
+                                    {sortOrder === "asc"
+                                        ? <img className="asc-icon" src={ascIcon} alt="asc" />
+                                        : <img className="desc-icon" src={descIcon} alt="desc" />}
+                                </th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Action</th>
                             </tr>
-                        </tbody>
-                        :
-                        <tbody>
-                            {userList && userList.length > 0
-                                ?
-                                (userList.map((user) => (
-                                    <tr key={user?.id}>
-                                        <td>{user?.id}</td>
-                                        <td>{user?.fullName}</td>
-                                        <td>{user?.email}</td>
-                                        <td>{roleMap[user?.roleId] || "unknow"}</td>
-                                        <td>
-                                            <button
-                                                onClick={() => handleDetailBtn(user)}
-                                                className="detail-icon">
-                                                <img src={detailIcon} alt="detail" />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDeleteBtn(user)}
-                                                className="delete-icon">
-                                                <img src={deleteIcon} alt="Delete" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )))
-                                :
-                                (<tr>
-                                    <td colSpan="5">No users found</td>
-                                </tr>)}
-                        </tbody>
-                    }
-                </table>
+                        </thead>
+                        {(isGettingAllUsers || isDeletingUser || isRegistingDoctor)
+                            ?
+                            <tbody>
+                                <tr>
+                                    <td colSpan={5}><LoadingSpinner /></td>
+                                </tr>
+                            </tbody>
+                            :
+                            <tbody>
+                                {userList && userList.length > 0
+                                    ?
+                                    (userList.map((user) => (
+                                        <tr key={user?.id}>
+                                            <td>{user?.id}</td>
+                                            <td>{user?.fullName}</td>
+                                            <td>{user?.email}</td>
+                                            <td>{roleMap[user?.roleId] || "unknow"}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() => handleDetailBtn(user)}
+                                                    className="detail-icon">
+                                                    <img src={detailIcon} alt="detail" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteBtn(user)}
+                                                    className="delete-icon">
+                                                    <img src={deleteIcon} alt="Delete" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )))
+                                    :
+                                    (<tr>
+                                        <td colSpan="5">No users found</td>
+                                    </tr>)}
+                            </tbody>
+                        }
+                    </table>
+                </div>
 
                 {/* React-paginate */}
                 {

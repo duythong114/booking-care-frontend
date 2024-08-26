@@ -30,47 +30,49 @@ const MedicalHistory = () => {
             <h1 className="medical-history-header">Medical History</h1>
 
             <div className="medical-history-body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Docter</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                            <th>Diagnosis</th>
-                            <th>Traeatment</th>
-                        </tr>
-                    </thead>
-                    {isGettingMedicalHistory
-                        ?
-                        <tbody>
+                <div className="history-body-table">
+                    <table>
+                        <thead>
                             <tr>
-                                <td colSpan={7}><LoadingSpinner /></td>
+                                <th>ID</th>
+                                <th>Docter</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Diagnosis</th>
+                                <th>Traeatment</th>
                             </tr>
-                        </tbody>
-                        :
-                        <tbody>
-                            {historyList && historyList.length > 0
-                                ?
-                                (historyList.map((history) => (
-                                    <tr key={history?.id}>
-                                        <td>{history?.id}</td>
-                                        <td>{history?.doctorName}</td>
-                                        <td>{history?.appointmentDate}</td>
-                                        <td>{history?.appointmentTime}</td>
-                                        <td>{history?.appointmentStatus}</td>
-                                        <td>{history?.diagnosis}</td>
-                                        <td>{history?.treatment}</td>
-                                    </tr>
-                                )))
-                                :
-                                (<tr>
-                                    <td colSpan="7">No history found</td>
-                                </tr>)}
-                        </tbody>
-                    }
-                </table>
+                        </thead>
+                        {isGettingMedicalHistory
+                            ?
+                            <tbody>
+                                <tr>
+                                    <td colSpan={7}><LoadingSpinner /></td>
+                                </tr>
+                            </tbody>
+                            :
+                            <tbody>
+                                {historyList && historyList.length > 0
+                                    ?
+                                    (historyList.map((history) => (
+                                        <tr key={history?.id}>
+                                            <td>{history?.id}</td>
+                                            <td>{history?.doctorName}</td>
+                                            <td>{history?.appointmentDate}</td>
+                                            <td>{history?.appointmentTime}</td>
+                                            <td>{history?.appointmentStatus}</td>
+                                            <td>{history?.diagnosis}</td>
+                                            <td>{history?.treatment}</td>
+                                        </tr>
+                                    )))
+                                    :
+                                    (<tr>
+                                        <td colSpan="7">No history found</td>
+                                    </tr>)}
+                            </tbody>
+                        }
+                    </table>
+                </div>
 
                 {/* React-paginate */}
                 {

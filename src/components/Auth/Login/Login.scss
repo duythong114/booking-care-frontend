@@ -1,62 +1,62 @@
 .login-container {
-    height: 100%;
-    display: flex;
+    height          : 100%;
+    display         : flex;
     background-color: white;
 
     .login-infor {
-        width: 100%;
-        height: 100%;
-        flex: 1;
-        display: flex;
-        align-items: center;
+        width          : 100%;
+        height         : 100%;
+        flex           : 1;
+        display        : flex;
+        align-items    : center;
         justify-content: center;
 
         .login-form {
-            width: auto;
-            height: auto;
-            border-radius: 20px;
-            border: 1px solid;
-            display: flex;
+            width         : auto;
+            height        : auto;
+            border-radius : 20px;
+            border        : 1px solid;
+            display       : flex;
             flex-direction: column;
-            align-items: center;
+            align-items   : center;
 
             .login-form-name {
-                margin: 32px 0 0;
-                font-size: 50px;
-                font-weight: 400;
-                text-transform: uppercase;
-                background: linear-gradient(90deg, #007BFF 4%, #7CA9D9 65.5%);
+                margin                 : 32px 0 0;
+                font-size              : 50px;
+                font-weight            : 400;
+                text-transform         : uppercase;
+                background             : linear-gradient(90deg, #007BFF 4%, #7CA9D9 65.5%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
 
             span {
-                font-size: 20px;
-                color: #7CA9D9;
+                font-size  : 20px;
+                color      : #7CA9D9;
                 font-weight: 300;
             }
 
             .login-form-email,
             .login-form-password {
-                height: 60px;
-                width: 100%;
-                gap: 16px;
-                padding: 0 10px;
-                margin-top: 40px;
-                display: flex;
-                font-size: 20px;
-                font-weight: 500;
-                align-items: center;
+                height         : 60px;
+                width          : 100%;
+                gap            : 16px;
+                padding        : 0 10px;
+                margin-top     : 40px;
+                display        : flex;
+                font-size      : 20px;
+                font-weight    : 500;
+                align-items    : center;
                 justify-content: space-between;
-                position: relative;
+                position       : relative;
 
 
                 input {
-                    width: 320px;
-                    height: 50px;
+                    width        : 320px;
+                    height       : 50px;
                     border-radius: 30px;
-                    text-align: center;
-                    border: 1px solid;
+                    text-align   : center;
+                    border       : 1px solid;
                 }
 
                 input:focus-visible {
@@ -64,33 +64,33 @@
                 }
 
                 .form-pass-icon {
-                    height: 24px;
+                    height  : 24px;
                     position: absolute;
-                    right: 12px;
+                    right   : 12px;
                 }
             }
 
             .login-form-btn {
-                width: 100%;
-                display: flex;
-                align-items: center;
+                width          : 100%;
+                display        : flex;
+                align-items    : center;
                 justify-content: space-evenly;
-                margin: 40px 0;
+                margin         : 40px 0;
             }
         }
     }
 
     .login-img {
-        width: 100%;
-        height: 100%;
-        flex: 1;
+        width   : 100%;
+        height  : 100%;
+        flex    : 1;
         position: relative;
 
         img {
-            height: 100%;
-            width: 100%;
+            height    : 100%;
+            width     : 100%;
             object-fit: cover;
-            position: absolute;
+            position  : absolute;
         }
     }
 }
@@ -104,6 +104,39 @@
 /* Màn hình từ 768px đến 991px */
 @media screen and (min-width: 768px) and (max-width: 991px) {
     .login-container {
+
+        .login-img {
+            display: none;
+        }
+    }
+}
+
+/* Màn hình đến 768px */
+@media screen and (max-width: 767px) {
+    .login-container {
+
+        .login-infor {
+            .login-form {
+                .login-form-name {
+                    font-size : 24px;
+                    margin-top: 12px;
+                }
+
+                span {
+                    font-size: 16px;
+                }
+
+                .login-form-email,
+                .login-form-password {
+                    justify-content: center;
+
+                    label {
+                        display: none;
+                    }
+                }
+            }
+
+        }
 
         .login-img {
             display: none;

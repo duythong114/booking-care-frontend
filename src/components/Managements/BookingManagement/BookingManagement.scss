@@ -134,3 +134,51 @@
         }
     }
 }
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .booking-mana-container {
+        width  : 100%;
+        padding: 0;
+
+        .booking-name-header {
+            font-size: 24px;
+        }
+
+        .booking-header {
+            margin-top: 8px;
+
+            .booking-header-search {
+                width: auto;
+
+                .search-input {
+                    max-width   : 260px;
+                    text-align  : start;
+                    padding-left: 8px;
+                }
+            }
+        }
+
+        .booking-mana-body {
+
+            .mana-body-table {
+                width     : 100%;
+                overflow-y: hidden;
+
+                table {
+                    width      : 100%;
+                    overflow   : scroll;
+                    white-space: nowrap;
+                }
+
+                td,
+                th {
+                    padding    : 0 4px;
+                    overflow   : hidden;
+                    text-align : center;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}

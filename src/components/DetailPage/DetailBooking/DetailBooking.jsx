@@ -56,20 +56,7 @@ const DetailBooking = () => {
         })
     };
 
-    const validateInputs = () => {
-        const requiredFields = ['appointmentStatus', 'diagnosis', 'treatment'];
-        for (const field of requiredFields) {
-            if (!updateData[field]?.trim()) {
-                toast.error(`Please fill out the ${field} field.`);
-                return false;
-            }
-        }
-        return true;
-    }
-
     const handleEdit = async () => {
-        if (!validateInputs()) return;
-
         try {
             const response = await dispatch(updateBooking(updateData)).unwrap();
 
@@ -141,7 +128,7 @@ const DetailBooking = () => {
                 show={showEditModal}
                 size="lg"
                 handleClose={handleToggleEditModal}
-                title="Edit Profile"
+                title="Update Booking"
                 body={
                     <div className="edit-booking-container">
                         <label>AppointmentStatus:</label>

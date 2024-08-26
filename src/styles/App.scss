@@ -4,17 +4,17 @@
         "header header"
         "sidebar main";
     grid-template-columns: auto 1fr;
-    grid-template-rows: 80px 1fr;
-    height: 100vh;
+    grid-template-rows   : 80px 1fr;
+    height               : 100vh;
 
     .header-content {
-        grid-area: header;
+        grid-area       : header;
         background-color: #edfffa;
-        color: #fff;
+        color           : #fff;
     }
 
     .sidebar-content {
-        grid-area: sidebar;
+        grid-area       : sidebar;
         background-color: #92d7ee;
     }
 
@@ -23,9 +23,9 @@
     }
 
     .full-content {
-        grid-area: main;
+        grid-area  : main;
         grid-column: 1 / -1;
-        grid-row: 1 / -1;
+        grid-row   : 1 / -1;
     }
 }
 
@@ -36,9 +36,7 @@
 
 /* Màn hình từ 992px đến 1199px */
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-    .layout-container {
-        
-    }
+    .layout-container {}
 }
 
 /* Màn hình từ 768px đến 991px */
@@ -50,6 +48,24 @@
             "sidebar"
             "main";
         grid-template-columns: 1fr;
-        grid-template-rows: 80px auto 1fr;
+        grid-template-rows   : 80px auto 1fr;
+    }
+}
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .layout-container {
+        display: grid;
+        grid-template-areas:
+            "header"
+            "sidebar"
+            "main";
+        grid-template-columns: 1fr;
+        grid-template-rows   : 80px auto 1fr;
+
+        .main-content {
+            width   : 100vw;
+            overflow: hidden;
+        }
     }
 }

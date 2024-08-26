@@ -56,3 +56,39 @@
         }
     }
 }
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .medical-history-container {
+        padding: 0;
+
+        .medical-history-header {
+            padding-top: 12px;
+            font-size  : 24px;
+        }
+
+        .medical-history-body {
+            margin: 0;
+
+            .history-body-table {
+                width     : 100%;
+                margin    : 8px 0;
+                overflow-y: hidden;
+
+                table {
+                    width      : 100%;
+                    overflow   : scroll;
+                    white-space: nowrap;
+                }
+
+                td,
+                th {
+                    padding    : 0 4px;
+                    overflow   : hidden;
+                    text-align : center;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}

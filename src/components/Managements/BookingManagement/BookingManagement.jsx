@@ -190,63 +190,65 @@ const BookingManagement = () => {
                         <option value="Afternoon">Afternoon</option>
                     </select>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th onClick={() => toggleOrderSort()}>
-                                ID
-                                {sortOrder === "asc"
-                                    ? <img className="asc-icon" src={ascIcon} alt="asc" />
-                                    : <img className="desc-icon" src={descIcon} alt="desc" />}
-                            </th>
-                            <th>Patient</th>
-                            <th>Doctor</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    {(isGettingAllBookings || isDeletingBooking)
-                        ?
-                        <tbody>
+                <div className="mana-body-table">
+                    <table>
+                        <thead>
                             <tr>
-                                <td colSpan={7}><LoadingSpinner /></td>
+                                <th onClick={() => toggleOrderSort()}>
+                                    ID
+                                    {sortOrder === "asc"
+                                        ? <img className="asc-icon" src={ascIcon} alt="asc" />
+                                        : <img className="desc-icon" src={descIcon} alt="desc" />}
+                                </th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
-                        </tbody>
-                        :
-                        <tbody>
-                            {bookingList && bookingList.length > 0
-                                ?
-                                (bookingList.map((booking) => (
-                                    <tr key={booking?.id}>
-                                        <td>{booking?.id}</td>
-                                        <td>{booking?.patientName}</td>
-                                        <td>{booking?.doctorName}</td>
-                                        <td>{booking?.appointmentDate}</td>
-                                        <td>{booking?.appointmentTime}</td>
-                                        <td>{booking?.appointmentStatus}</td>
-                                        <td>
-                                            <button
-                                                onClick={() => handleDetailBtn(booking)}
-                                                className="detail-icon">
-                                                <img src={detailIcon} alt="detail" />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDeleteBtn(booking)}
-                                                className="delete-icon">
-                                                <img src={deleteIcon} alt="Delete" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )))
-                                :
-                                (<tr>
-                                    <td colSpan="5">No bookings found</td>
-                                </tr>)}
-                        </tbody>
-                    }
-                </table>
+                        </thead>
+                        {(isGettingAllBookings || isDeletingBooking)
+                            ?
+                            <tbody>
+                                <tr>
+                                    <td colSpan={7}><LoadingSpinner /></td>
+                                </tr>
+                            </tbody>
+                            :
+                            <tbody>
+                                {bookingList && bookingList.length > 0
+                                    ?
+                                    (bookingList.map((booking) => (
+                                        <tr key={booking?.id}>
+                                            <td>{booking?.id}</td>
+                                            <td>{booking?.patientName}</td>
+                                            <td>{booking?.doctorName}</td>
+                                            <td>{booking?.appointmentDate}</td>
+                                            <td>{booking?.appointmentTime}</td>
+                                            <td>{booking?.appointmentStatus}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() => handleDetailBtn(booking)}
+                                                    className="detail-icon">
+                                                    <img src={detailIcon} alt="detail" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteBtn(booking)}
+                                                    className="delete-icon">
+                                                    <img src={deleteIcon} alt="Delete" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )))
+                                    :
+                                    (<tr>
+                                        <td colSpan="5">No bookings found</td>
+                                    </tr>)}
+                            </tbody>
+                        }
+                    </table>
+                </div>
 
                 {/* React-paginate */}
                 {

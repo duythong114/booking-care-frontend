@@ -72,3 +72,36 @@
         }
     }
 }
+
+/* Màn hình đến 767px */
+@media screen and (max-width: 767px) {
+    .profile-container {
+
+        .profile-name {
+            font-size  : 24px;
+            padding-top: 12px;
+        }
+
+        .profile-name-infor {
+            margin-top     : 0;
+            justify-content: center;
+
+            .infor-avatar {
+                max-width: 300px;
+
+                .infor-img-avatar {
+                    width : 120px;
+                    height: 120px;
+                }
+
+                .infor-img-edit {
+                    height: 24px;
+                }
+            }
+
+            .info-fields {
+                max-width: 300px;
+            }
+        }
+    }
+}
