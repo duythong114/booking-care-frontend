@@ -15,7 +15,6 @@ import {
     getAvailableBooking,
     createBooking,
     searchBooking,
-    getBookingByDate,
 } from "../../../redux/slices/bookingSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
@@ -35,12 +34,9 @@ const BookingManagement = () => {
     const [size, setSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
     const [bookingData, setBookingData] = useState("")
-
-    // state for modal booking
     const isGettingAvailable = useSelector(state => state.booking.isGettingAvailable)
     const isCreatingBooking = useSelector(state => state.booking.isCreatingBooking)
     const availableBookingList = useSelector(state => state.booking.availableBookingList)
-    const isGettingBookingByDate = useSelector(state => state.booking.isGettingBookingByDate)
     const [morningAppointments, setMorningAppointments] = useState("")
     const [afternoonAppointments, setAfternoonAppointments] = useState("")
     const [showBookingModal, setShowBookingModal] = useState(false)
@@ -53,12 +49,14 @@ const BookingManagement = () => {
     const [searchData, setSearchData] = useState("")
     const [sortOrder, setSortOrder] = useState("asc");
     const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
 
     useEffect(() => {
-        let pagination = { page, size, sortOrder }
-        dispatch(getAllBookings(pagination))
+        let bookingPayload = { page, size, sortOrder, date, time };
+        dispatch(getAllBookings(bookingPayload));
+
         // eslint-disable-next-line
-    }, [page, sortOrder])
+    }, [date, time, sortOrder, page]);
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -165,16 +163,6 @@ const BookingManagement = () => {
         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     }
 
-    useEffect(() => {
-        if (date) {
-            let filterPayload = { page, size, date };
-            dispatch(getBookingByDate(filterPayload));
-        } else {
-            dispatch(getAllBookings({ page, size, sortOrder }));
-        }
-        // eslint-disable-next-line
-    }, [date]);
-
     if (isCreatingBooking || isGettingAvailable) {
         return <LoadingSpinner />
     }
@@ -202,13 +190,23 @@ const BookingManagement = () => {
                 </button>
             </div>
             <div className="booking-mana-body">
-                <input
-                    className="booking-date"
-                    type="date"
-                    placeholder="yyyy-mm-dd"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
+                <div className="filter-section">
+                    <input
+                        className="booking-date"
+                        type="date"
+                        placeholder="yyyy-mm-dd"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+                    <select
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        name="booking-time" className="booking-time">
+                        <option value="">Select Time</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                    </select>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -226,7 +224,7 @@ const BookingManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllBookings || isDeletingBooking || isSearchingBooking || isGettingBookingByDate)
+                    {(isGettingAllBookings || isDeletingBooking || isSearchingBooking)
                         ?
                         <tbody>
                             <tr>

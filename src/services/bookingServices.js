@@ -13,9 +13,13 @@ const handleError = (error) => {
     }
 };
 
-const getAllBookingsService = async (pagination) => {
+const getAllBookingsService = async (bookingPayload) => {
+    const { page, size, sortOrder, date, time } = bookingPayload;
+
     try {
-        const response = await axios.get(`/api/appointments?page=${pagination.page}&size=${pagination.size}&sort=id,${pagination.sortOrder}`);
+        const response = await axios.get(
+            `/api/appointments?page=${page}&size=${size}&sort=id,${sortOrder}&date=${date}&time=${time}`
+        );
         return response;
     } catch (error) {
         handleError(error)
@@ -95,15 +99,6 @@ const searchBookingService = async (searchPayload) => {
     }
 }
 
-const getBookingByDateService = async (filterPayload) => {
-    try {
-        const response = await axios.get(`/api/appointments?page=${filterPayload.page}&size=${filterPayload.size}&date=${filterPayload.date}`);
-        return response;
-    } catch (error) {
-        handleError(error)
-    }
-}
-
 export {
     getAllBookingsService,
     deleteBookingService,
@@ -113,5 +108,4 @@ export {
     getMedicalHistoryService,
     updateBookingService,
     searchBookingService,
-    getBookingByDateService,
 }
