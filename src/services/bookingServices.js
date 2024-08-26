@@ -101,6 +101,7 @@ const getBookingByDateService = async (filterPayload) => {
         return response;
     } catch (error) {
         handleError(error)
+<<<<<<< HEAD
     }
 }
 
@@ -155,6 +156,8 @@ const getBookingByTime = async (pagination) => {
             // Something else happened
             throw new Error('An unexpected error occurred.');
         }
+=======
+>>>>>>> main
     }
 }
 
@@ -165,13 +168,19 @@ export {
     getAvailableBookingService,
     createBookingService,
 <<<<<<< HEAD
+<<<<<<< HEAD
     searchBookingService,
     getBookingByDate,
     getBookingByTime,
 =======
+=======
+>>>>>>> main
     getMedicalHistoryService,
     updateBookingService,
     searchBookingService,
     getBookingByDateService,
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
 }

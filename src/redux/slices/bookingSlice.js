@@ -6,14 +6,20 @@ import {
     getAvailableBookingService,
     createBookingService,
 <<<<<<< HEAD
+<<<<<<< HEAD
     searchBookingService,
     getBookingByDate,
     getBookingByTime,
 =======
+=======
+>>>>>>> main
     getMedicalHistoryService,
     updateBookingService,
     searchBookingService,
     getBookingByDateService,
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
 } from '../../services/bookingServices'
 
@@ -78,17 +84,23 @@ export const createBooking = createAsyncThunk(
 );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const searchPatient = createAsyncThunk(
     'booking/searchPatient',
     async (pagination, { rejectWithValue }) => {
         try {
             const response = await searchBookingService(pagination);
 =======
+=======
+>>>>>>> main
 export const getMedicalHistory = createAsyncThunk(
     'booking/getMedicalHistory',
     async (pagination, { rejectWithValue }) => {
         try {
             const response = await getMedicalHistoryService(pagination);
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
             return response;
         } catch (error) {
@@ -97,6 +109,7 @@ export const getMedicalHistory = createAsyncThunk(
     }
 );
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export const getBookingDate = createAsyncThunk(
     'booking/BookingDate',
@@ -104,11 +117,16 @@ export const getBookingDate = createAsyncThunk(
         try {
             const response = await getBookingByDate(pagination);
 =======
+=======
+>>>>>>> main
 export const updateBooking = createAsyncThunk(
     'booking/updateBooking',
     async (bookingData, { rejectWithValue }) => {
         try {
             const response = await updateBookingService(bookingData);
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
             return response;
         } catch (error) {
@@ -118,12 +136,15 @@ export const updateBooking = createAsyncThunk(
 );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const getBookingTime = createAsyncThunk(
     'booking/BookingTime',
     async (pagination, { rejectWithValue }) => {
         try {
             const response = await getBookingByTime(pagination);
 =======
+=======
+>>>>>>> main
 export const searchBooking = createAsyncThunk(
     'booking/searchBooking',
     async (searchPayload, { rejectWithValue }) => {
@@ -141,6 +162,9 @@ export const getBookingByDate = createAsyncThunk(
     async (filterPayload, { rejectWithValue }) => {
         try {
             const response = await getBookingByDateService(filterPayload);
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
             return response;
         } catch (error) {
@@ -177,7 +201,10 @@ const initialState = {
     isCreatingBooking: false,
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> main
     // get medical history
     isGettingMedicalHistory: false,
     historyList: null,
@@ -186,16 +213,23 @@ const initialState = {
     // update booking
     isUpdatingBooking: false,
 
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
     // search patient
     isSearchingBooking: false,
 
     // get booking by date
 <<<<<<< HEAD
+<<<<<<< HEAD
     isGettingBookingDate: false,
 
     // get booking by time
     isGettingBookingTime: false,
+=======
+    isGettingBookingByDate: false,
+>>>>>>> main
 =======
     isGettingBookingByDate: false,
 >>>>>>> main
@@ -283,6 +317,7 @@ export const bookingSlice = createSlice({
             })
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // search patient
         builder
             .addCase(searchPatient.pending, (state, action) => {
@@ -294,6 +329,8 @@ export const bookingSlice = createSlice({
             })
             .addCase(searchPatient.rejected, (state, action) => {
 =======
+=======
+>>>>>>> main
         // get medical history
         builder
             .addCase(getMedicalHistory.pending, (state, action) => {
@@ -336,6 +373,9 @@ export const bookingSlice = createSlice({
                 state.totalPage = action.payload?.data?.meta?.pages
             })
             .addCase(searchBooking.rejected, (state, action) => {
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
                 state.isSearchingBooking = false
                 state.isBookingError = action.error.message
@@ -343,6 +383,7 @@ export const bookingSlice = createSlice({
 
         // get booking by date
         builder
+<<<<<<< HEAD
 <<<<<<< HEAD
             .addCase(getBookingDate.pending, (state, action) => {
                 state.isGettingBookingDate = true
@@ -368,6 +409,8 @@ export const bookingSlice = createSlice({
             .addCase(getBookingTime.rejected, (state, action) => {
                 state.isGettingBookingTime = false
 =======
+=======
+>>>>>>> main
             .addCase(getBookingByDate.pending, (state, action) => {
                 state.isGettingBookingByDate = true
                 state.isBookingError = null
@@ -379,6 +422,9 @@ export const bookingSlice = createSlice({
             })
             .addCase(getBookingByDate.rejected, (state, action) => {
                 state.isGettingBookingByDate = false
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
                 state.isBookingError = action.error.message
             })
