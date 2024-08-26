@@ -139,7 +139,7 @@ const BookingManagement = () => {
                 }
             }
         } else {
-            toast.error("Please select date and time.");
+            toast.error("Please select date, time or patientId.");
         }
     }
 
