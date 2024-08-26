@@ -15,6 +15,7 @@ import {
     getAvailableBooking,
     createBooking,
     searchBooking,
+    getBookingByDate,
 } from "../../../redux/slices/bookingSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
@@ -33,12 +34,13 @@ const BookingManagement = () => {
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
     const [showModal, setShowModal] = useState(false)
-    const [bookingData, setBookingData] = useState(null)
+    const [bookingData, setBookingData] = useState("")
 
     // state for modal booking
     const isGettingAvailable = useSelector(state => state.booking.isGettingAvailable)
     const isCreatingBooking = useSelector(state => state.booking.isCreatingBooking)
     const availableBookingList = useSelector(state => state.booking.availableBookingList)
+    const isGettingBookingByDate = useSelector(state => state.booking.isGettingBookingByDate)
     const [morningAppointments, setMorningAppointments] = useState("")
     const [afternoonAppointments, setAfternoonAppointments] = useState("")
     const [showBookingModal, setShowBookingModal] = useState(false)
@@ -50,6 +52,7 @@ const BookingManagement = () => {
     const [selectedAppointment, setSelectedAppointment] = useState(initialState);
     const [searchData, setSearchData] = useState("")
     const [sortOrder, setSortOrder] = useState("asc");
+    const [date, setDate] = useState("");
 
     useEffect(() => {
         let pagination = { page, size, sortOrder }
@@ -162,6 +165,16 @@ const BookingManagement = () => {
         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     }
 
+    useEffect(() => {
+        if (date) {
+            let filterPayload = { page, size, date };
+            dispatch(getBookingByDate(filterPayload));
+        } else {
+            dispatch(getAllBookings({ page, size, sortOrder }));
+        }
+        // eslint-disable-next-line
+    }, [date]);
+
     if (isCreatingBooking || isGettingAvailable) {
         return <LoadingSpinner />
     }
@@ -189,6 +202,13 @@ const BookingManagement = () => {
                 </button>
             </div>
             <div className="booking-mana-body">
+                <input
+                    className="booking-date"
+                    type="date"
+                    placeholder="yyyy-mm-dd"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                />
                 <table>
                     <thead>
                         <tr>
@@ -206,7 +226,7 @@ const BookingManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllBookings || isDeletingBooking || isSearchingBooking)
+                    {(isGettingAllBookings || isDeletingBooking || isSearchingBooking || isGettingBookingByDate)
                         ?
                         <tbody>
                             <tr>

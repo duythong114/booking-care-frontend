@@ -95,6 +95,15 @@ const searchBookingService = async (searchPayload) => {
     }
 }
 
+const getBookingByDateService = async (filterPayload) => {
+    try {
+        const response = await axios.get(`/api/appointments?page=${filterPayload.page}&size=${filterPayload.size}&date=${filterPayload.date}`);
+        return response;
+    } catch (error) {
+        handleError(error)
+    }
+}
+
 export {
     getAllBookingsService,
     deleteBookingService,
@@ -104,4 +113,5 @@ export {
     getMedicalHistoryService,
     updateBookingService,
     searchBookingService,
+    getBookingByDateService,
 }
