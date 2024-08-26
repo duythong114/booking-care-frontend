@@ -65,9 +65,12 @@ const getUserInfoService = async () => {
     }
 };
 
-const getAllUserService = async (pagination) => {
+const getAllUserService = async (userPayload) => {
+    const { page, size, sortOrder, searchData } = userPayload
     try {
-        const response = await axios.get(`/api/user?page=${pagination.page}&size=${pagination.size}&sort=id,${pagination.sortOrder}`);
+        const response = await axios.get(
+            `/api/user?page=${page}&size=${size}&sort=id,${sortOrder}&name=${searchData}`
+        );
         return response;
     } catch (error) {
         handleError(error)
@@ -126,15 +129,6 @@ const uploadAvatarService = async (image) => {
     }
 }
 
-const searchUserService = async (searchPayload) => {
-    try {
-        const response = await axios.get(`/api/user?page=${searchPayload.page}&size=${searchPayload.size}&name=${searchPayload.searchData}`);
-        return response;
-    } catch (error) {
-        handleError(error)
-    }
-}
-
 export {
     registerPatientService,
     registerDoctorService,
@@ -145,5 +139,4 @@ export {
     getDetailUserService,
     editUserService,
     uploadAvatarService,
-    searchUserService,
 }

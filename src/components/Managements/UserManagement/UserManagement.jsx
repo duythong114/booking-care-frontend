@@ -8,7 +8,7 @@ import descIcon from "../../../assets/icons/desc.svg"
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux"
-import { getAllUser, deleteUser, getDetailUser, registerDoctor, searchUser } from "../../../redux/slices/userSlice"
+import { getAllUser, deleteUser, getDetailUser, registerDoctor } from "../../../redux/slices/userSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
 import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner"
@@ -35,7 +35,6 @@ const UserManagement = () => {
     const isGettingAllUsers = useSelector(state => state.user.isGettingAllUsers)
     const isDeletingUser = useSelector(state => state.user.isDeletingUser)
     const isRegistingDoctor = useSelector(state => state.user.isRegistingDoctor)
-    const isSearchingUser = useSelector(state => state.user.isSearchingUser)
     const [page, setPage] = useState(1)
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
@@ -47,10 +46,10 @@ const UserManagement = () => {
     const [sortOrder, setSortOrder] = useState("asc");
 
     useEffect(() => {
-        let pagination = { page, size, sortOrder }
-        dispatch(getAllUser(pagination))
+        let userPayload = { page, size, sortOrder, searchData }
+        dispatch(getAllUser(userPayload))
         // eslint-disable-next-line
-    }, [page, sortOrder])
+    }, [page, sortOrder, searchData])
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -136,22 +135,6 @@ const UserManagement = () => {
         }
     }
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSearchUser()
-        }
-    }
-
-    const handleSearchUser = () => {
-        let searchPayload = { page, size, searchData }
-        let pagination = { page, size }
-        if (searchData) {
-            dispatch(searchUser(searchPayload))
-        } else {
-            dispatch(getAllUser(pagination))
-        }
-    }
-
     const toggleOrderSort = () => {
         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     }
@@ -165,7 +148,6 @@ const UserManagement = () => {
                         className="search-input"
                         type="text"
                         onChange={(e) => setSearchData(e.target.value)}
-                        onKeyDown={(e) => handleKeyPress(e)}
                         value={searchData}
                         placeholder="Enter Username"
                     />
@@ -194,7 +176,7 @@ const UserManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor || isSearchingUser)
+                    {(isGettingAllUsers || isDeletingUser || isRegistingDoctor)
                         ?
                         <tbody>
                             <tr>

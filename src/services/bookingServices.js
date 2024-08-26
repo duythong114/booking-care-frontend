@@ -14,11 +14,11 @@ const handleError = (error) => {
 };
 
 const getAllBookingsService = async (bookingPayload) => {
-    const { page, size, sortOrder, date, time } = bookingPayload;
+    const { page, size, sortOrder, date, time, searchData } = bookingPayload;
 
     try {
         const response = await axios.get(
-            `/api/appointments?page=${page}&size=${size}&sort=id,${sortOrder}&date=${date}&time=${time}`
+            `/api/appointments?page=${page}&size=${size}&patientName=${searchData}&sort=id,${sortOrder}&date=${date}&time=${time}`
         );
         return response;
     } catch (error) {
@@ -90,15 +90,6 @@ const updateBookingService = async (bookingData) => {
     }
 }
 
-const searchBookingService = async (searchPayload) => {
-    try {
-        const response = await axios.get(`/api/appointments?page=${searchPayload.page}&size=${searchPayload.size}&patientName=${searchPayload.searchData}`);
-        return response;
-    } catch (error) {
-        handleError(error)
-    }
-}
-
 export {
     getAllBookingsService,
     deleteBookingService,
@@ -107,5 +98,4 @@ export {
     createBookingService,
     getMedicalHistoryService,
     updateBookingService,
-    searchBookingService,
 }

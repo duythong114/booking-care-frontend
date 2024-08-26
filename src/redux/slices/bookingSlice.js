@@ -7,7 +7,6 @@ import {
     createBookingService,
     getMedicalHistoryService,
     updateBookingService,
-    searchBookingService,
 } from '../../services/bookingServices'
 
 export const getAllBookings = createAsyncThunk(
@@ -94,18 +93,6 @@ export const updateBooking = createAsyncThunk(
     }
 );
 
-export const searchBooking = createAsyncThunk(
-    'booking/searchBooking',
-    async (searchPayload, { rejectWithValue }) => {
-        try {
-            const response = await searchBookingService(searchPayload);
-            return response;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
-
 // Load state from localStorage
 const loadDetailBookingJSON = localStorage.getItem('detailBooking');
 const loadDetailBooking = JSON.parse(loadDetailBookingJSON)
@@ -140,9 +127,6 @@ const initialState = {
 
     // update booking
     isUpdatingBooking: false,
-
-    // search patient
-    isSearchingBooking: false,
 }
 
 export const bookingSlice = createSlice({
@@ -253,22 +237,6 @@ export const bookingSlice = createSlice({
             })
             .addCase(updateBooking.rejected, (state, action) => {
                 state.isUpdatingBooking = false
-                state.isBookingError = action.error.message
-            })
-
-        // search booking
-        builder
-            .addCase(searchBooking.pending, (state, action) => {
-                state.isSearchingBooking = true
-                state.isBookingError = null
-            })
-            .addCase(searchBooking.fulfilled, (state, action) => {
-                state.isSearchingBooking = false
-                state.bookingList = action.payload?.data?.result
-                state.totalPage = action.payload?.data?.meta?.pages
-            })
-            .addCase(searchBooking.rejected, (state, action) => {
-                state.isSearchingBooking = false
                 state.isBookingError = action.error.message
             })
     },

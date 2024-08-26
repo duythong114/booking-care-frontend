@@ -14,7 +14,6 @@ import {
     getDetailBooking,
     getAvailableBooking,
     createBooking,
-    searchBooking,
 } from "../../../redux/slices/bookingSlice"
 import { useEffect, useState } from "react"
 import ModalComponent from "../../Modal/Modal"
@@ -28,7 +27,6 @@ const BookingManagement = () => {
     const totalPage = useSelector(state => state.booking.totalPage)
     const isGettingAllBookings = useSelector(state => state.booking.isGettingAllBookings)
     const isDeletingBooking = useSelector(state => state.booking.isDeletingBooking)
-    const isSearchingBooking = useSelector(state => state.booking.isSearchingBooking)
     const [page, setPage] = useState(1)
     // eslint-disable-next-line
     const [size, setSize] = useState(4)
@@ -52,11 +50,12 @@ const BookingManagement = () => {
     const [time, setTime] = useState("");
 
     useEffect(() => {
-        let bookingPayload = { page, size, sortOrder, date, time };
+        let bookingPayload = { page, size, sortOrder, date, time, searchData };
+        console.log(bookingPayload);
         dispatch(getAllBookings(bookingPayload));
 
         // eslint-disable-next-line
-    }, [date, time, sortOrder, page]);
+    }, [date, time, sortOrder, page, searchData]);
 
     // this function is from react-paginate
     const handlePageClick = (event) => {
@@ -142,23 +141,6 @@ const BookingManagement = () => {
         }
     }
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSearchBooking()
-        }
-    }
-
-    const handleSearchBooking = () => {
-        let searchPayload = { page, size, searchData };
-        let pagination = { page, size }
-
-        if (searchData) {
-            dispatch(searchBooking(searchPayload))
-        } else {
-            dispatch(getAllBookings(pagination))
-        }
-    }
-
     const toggleOrderSort = () => {
         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     }
@@ -176,7 +158,6 @@ const BookingManagement = () => {
                         className="search-input"
                         type="text"
                         value={searchData}
-                        onKeyDown={(e) => handleKeyPress(e)}
                         onChange={(e) => setSearchData(e.target.value)}
                         placeholder="Enter Patient Name"
                     />
@@ -224,7 +205,7 @@ const BookingManagement = () => {
                             <th>Action</th>
                         </tr>
                     </thead>
-                    {(isGettingAllBookings || isDeletingBooking || isSearchingBooking)
+                    {(isGettingAllBookings || isDeletingBooking)
                         ?
                         <tbody>
                             <tr>
